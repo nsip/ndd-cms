@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
 
-import { useNotification } from "@kyvg/vue3-notification";
+import { notify } from "@kyvg/vue3-notification";
 import { jsonEntHTML, jsonEntTEXT } from "@/share/EntType";
 import { jsonColHTML, jsonColTEXT } from "@/share/ColType";
 import { postDataToDic } from "@/share/share";
@@ -18,8 +18,6 @@ import { URL_VIEW } from "@/share/ip";
 
 // npm install file-saver --save
 // npm install @types/file-saver --save-dev
-
-const notification = useNotification()
 
 const ToVIEW = async () => { location.replace(`${URL_VIEW}`) };
 
@@ -51,7 +49,7 @@ const SaveJSON = async () => {
     {
         const de = await postDataToDic(jsTEXT)
         if (de.error != null) {
-            notification.notify({
+            notify({
                 title: "Error: Post TEXT to Dictionary",
                 text: de.error,
                 type: "error"
@@ -62,7 +60,7 @@ const SaveJSON = async () => {
     {
         const de = await postDataToDic(jsHTML)
         if (de.error != null) {
-            notification.notify({
+            notify({
                 title: "Error: Post HTML to Dictionary",
                 text: de.error,
                 type: "error"
@@ -71,7 +69,7 @@ const SaveJSON = async () => {
         }
     }
 
-    notification.notify({
+    notify({
         title: "Submitted",
         text: `[${item}] has been uploaded, redirecting to main page`,
         type: "success"

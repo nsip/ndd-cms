@@ -22,13 +22,12 @@
 
 <script setup lang="ts">
 
-import { useNotification } from "@kyvg/vue3-notification";
+import { notify } from "@kyvg/vue3-notification";
 import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
 import { itemName, itemKind } from "@/share/share";
 import TextLine from "@/components/TextLine.vue";
 import EditorLegDef from "@/components/entity/6_LegalDef_Editor.vue";
 
-const notification = useNotification()
 const icon = ref("chevron-down");
 const visEditor = ref(false);
 const nEditor = ref(0);
@@ -57,7 +56,7 @@ const onMoreLessClick = (type: string) => {
         case "+":
             {
                 if (jsonTEXT.IsLastLegalDefEmpty()) {
-                    notification.notify({
+                    notify({
                         title: "Note",
                         text: "please use available editor(s). if hidden, unfold it",
                         type: "warn"
@@ -76,7 +75,7 @@ const onMoreLessClick = (type: string) => {
         case "-":
             {
                 if (nEditor.value <= 1) {
-                    notification.notify({
+                    notify({
                         title: "Note",
                         text: "no more editor group to remove",
                         type: "warn"

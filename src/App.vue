@@ -16,7 +16,7 @@
 <script setup lang="ts">
 
 import { useCookies } from "vue3-cookies";
-import { useNotification } from "@kyvg/vue3-notification";
+import { notify } from "@kyvg/vue3-notification";
 import { Mode, loginAuth, loginToken, loginUser, getSelfName, itemName, itemKind, getItemContent } from "@/share/share";
 import { EntType, jsonEntHTML, jsonEntTEXT } from "@/share/EntType";
 import { ColType, jsonColHTML, jsonColTEXT } from "@/share/ColType";
@@ -27,7 +27,6 @@ import EntryEnt from "@/components/entity/EntryEnt.vue";
 import EntryCol from "@/components/collection/EntryCol.vue";
 
 const { cookies } = useCookies();
-const notification = useNotification()
 const display = ref(false)
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 
@@ -65,7 +64,7 @@ onMounted(async () => {
 
     if (loginToken.value.length < 128) {
 
-        notification.notify({
+        notify({
             title: "Error",
             text: "Invalid Auth Info",
             type: "error"
@@ -77,7 +76,7 @@ onMounted(async () => {
         {
             const de = await getSelfName();
             if (de.error != null) {
-                notification.notify({
+                notify({
                     title: "Error: Cannot Get Self User Name",
                     text: de.error,
                     type: "error"
@@ -100,7 +99,7 @@ onMounted(async () => {
                     {
                         const de = await getItemContent(itemName.value, itemKind.value, "existing")
                         if (de.error != null) {
-                            notification.notify({
+                            notify({
                                 title: "Error: Get Entity Item Content",
                                 text: de.error,
                                 type: "error"
@@ -133,7 +132,7 @@ onMounted(async () => {
                     {
                         const de = await getItemContent(itemName.value, itemKind.value, "existing")
                         if (de.error != null) {
-                            notification.notify({
+                            notify({
                                 title: "Error: Get Collection Item Content",
                                 text: de.error,
                                 type: "error"
