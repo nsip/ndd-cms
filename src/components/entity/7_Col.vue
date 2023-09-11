@@ -34,6 +34,13 @@ const nEditor = ref(0);
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 
 onMounted(async () => {
+
+    // add new item
+    if (itemName.value === null) {
+        nEditor.value = 1
+    }
+
+    // edit existing item
     if (itemName.value?.length > 0 && itemKind.value?.length > 0) {
         if (jsonHTML.Collections.length > 0) {
             nEditor.value = jsonHTML.Collections.length;
@@ -43,6 +50,7 @@ onMounted(async () => {
             nEditor.value = 1
         }
     }
+
     mounted = true;
 });
 
