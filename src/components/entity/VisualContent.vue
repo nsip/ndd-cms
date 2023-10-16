@@ -113,6 +113,25 @@ const prevLegalDefinition = () => {
     return head;
 };
 
+const prevSensitivity = () => {
+    const head = "<h4 style='font-size:large; font-style:italic; background-color: darkgray'><pre> Sensitivity</pre></h4>";
+    const n = jsonTEXT.CntSensi();
+    let eles: string[] = [];
+    for (let i = 0; i < n; i++) {
+        const jt = jsonTEXT.Sensitivity[i];
+        const jh = jsonHTML.Sensitivity[i];
+        eles[i] = "";
+        eles[i] += nonEmptyHtml(">> locale:", jt.Locale, jh.Locale);
+        eles[i] += nonEmptyHtml(">> value:", jt.Value, jh.Value);
+        eles[i] += nonEmptyHtml(">> commentary:", jt.Commentary, jh.Commentary);
+    }
+    const body = eles.join("<hr style='border-top: 1px dashed;'>");
+    if (body.length > 0) {
+        return head + body;
+    }
+    return head;
+}
+
 const prevCollections = () => {
     const head = "<h4 style='font-size:large; font-style:italic; background-color: darkgray'><pre> Collections</pre></h4>";
     const n = jsonTEXT.CntCol();
@@ -155,6 +174,7 @@ const wholeContent = () => {
         prevSIF() +
         prevOtherStandards() +
         prevLegalDefinition() +
+        prevSensitivity() +
         prevCollections() +
         prevMetadata()
     );
@@ -163,6 +183,4 @@ const wholeContent = () => {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>
+<style scoped></style>
