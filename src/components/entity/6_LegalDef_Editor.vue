@@ -74,20 +74,20 @@ const onReadyCmt = (quill: Quill) => {
 const textChangeCit = (idx: number) => {
     const html = quillCit.root.innerHTML;
     const text = quillCit.getText(0, 100000);
-    jsonHTML.SetLegalDef(idx, "", html, "", "", "", "");
-    jsonTEXT.SetLegalDef(idx, "", text, "", "", "", "");
+    jsonHTML.SetLegalDef(idx, "**", html, "**", "**", "**", "**");
+    jsonTEXT.SetLegalDef(idx, "**", text, "**", "**", "**", "**");
 };
 const textChangeDef = (idx: number) => {
     const html = quillDef.root.innerHTML;
     const text = quillDef.getText(0, 100000);
-    jsonHTML.SetLegalDef(idx, "", "", "", html, "", "");
-    jsonTEXT.SetLegalDef(idx, "", "", "", text, "", "");
+    jsonHTML.SetLegalDef(idx, "**", "**", "**", html, "**", "**");
+    jsonTEXT.SetLegalDef(idx, "**", "**", "**", text, "**", "**");
 };
 const textChangeCmt = (idx: number) => {
     const html = quillCmt.root.innerHTML;
     const text = quillCmt.getText(0, 100000);
-    jsonHTML.SetLegalDef(idx, "", "", "", "", html, "");
-    jsonTEXT.SetLegalDef(idx, "", "", "", "", text, "");
+    jsonHTML.SetLegalDef(idx, "**", "**", "**", "**", html, "**");
+    jsonTEXT.SetLegalDef(idx, "**", "**", "**", "**", text, "**");
 };
 
 watchEffect(() => {
@@ -98,8 +98,8 @@ watchEffect(() => {
     const ds = datestamp.value;
 
     if (mounted) {
-        jsonHTML.SetLegalDef(idx || 0, ln, "", lk, "", "", ds);
-        jsonTEXT.SetLegalDef(idx || 0, ln, "", lk, "", "", ds);
+        jsonHTML.SetLegalDef(idx || 0, ln, "**", lk, "**", "**", ds);
+        jsonTEXT.SetLegalDef(idx || 0, ln, "**", lk, "**", "**", ds);
         if (taLN.value != null) {
             const numberOfLineBreaks = (ln.match(/\n/g) || []).length;
             const newHeight = 10 + numberOfLineBreaks * 20 + 12 + 2;

@@ -61,15 +61,15 @@ const onReadyCmt = (quill: Quill) => {
 const textChangeDef = (idx: number) => {
     const html = quillDef.root.innerHTML;
     const text = quillDef.getText(0, 100000);
-    jsonHTML.SetSIF("html", idx, "", html, "", "");
-    jsonTEXT.SetSIF("", idx, "", text, "", "");
+    jsonHTML.SetSIF("html", idx, "**", html, "**", "**");
+    jsonTEXT.SetSIF("", idx, "**", text, "**", "**");
 };
 
 const textChangeCmt = (idx: number) => {
     const html = quillCmt.root.innerHTML;
     const text = quillCmt.getText(0, 100000);
-    jsonHTML.SetSIF("html", idx, "", "", html, "");
-    jsonTEXT.SetSIF("", idx, "", "", text, "");
+    jsonHTML.SetSIF("html", idx, "**", "**", html, "**");
+    jsonTEXT.SetSIF("", idx, "**", "**", text, "**");
 };
 
 watchEffect(() => {
@@ -79,8 +79,8 @@ watchEffect(() => {
     const ds = datestamp.value;
 
     if (mounted) {
-        jsonTEXT.SetSIF("", idx || 0, xp, "", "", ds);
-        jsonHTML.SetSIF("html", idx || 0, xp, "", "", ds);
+        jsonTEXT.SetSIF("", idx || 0, xp, "**", "**", ds);
+        jsonHTML.SetSIF("html", idx || 0, xp, "**", "**", ds);
         // resize textarea
         if (taXP.value != null) {
             const numberOfLineBreaks = (xp.match(/\n/g) || []).length;

@@ -63,8 +63,8 @@ const onReadyDef = (quill: Quill) => {
 const textChangeDef = (idx: number) => {
     const html = quillDef.root.innerHTML;
     const text = quillDef.getText(0, 100000);
-    jsonHTML.SetOtherStd("html", idx, "", "", "", html, "");
-    jsonTEXT.SetOtherStd("", idx, "", "", "", text, "");
+    jsonHTML.SetOtherStd("html", idx, "**", "**", "**", html, "**");
+    jsonTEXT.SetOtherStd("", idx, "**", "**", "**", text, "**");
 };
 
 const onReadyCmt = (quill: Quill) => {
@@ -74,8 +74,8 @@ const onReadyCmt = (quill: Quill) => {
 const textChangeCmt = (idx: number) => {
     const html = quillCmt.root.innerHTML;
     const text = quillCmt.getText(0, 100000);
-    jsonHTML.SetOtherStd("html", idx, "", "", "", "", html);
-    jsonTEXT.SetOtherStd("", idx, "", "", "", "", text);
+    jsonHTML.SetOtherStd("html", idx, "**", "**", "**", "**", html);
+    jsonTEXT.SetOtherStd("", idx, "**", "**", "**", "**", text);
 };
 
 watchEffect(() => {
@@ -86,8 +86,8 @@ watchEffect(() => {
     const p = paths.value;
 
     if (mounted) {
-        jsonHTML.SetOtherStd("html", idx || 0, s, l, p, "", "");
-        jsonTEXT.SetOtherStd("", idx || 0, s, l, p, "", "");
+        jsonHTML.SetOtherStd("html", idx || 0, s, l, p, "**", "**");
+        jsonTEXT.SetOtherStd("", idx || 0, s, l, p, "**", "**");
         if (taS.value != null) {
             const numberOfLineBreaks = (s.match(/\n/g) || []).length;
             const newHeight = 10 + numberOfLineBreaks * 20 + 12 + 2;
