@@ -49,7 +49,7 @@ export class ColType {
     //
 
     SetUrl(urlStr: string) {
-        this.URL = validStrTEXTArr(urlStr);
+        this.URL = validStrTEXTArr(urlStr, this.URL);
     }
 
     CntUrl() {
@@ -97,7 +97,7 @@ export class ColType {
     //
 
     SetEntities(entitiesStr: string) {
-        this.Entities = validStrTEXTArr(entitiesStr);
+        this.Entities = validStrTEXTArr(entitiesStr, this.Entities);
     }
 
     CntEntities() {
