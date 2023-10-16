@@ -74,20 +74,20 @@ const onReadyDM = (quill: Quill) => {
 const textChangeDes = (idx: number) => {
     const html = quillDes.root.innerHTML;
     const text = quillDes.getText(0, 100000);
-    jsonHTML.SetCol("html", idx, "", html, "", "", "", "");
-    jsonTEXT.SetCol("", idx, "", text, "", "", "", "");
+    jsonHTML.SetCol("html", idx, "**", html, "**", "**", "**", "**");
+    jsonTEXT.SetCol("", idx, "**", text, "**", "**", "**", "**");
 };
 const textChangeBR = (idx: number) => {
     const html = quillBR.root.innerHTML;
     const text = quillBR.getText(0, 100000);
-    jsonHTML.SetCol("html", idx, "", "", "", "", html, "");
-    jsonTEXT.SetCol("", idx, "", "", "", "", text, "");
+    jsonHTML.SetCol("html", idx, "**", "**", "**", "**", html, "**");
+    jsonTEXT.SetCol("", idx, "**", "**", "**", "**", text, "**");
 };
 const textChangeDM = (idx: number) => {
     const html = quillDM.root.innerHTML;
     const text = quillDM.getText(0, 100000);
-    jsonHTML.SetCol("html", idx, "", "", "", "", "", html);
-    jsonTEXT.SetCol("", idx, "", "", "", "", "", text);
+    jsonHTML.SetCol("html", idx, "**", "**", "**", "**", "**", html);
+    jsonTEXT.SetCol("", idx, "**", "**", "**", "**", "**", text);
 };
 
 watchEffect(() => {
@@ -98,8 +98,8 @@ watchEffect(() => {
     const e = elements.value;
 
     if (mounted) {
-        jsonHTML.SetCol("html", idx || 0, n, "", s, e, "", "");
-        jsonTEXT.SetCol("", idx || 0, n, "", s, e, "", "");
+        jsonHTML.SetCol("html", idx || 0, n, "**", s, e, "**", "**");
+        jsonTEXT.SetCol("", idx || 0, n, "**", s, e, "**", "**");
         if (taN.value != null) {
             const numberOfLineBreaks = (n.match(/\n/g) || []).length;
             const newHeight = 10 + numberOfLineBreaks * 20 + 12 + 2;

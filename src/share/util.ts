@@ -27,14 +27,18 @@ export const timestamp = () => {
     );
 };
 
+const DefaultSymbol = '**';
+
+// if val is '**', return defaultVal; otherwise, return val (without tail space)
 export const validStr = (val: string, defaultVal: string) => {
-    if (val.length == 0) {
-        return defaultVal;
-    }
-    return val.trimEnd();
+    return val != DefaultSymbol ? val.trimEnd() : defaultVal;
 };
 
-export const validStrHTMLArr = (val: string) => {
+export const validStrHTMLArr = (val: string, defaultVal: string[]) => {
+
+    if (val == DefaultSymbol) {
+        return defaultVal
+    }
 
     const arr = val.split(/<\/p>|<\/h1>|<\/h2>|<\/h3>|<\/h4>|<\/h5>|<\/h6>/);
 
@@ -63,7 +67,12 @@ export const validStrHTMLArr = (val: string) => {
     return rt;
 };
 
-export const validStrTEXTArr = (val: string) => {
+export const validStrTEXTArr = (val: string, defaultVal: string[]) => {
+
+    if (val == DefaultSymbol) {
+        return defaultVal
+    }
+
     // filter empty text line
     const rt: string[] = [];
     val.split("\n").forEach((element) => {

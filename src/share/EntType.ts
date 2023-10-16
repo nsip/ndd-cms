@@ -8,6 +8,7 @@ export class EntType {
     SIF: sifType[] = [new sifType()];
     OtherStandards: otherStdType[] = [new otherStdType()];
     LegalDefinitions: legalDefType[] = [new legalDefType()];
+    Sensitivity: sensiType[] = [new sensiType()];
     Collections: colType[] = [new colType()];
     Metadata: metaType = new metaType();
 
@@ -34,8 +35,9 @@ export class EntType {
     //
 
     SetOtherName(nameStr: string) {
-        this.OtherNames = validStrTEXTArr(nameStr);
+        this.OtherNames = validStrTEXTArr(nameStr, this.OtherNames);
     }
+
     // SetOtherName(TYPE: string, nameStr: string) {
     //     switch (TYPE) {
     //         case "html":
@@ -85,9 +87,11 @@ export class EntType {
     AddSIF() {
         this.SIF.push(new sifType());
     }
+
     RmSIFLast() {
         this.SIF.splice(-1);
     }
+
     SetSIF(
         TYPE: string,
         i: number,
@@ -105,15 +109,17 @@ export class EntType {
         ele.Datestamp = validStr(datestamp, ele.Datestamp);
         switch (TYPE) {
             case "html":
-                ele.XPath = validStrHTMLArr(xpathStr);
+                ele.XPath = validStrHTMLArr(xpathStr, ele.XPath);
                 break;
             default:
-                ele.XPath = validStrTEXTArr(xpathStr);
+                ele.XPath = validStrTEXTArr(xpathStr, ele.XPath);
         }
     }
+
     CntSIF() {
         return this.SIF.length;
     }
+
     IsSIFEmpty(i: number) {
         const ele = this.SIF[i];
         if (ele == undefined) {
@@ -126,6 +132,7 @@ export class EntType {
             ele.Datestamp.trim().length == 0
         );
     }
+
     IsLastSIFEmpty() {
         const n = this.CntSIF();
         return n == 0 || this.IsSIFEmpty(n - 1);
@@ -161,9 +168,11 @@ export class EntType {
     AddOtherStd() {
         this.OtherStandards.push(new otherStdType());
     }
+
     RmOtherStdLast() {
         this.OtherStandards.splice(-1);
     }
+
     SetOtherStd(
         TYPE: string,
         i: number,
@@ -182,17 +191,19 @@ export class EntType {
         ele.Commentary = validStr(commentary, ele.Commentary);
         switch (TYPE) {
             case "html":
-                ele.Link = validStrHTMLArr(linkStr);
-                ele.Path = validStrHTMLArr(pathStr);
+                ele.Link = validStrHTMLArr(linkStr, ele.Link);
+                ele.Path = validStrHTMLArr(pathStr, ele.Path);
                 break;
             default:
-                ele.Link = validStrTEXTArr(linkStr);
-                ele.Path = validStrTEXTArr(pathStr);
+                ele.Link = validStrTEXTArr(linkStr, ele.Link);
+                ele.Path = validStrTEXTArr(pathStr, ele.Path);
         }
     }
+
     CntOtherStd() {
         return this.OtherStandards.length;
     }
+
     IsOtherStdEmpty(i: number) {
         const ele = this.OtherStandards[i];
         if (ele == undefined) {
@@ -206,6 +217,7 @@ export class EntType {
             ele.Path.length == 0
         );
     }
+
     IsLastOtherStdEmpty() {
         const n = this.CntOtherStd();
         return n == 0 || this.IsOtherStdEmpty(n - 1);
@@ -242,9 +254,11 @@ export class EntType {
     AddLegalDef() {
         this.LegalDefinitions.push(new legalDefType());
     }
+
     RmLegalDefLast() {
         this.LegalDefinitions.splice(-1);
     }
+
     SetLegalDef(
         i: number,
         legislationName: string,
@@ -265,9 +279,11 @@ export class EntType {
         ele.Commentary = validStr(commentary, ele.Commentary);
         ele.Datestamp = validStr(datestamp, ele.Datestamp);
     }
+
     CntLegalDef() {
         return this.LegalDefinitions.length;
     }
+
     IsLegalDefEmpty(i: number) {
         const ele = this.LegalDefinitions[i];
         if (ele == undefined) {
@@ -282,6 +298,7 @@ export class EntType {
             ele.Link.length == 0
         );
     }
+
     IsLastLegalDefEmpty() {
         const n = this.CntLegalDef();
         return n == 0 || this.IsLegalDefEmpty(n - 1);
@@ -313,15 +330,87 @@ export class EntType {
     }
 
     //
+    // Sensitivity --------------------------------------------------
+    //
+
+    AddSensi() {
+        this.Sensitivity.push(new sensiType());
+    }
+
+    RmSensiLast() {
+        this.Sensitivity.splice(-1);
+    }
+
+    SetSensi(
+        i: number,
+        locale: string,
+        value: string,
+        commentary: string,
+    ) {
+        if (this.CntSensi() == 0) {
+            return
+        }
+        const ele = this.Sensitivity[i];
+        ele.Locale = validStr(locale, ele.Locale);
+        ele.Value = validStr(value, ele.Value);
+        ele.Commentary = validStr(commentary, ele.Commentary);
+    }
+
+    CntSensi() {
+        return this.Sensitivity.length;
+    }
+
+    IsSensiEmpty(i: number) {
+        const ele = this.Sensitivity[i];
+        if (ele == undefined) {
+            return true;
+        }
+        return (
+            ele.Locale.trim().length == 0 &&
+            ele.Value.trim().length == 0 &&
+            ele.Commentary.trim().length == 0
+        );
+    }
+
+    IsLastSensiEmpty() {
+        const n = this.CntSensi();
+        return n == 0 || this.IsSensiEmpty(n - 1);
+    }
+
+    AssignSensi(TYPE: string, sensi: sensiType[]) {
+        switch (TYPE) {
+            case "html":
+                this.Sensitivity = sensi != null ? sensi : EmptySensi();
+                break;
+            default:
+                this.Sensitivity = sensi != null ? this.PlainSensi(sensi) : EmptySensi();
+        }
+    }
+
+    PlainSensi(Sensi: sensiType[]) {
+        const sensiPlain: sensiType[] = [];
+        Sensi.forEach((val) => {
+            const sensi = new sensiType();
+            sensi.Locale = cvtHtml2Plain(val.Locale);
+            sensi.Value = cvtHtml2Plain(val.Value);
+            sensi.Commentary = cvtHtml2Plain(val.Commentary);
+            sensiPlain.push(sensi);
+        });
+        return sensiPlain;
+    }
+
+    //
     // Collections --------------------------------------------------
     //
 
     AddCol() {
         this.Collections.push(new colType());
     }
+
     RmColLast() {
         this.Collections.splice(-1);
     }
+
     SetCol(
         TYPE: string,
         i: number,
@@ -342,17 +431,19 @@ export class EntType {
         ele.DefinitionModification = validStr(defmod, ele.DefinitionModification);
         switch (TYPE) {
             case "html":
-                ele.Elements = validStrHTMLArr(elementStr);
-                ele.BusinessRules = validStrHTMLArr(bizruleStr);
+                ele.Elements = validStrHTMLArr(elementStr, ele.Elements);
+                ele.BusinessRules = validStrHTMLArr(bizruleStr, ele.BusinessRules);
                 break;
             default:
-                ele.Elements = validStrTEXTArr(elementStr);
-                ele.BusinessRules = validStrTEXTArr(bizruleStr);
+                ele.Elements = validStrTEXTArr(elementStr, ele.Elements);
+                ele.BusinessRules = validStrTEXTArr(bizruleStr, ele.BusinessRules);
         }
     }
+
     CntCol() {
         return this.Collections.length;
     }
+
     IsColEmpty(i: number) {
         const ele = this.Collections[i];
         if (ele == undefined) {
@@ -367,6 +458,7 @@ export class EntType {
             ele.BusinessRules.length == 0
         );
     }
+
     IsLastColEmpty() {
         const n = this.CntCol();
         return n == 0 || this.IsColEmpty(n - 1);
@@ -413,14 +505,14 @@ export class EntType {
         this.Metadata.Type = validStr(type, this.Metadata.Type);
         switch (TYPE) {
             case "html":
-                this.Metadata.Superclass = validStrHTMLArr(superclass);
-                this.Metadata.ExpectedAttributes = validStrHTMLArr(attrStr);
-                this.Metadata.CrossrefEntities = validStrHTMLArr(crossref);
+                this.Metadata.Superclass = validStrHTMLArr(superclass, this.Metadata.Superclass);
+                this.Metadata.ExpectedAttributes = validStrHTMLArr(attrStr, this.Metadata.ExpectedAttributes);
+                this.Metadata.CrossrefEntities = validStrHTMLArr(crossref, this.Metadata.CrossrefEntities);
                 break;
             default:
-                this.Metadata.Superclass = validStrTEXTArr(superclass);
-                this.Metadata.ExpectedAttributes = validStrTEXTArr(attrStr);
-                this.Metadata.CrossrefEntities = validStrTEXTArr(crossref);
+                this.Metadata.Superclass = validStrTEXTArr(superclass, this.Metadata.Superclass);
+                this.Metadata.ExpectedAttributes = validStrTEXTArr(attrStr, this.Metadata.ExpectedAttributes);
+                this.Metadata.CrossrefEntities = validStrTEXTArr(crossref, this.Metadata.CrossrefEntities);
         }
     }
 
@@ -485,6 +577,12 @@ class legalDefType {
     Datestamp = "";
 }
 
+class sensiType {
+    Locale = "";
+    Value = "";
+    Commentary = "";
+}
+
 class colType {
     Name = "";
     Description = "";
@@ -506,6 +604,7 @@ const EmptyStrArr = (): string[] => { return [] }
 const EmptySIF = (): sifType[] => { return [] }
 const EmptyOS = (): otherStdType[] => { return [] }
 const EmptyLD = (): legalDefType[] => { return [] }
+const EmptySensi = (): sensiType[] => { return [] }
 const EmptyCol = (): colType[] => { return [] }
 
 export const jsonEntHTML = reactive(new EntType());

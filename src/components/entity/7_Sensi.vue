@@ -1,6 +1,6 @@
 <template>
     <div class="com">
-        <span class="label">Collections:</span>
+        <span class="label">Sensitivity:</span>
         <button class="hide-editor" @click="onToggleVisible()">
             <font-awesome-icon :icon="icon" />
         </button>
@@ -10,11 +10,11 @@
         <button class="more-editor" @click="onMoreLessClick('+')">
             <font-awesome-icon icon="circle-plus" />
         </button>
-        <span class="hint2">list of [name, description, standard, elements(list), businessRules(list), definitionModification]</span>
+        <span class="hint2">list of [locale, value, commentary]</span>
         <div v-if="visEditor">
             <div v-for="(n, i) in nEditor" :key="i">
                 <TextLine :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="1.5px" />
-                <EditorCol :idx="i" />
+                <EditorSensi :idx="i" />
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@ import { notify } from "@kyvg/vue3-notification";
 import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
 import { itemName, itemKind } from "@/share/share";
 import TextLine from "@/components/TextLine.vue";
-import EditorCol from "@/components/entity/7_Col_Editor.vue";
+import EditorSensi from "@/components/entity/7_Sensi_Editor.vue";
 
 const icon = ref("chevron-down");
 const visEditor = ref(false);
@@ -42,11 +42,11 @@ onMounted(async () => {
 
     // edit existing item
     if (itemName.value?.length > 0 && itemKind.value?.length > 0) {
-        if (jsonHTML.Collections.length > 0) {
-            nEditor.value = jsonHTML.Collections.length;
+        if (jsonHTML.Sensitivity.length > 0) {
+            nEditor.value = jsonHTML.Sensitivity.length;
         } else {
-            jsonHTML.AddCol()
-            jsonTEXT.AddCol()
+            jsonHTML.AddSensi()
+            jsonTEXT.AddSensi()
             nEditor.value = 1
         }
     }
@@ -63,7 +63,7 @@ const onMoreLessClick = (type: string) => {
     switch (type) {
         case "+":
             {
-                if (jsonTEXT.IsLastColEmpty()) {
+                if (jsonTEXT.IsLastSensiEmpty()) {
                     notify({
                         title: "Note",
                         text: "please use available editor(s). if hidden, unfold it",
@@ -72,9 +72,9 @@ const onMoreLessClick = (type: string) => {
                     break;
                 }
 
-                // add new Collection element in json
-                jsonHTML.AddCol();
-                jsonTEXT.AddCol();
+                // add new Sensitivity element in json
+                jsonHTML.AddSensi();
+                jsonTEXT.AddSensi();
 
                 nEditor.value++;
             }
@@ -91,9 +91,9 @@ const onMoreLessClick = (type: string) => {
                     break;
                 }
 
-                // remove last Collection element in json
-                jsonHTML.RmColLast();
-                jsonTEXT.RmColLast();
+                // remove last Sensitivity element in json
+                jsonHTML.RmSensiLast();
+                jsonTEXT.RmSensiLast();
 
                 nEditor.value--;
             }
