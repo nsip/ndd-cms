@@ -114,6 +114,7 @@ onMounted(async () => {
                         jsonEntHTML.AssignSIF("html", entity.SIF);
                         jsonEntHTML.AssignOtherStd("html", entity.OtherStandards);
                         jsonEntHTML.AssignLegalDef("html", entity.LegalDefinitions);
+                        jsonEntHTML.AssignSensi("html", entity.Sensitivity);
                         jsonEntHTML.AssignCol("html", entity.Collections);
                         jsonEntHTML.AssignMeta("html", entity.Metadata);
 
@@ -123,6 +124,7 @@ onMounted(async () => {
                         jsonEntTEXT.AssignSIF("text", entity.SIF);
                         jsonEntTEXT.AssignOtherStd("text", entity.OtherStandards);
                         jsonEntTEXT.AssignLegalDef("text", entity.LegalDefinitions);
+                        jsonEntTEXT.AssignSensi("text", entity.Sensitivity);
                         jsonEntTEXT.AssignCol("text", entity.Collections);
                         jsonEntTEXT.AssignMeta("text", entity.Metadata);
                     }
