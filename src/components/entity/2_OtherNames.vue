@@ -5,7 +5,7 @@
             <font-awesome-icon :icon="icon" />
         </button>
         <div v-if="visEditor">
-            <textarea class="content" ref="taON" v-model="othernames" placeholder="entity's other names"></textarea>
+            <textarea class="content" ref="taON" v-model="other_names" placeholder="entity's other names"></textarea>
         </div>
     </div>
 </template>
@@ -13,10 +13,11 @@
 <script setup lang="ts">
 
 import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
+import { fitTextarea } from "@/share/util";
 
 const icon = ref("chevron-down");
 const visEditor = ref(false);
-const othernames = ref(""); // text area content (left)
+const other_names = ref(""); // text area content (left)
 const taON = ref<HTMLTextAreaElement | null>(null); // fetch element
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 
@@ -26,22 +27,17 @@ const onToggleVisible = () => {
 };
 
 onMounted(async () => {
-    othernames.value = jsonTEXT.OtherNames != null ? jsonTEXT.OtherNames.join("\n") : "";
+    other_names.value = jsonTEXT.OtherNames != null ? jsonTEXT.OtherNames.join("\n") : "";
     mounted = true;
 });
 
 watchEffect(() => {
-    const str4arr = othernames.value
+    const str4arr = other_names.value
     if (mounted) {
         // update data
         jsonTEXT.SetOtherName(str4arr);
         jsonHTML.SetOtherName(str4arr);
-        // resize textarea
-        if (taON.value != null) {
-            const numberOfLineBreaks = (str4arr.match(/\n/g) || []).length;
-            const newHeight = 10 + numberOfLineBreaks * 20 + 12 + 2;
-            taON.value!.style.height = newHeight + "px";
-        }
+        fitTextarea(taON.value!, str4arr);
     }
 });
 

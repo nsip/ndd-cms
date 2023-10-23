@@ -25,6 +25,7 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
 import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
 import TextLine from "@/components/TextLine.vue";
+import { fitTextarea } from "@/share/util";
 
 const name = ref("");
 const standard = ref("");
@@ -61,6 +62,20 @@ onMounted(async () => {
     mounted = true;
 });
 
+watchEffect(() => {
+    const idx = props.idx;
+    const n = name.value;
+    const s = standard.value;
+    const e = elements.value;
+    if (mounted) {
+        jsonHTML.SetCol("html", idx || 0, n, "**", s, e, "**", "**");
+        jsonTEXT.SetCol("", idx || 0, n, "**", s, e, "**", "**");
+        fitTextarea(taN.value!, n);
+        fitTextarea(taS.value!, s);
+        fitTextarea(taE.value!, e);
+    }
+});
+
 const onReadyDes = (quill: Quill) => {
     quillDes = quill;
 };
@@ -89,34 +104,6 @@ const textChangeDM = (idx: number) => {
     jsonHTML.SetCol("html", idx, "**", "**", "**", "**", "**", html);
     jsonTEXT.SetCol("", idx, "**", "**", "**", "**", "**", text);
 };
-
-watchEffect(() => {
-
-    const idx = props.idx;
-    const n = name.value;
-    const s = standard.value;
-    const e = elements.value;
-
-    if (mounted) {
-        jsonHTML.SetCol("html", idx || 0, n, "**", s, e, "**", "**");
-        jsonTEXT.SetCol("", idx || 0, n, "**", s, e, "**", "**");
-        if (taN.value != null) {
-            const numberOfLineBreaks = (n.match(/\n/g) || []).length;
-            const newHeight = 10 + numberOfLineBreaks * 20 + 12 + 2;
-            taN.value!.style.height = newHeight + "px";
-        }
-        if (taS.value != null) {
-            const numberOfLineBreaks = (s.match(/\n/g) || []).length;
-            const newHeight = 10 + numberOfLineBreaks * 20 + 12 + 2;
-            taS.value!.style.height = newHeight + "px";
-        }
-        if (taE.value != null) {
-            const numberOfLineBreaks = (e.match(/\n/g) || []).length;
-            const newHeight = 10 + numberOfLineBreaks * 20 + 20 + 2;
-            taE.value!.style.height = newHeight + "px";
-        }
-    }
-});
 
 </script>
 

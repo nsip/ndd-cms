@@ -19,6 +19,7 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
 import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
 import TextLine from "@/components/TextLine.vue";
+import { fitTextarea } from "@/share/util";
 
 const xpath = ref("");
 const datestamp = ref("");
@@ -81,17 +82,8 @@ watchEffect(() => {
     if (mounted) {
         jsonTEXT.SetSIF("", idx || 0, xp, "**", "**", ds);
         jsonHTML.SetSIF("html", idx || 0, xp, "**", "**", ds);
-        // resize textarea
-        if (taXP.value != null) {
-            const numberOfLineBreaks = (xp.match(/\n/g) || []).length;
-            const newHeight = 10 + numberOfLineBreaks * 20 + 12 + 2;
-            taXP.value!.style.height = newHeight + "px";
-        }
-        if (taDS.value != null) {
-            const numberOfLineBreaks = (ds.match(/\n/g) || []).length;
-            const newHeight = 10 + numberOfLineBreaks * 20 + 12 + 2;
-            taDS.value!.style.height = newHeight + "px";
-        }
+        fitTextarea(taXP.value!, xp);
+        fitTextarea(taDS.value!, ds);
     }
 });
 

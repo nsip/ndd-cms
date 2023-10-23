@@ -22,6 +22,7 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
 import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
 import TextLine from "@/components/TextLine.vue";
+import { fitTextarea } from "@/share/util";
 
 const std = ref("");
 const links = ref("");
@@ -88,21 +89,9 @@ watchEffect(() => {
     if (mounted) {
         jsonHTML.SetOtherStd("html", idx || 0, s, l, p, "**", "**");
         jsonTEXT.SetOtherStd("", idx || 0, s, l, p, "**", "**");
-        if (taS.value != null) {
-            const numberOfLineBreaks = (s.match(/\n/g) || []).length;
-            const newHeight = 10 + numberOfLineBreaks * 20 + 12 + 2;
-            taS.value!.style.height = newHeight + "px";
-        }
-        if (taL.value != null) {
-            const numberOfLineBreaks = (l.match(/\n/g) || []).length;
-            const newHeight = 10 + numberOfLineBreaks * 20 + 12 + 2;
-            taL.value!.style.height = newHeight + "px";
-        }
-        if (taP.value != null) {
-            const numberOfLineBreaks = (p.match(/\n/g) || []).length;
-            const newHeight = 10 + numberOfLineBreaks * 20 + 12 + 2;
-            taP.value!.style.height = newHeight + "px";
-        }
+        fitTextarea(taS.value!, s);
+        fitTextarea(taL.value!, l);
+        fitTextarea(taP.value!, p);
     }
 });
 

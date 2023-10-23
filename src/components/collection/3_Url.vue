@@ -12,6 +12,7 @@
 
 <script setup lang="ts">
 import { jsonColHTML, jsonColTEXT } from "@/share/ColType";
+import { fitTextarea } from "@/share/util";
 
 const icon = ref("chevron-down");
 const visEditor = ref(false);
@@ -34,12 +35,7 @@ watchEffect(() => {
     if (mounted) {
         jsonColTEXT.SetUrl(u);
         jsonColHTML.SetUrl(u);
-        // resize textarea
-        if (taURL.value != null) {
-            const numberOfLineBreaks = (u.match(/\n/g) || []).length;
-            const newHeight = 10 + numberOfLineBreaks * 20 + 12 + 2;
-            taURL.value!.style.height = newHeight + "px";
-        }
+        fitTextarea(taURL.value!, u);
     }
 });
 

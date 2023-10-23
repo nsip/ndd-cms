@@ -144,6 +144,7 @@ const prevCollections = () => {
         eles[i] += nonEmptyHtml(">> description:", jt.Description, jh.Description);
         eles[i] += nonEmptyHtml(">> standard:", jt.Standard, jh.Standard);
         eles[i] += (jt.Elements != null && jh.Elements != null) ? nonEmptyHtml(">> elements:", jt.Elements.join(""), jh.Elements.join("")) : "";
+        eles[i] += (jt.Elements != null && jh.Elements != null) ? nonEmptyHtml(">> business rules:", jt.BusinessRules.join(""), jh.BusinessRules.join("")) : "";
         eles[i] += nonEmptyHtml(">> definition modification:", jt.DefinitionModification, jh.DefinitionModification);
     }
     const body = eles.join("<hr style='border-top: 1px dashed;'>");

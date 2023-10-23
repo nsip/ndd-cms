@@ -24,6 +24,7 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
 import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
 import TextLine from "@/components/TextLine.vue";
+import { fitTextarea } from "@/share/util";
 
 
 const legname = ref("");
@@ -91,30 +92,16 @@ const textChangeCmt = (idx: number) => {
 };
 
 watchEffect(() => {
-
     const idx = props.idx;
     const ln = legname.value;
     const lk = link.value;
     const ds = datestamp.value;
-
     if (mounted) {
         jsonHTML.SetLegalDef(idx || 0, ln, "**", lk, "**", "**", ds);
         jsonTEXT.SetLegalDef(idx || 0, ln, "**", lk, "**", "**", ds);
-        if (taLN.value != null) {
-            const numberOfLineBreaks = (ln.match(/\n/g) || []).length;
-            const newHeight = 10 + numberOfLineBreaks * 20 + 12 + 2;
-            taLN.value!.style.height = newHeight + "px";
-        }
-        if (taLK.value != null) {
-            const numberOfLineBreaks = (lk.match(/\n/g) || []).length;
-            const newHeight = 10 + numberOfLineBreaks * 20 + 12 + 2;
-            taLK.value!.style.height = newHeight + "px";
-        }
-        if (taDS.value != null) {
-            const numberOfLineBreaks = (ds.match(/\n/g) || []).length;
-            const newHeight = 10 + numberOfLineBreaks * 20 + 12 + 2;
-            taDS.value!.style.height = newHeight + "px";
-        }
+        fitTextarea(taLN.value!, ln);
+        fitTextarea(taLK.value!, lk);
+        fitTextarea(taDS.value!, ds);
     }
 });
 

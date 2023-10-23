@@ -19,6 +19,7 @@
 
 import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
 import TextLine from "@/components/TextLine.vue";
+import { fitTextarea } from "@/share/util";
 
 const identifier = ref("");
 const type = ref("");
@@ -51,28 +52,16 @@ watchEffect(() => {
 
     const id = identifier.value;
     const t = type.value;
-    const a = attributes.value;
+    const ea = attributes.value;
     const sc = superclasses.value;
     const re = refentities.value;
 
     if (mounted) {
-        jsonHTML.SetMeta("html", id, t, a, sc, re);
-        jsonTEXT.SetMeta("", id, t, a, sc, re);
-        if (taEA.value != null) {
-            const numberOfLineBreaks = (a.match(/\n/g) || []).length;
-            const newHeight = 10 + numberOfLineBreaks * 20 + 12 + 2;
-            taEA.value!.style.height = newHeight + "px";
-        }
-        if (taSC.value != null) {
-            const numberOfLineBreaks = (sc.match(/\n/g) || []).length;
-            const newHeight = 10 + numberOfLineBreaks * 20 + 12 + 2;
-            taSC.value!.style.height = newHeight + "px";
-        }
-        if (taRE.value != null) {
-            const numberOfLineBreaks = (re.match(/\n/g) || []).length;
-            const newHeight = 10 + numberOfLineBreaks * 20 + 12 + 2;
-            taRE.value!.style.height = newHeight + "px";
-        }
+        jsonHTML.SetMeta("html", id, t, ea, sc, re);
+        jsonTEXT.SetMeta("", id, t, ea, sc, re);
+        fitTextarea(taEA.value!, ea);
+        fitTextarea(taSC.value!, sc);
+        fitTextarea(taRE.value!, re);
     }
 });
 
