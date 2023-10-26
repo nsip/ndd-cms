@@ -107,9 +107,9 @@ export const cvtArrayHtml2Plain = (htmls: string[]) => {
     return plains;
 };
 
-export const fitTextarea = (ta: HTMLTextAreaElement, str4arr: string) => {
+export const fitTextarea = (ta: HTMLTextAreaElement, str: string) => {
     if (ta != null) {
-        const numberOfLineBreaks = (str4arr.match(/\n/g) || []).length;
+        const numberOfLineBreaks = (str.match(/\n/g) || []).length;
         const newHeight = 10 + numberOfLineBreaks * 20 + 12 + 2;
         ta.style.height = newHeight + "px";
     }
