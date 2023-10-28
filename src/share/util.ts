@@ -1,9 +1,9 @@
-export const addSpacesAtStartP = (p: string, n: number) => {
+export const padStartSpaceP = (s: string, n: number) => {
     let spaces = ""
     for (let i = 0; i < n; i++) {
         spaces += "&nbsp;"
     }
-    return p.replace('<p>', '<p>' + spaces)
+    return s.replace('<p>', '<p>' + spaces)
 }
 
 export const isHTMLStr = (s: string) => {

@@ -5,15 +5,15 @@
 <script setup lang="ts">
 
 import { jsonCol } from "@/share/ColType";
-import { addSpacesAtStartP, isHTMLStr } from "@/share/util";
+import { padStartSpaceP, isHTMLStr } from "@/share/util";
 
 const field_title_html = (label: string) => {
-    return `<h4 style='font-size:large; font-style:italic; background-color: darkgray'><pre> ${label} </pre></h4>`
+    return `<h4 style='font-size:large; font-style:italic; background-color: darkgray'><pre>  ${label}  </pre></h4>`
 }
 
 const field_subtitle_html = (label: string) => {
     label = `>> ${label}:`
-    return `<h4 style='margin-left:10px; font-style:italic'> + ${label} + </h4>`
+    return `<h4 style='margin-left:10px; font-style:italic'><pre> ${label} </pre></h4>`
 }
 
 const field_value_html = (value: any) => {
@@ -21,10 +21,10 @@ const field_value_html = (value: any) => {
     if (!htmlFlag) {
         if (Array.isArray(value) && value.length > 0) {
             const elems: string[] = [];
-            value.forEach(e => { elems.push(e) })
-            return `<p> ${elems.join("<br>")} <p>`
+            value.forEach(e => { elems.push(padStartSpaceP(`<p>${e}</p>`, 8)) })
+            return elems.join("")
         } else if (value.length > 0) {
-            return `<p> ${value} <p>`
+            return padStartSpaceP(`<p>${value}</p>`, 8)
         } else {
             return ""
         }
@@ -32,7 +32,7 @@ const field_value_html = (value: any) => {
         if (Array.isArray(value) && value.length > 0) {
             const elems: string[] = [];
             value.forEach(e => { elems.push(e) })
-            return elems.join("<br>")
+            return elems.join("")
         } else if (value.length > 0) {
             return value
         } else {
@@ -62,8 +62,9 @@ const prevURLs = () => {
 const prevMetadata = () => {
     let rt = field_title_html('Meta Data');
     const sub_obj = jsonCol.Metadata;
-    let sub_str = field_subtitle_html('identifier') + field_value_html(sub_obj.Identifier)
-    sub_str += field_subtitle_html('type') + field_value_html(sub_obj.Type)
+    let sub_str = "";
+    sub_str += sub_obj.Identifier.length > 0 ? field_subtitle_html('identifier') + field_value_html(sub_obj.Identifier) : ""
+    sub_str += sub_obj.Type.length > 0 ? field_subtitle_html('type') + field_value_html(sub_obj.Type) : ""
     return rt + sub_str
 };
 
