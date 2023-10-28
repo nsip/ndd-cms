@@ -14,7 +14,7 @@
 import { QuillEditor, Quill } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
-import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
+import { jsonEnt } from "@/share/EntType";
 import TextLine from "@/components/TextLine.vue";
 
 const locale = ref("");
@@ -29,7 +29,7 @@ const props = defineProps({
 
 onMounted(async () => {
 
-    const sensi = jsonHTML.Sensitivity[props.idx || 0];
+    const sensi = jsonEnt.Sensitivity[props.idx || 0];
 
     if (sensi != undefined && sensi != null) {
 
@@ -51,8 +51,7 @@ const onReadyC = (quill: Quill) => {
 const textChangeC = (idx: number) => {
     const html = quillC.root.innerHTML;
     const text = quillC.getText(0, 100000);
-    jsonHTML.SetSensi(idx, "**", "**", html);
-    jsonTEXT.SetSensi(idx, "**", "**", text);
+    jsonEnt.SetSensi(idx, "**", "**", html);
 };
 
 watchEffect(() => {
@@ -62,8 +61,7 @@ watchEffect(() => {
     const v = val.value;
 
     if (mounted) {
-        jsonHTML.SetSensi(idx || 0, l, v, "**");
-        jsonTEXT.SetSensi(idx || 0, l, v, "**");
+        jsonEnt.SetSensi(idx || 0, l, v, "**");
     }
 });
 

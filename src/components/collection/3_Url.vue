@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { jsonColHTML, jsonColTEXT } from "@/share/ColType";
+import { jsonCol } from "@/share/ColType";
 import { fitTextarea } from "@/share/util";
 
 const icon = ref("chevron-down");
@@ -26,15 +26,14 @@ const onToggleVisible = () => {
 };
 
 onMounted(async () => {
-    urls.value = jsonColTEXT.URL != null ? jsonColTEXT.URL.join("\n") : "";
+    urls.value = jsonCol.URL != null ? jsonCol.URL.join("\n") : "";
     mounted = true
 });
 
 watchEffect(() => {
     const u = urls.value
     if (mounted) {
-        jsonColTEXT.SetUrl(u);
-        jsonColHTML.SetUrl(u);
+        jsonCol.SetUrl(u);
         fitTextarea(taURL.value!, u);
     }
 });

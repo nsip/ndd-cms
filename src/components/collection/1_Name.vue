@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-import { jsonColHTML as jsonHTML, jsonColTEXT as jsonTEXT } from "@/share/ColType";
+import { jsonCol } from "@/share/ColType";
 import { Mode } from "@/share/share";
 
 const collection = ref("");
@@ -15,7 +15,7 @@ const colInput = ref();
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 
 onMounted(async () => {
-    collection.value = jsonTEXT.Entity;
+    collection.value = jsonCol.Entity;
     colInput.value.focus();
     mounted = true
 });
@@ -23,8 +23,7 @@ onMounted(async () => {
 watchEffect(() => {
     const name = collection.value;
     if (mounted) {
-        jsonHTML.SetName(name);
-        jsonTEXT.SetName(name);
+        jsonCol.SetName(name);
     }
 });
 

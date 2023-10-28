@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 
-import { jsonColHTML, jsonColTEXT } from "@/share/ColType";
+import { jsonCol } from "@/share/ColType";
 import { Mode } from "@/share/share";
 import { fitTextarea } from "@/share/util";
 
@@ -28,15 +28,14 @@ const onToggleVisible = () => {
 };
 
 onMounted(async () => {
-    entities.value = jsonColTEXT.Entities != null ? jsonColTEXT.Entities.join("\n") : "";
+    entities.value = jsonCol.Entities != null ? jsonCol.Entities.join("\n") : "";
     mounted = true;
 });
 
 watchEffect(() => {
     const e = entities.value;
     if (mounted) {
-        jsonColTEXT.SetEntities(e);
-        jsonColHTML.SetEntities(e);
+        jsonCol.SetEntities(e);
         fitTextarea(taE.value!, e);
     }
 });

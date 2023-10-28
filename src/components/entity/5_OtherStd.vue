@@ -23,7 +23,7 @@
 <script setup lang="ts">
 
 import { notify } from "@kyvg/vue3-notification";
-import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
+import { jsonEnt } from "@/share/EntType";
 import { itemName, itemKind } from "@/share/share";
 import TextLine from "@/components/TextLine.vue";
 import EditorOtherStd from "@/components/entity/5_OtherStd_Editor.vue";
@@ -42,11 +42,10 @@ onMounted(async () => {
 
     // edit existing item
     if (itemName.value?.length > 0 && itemKind.value?.length > 0) {
-        if (jsonHTML.OtherStandards.length > 0) {
-            nEditor.value = jsonHTML.OtherStandards.length;
+        if (jsonEnt.OtherStandards.length > 0) {
+            nEditor.value = jsonEnt.OtherStandards.length;
         } else {
-            jsonHTML.AddOtherStd();
-            jsonTEXT.AddOtherStd();
+            jsonEnt.AddOtherStd();
             nEditor.value = 1
         }
     }
@@ -63,7 +62,7 @@ const onMoreLessClick = (type: string) => {
     switch (type) {
         case "+":
             {
-                if (jsonTEXT.IsLastOtherStdEmpty()) {
+                if (jsonEnt.IsLastOtherStdEmpty()) {
                     notify({
                         title: "Note",
                         text: "please use available editor(s). if hidden, unfold it",
@@ -73,8 +72,7 @@ const onMoreLessClick = (type: string) => {
                 }
 
                 // add new OtherStandard element in json
-                jsonHTML.AddOtherStd();
-                jsonTEXT.AddOtherStd();
+                jsonEnt.AddOtherStd();
 
                 nEditor.value++;
             }
@@ -92,8 +90,7 @@ const onMoreLessClick = (type: string) => {
                 }
 
                 // remove last OtherStandard element in json
-                jsonHTML.RmOtherStdLast();
-                jsonTEXT.RmOtherStdLast();
+                jsonEnt.RmOtherStdLast();
 
                 nEditor.value--;
             }

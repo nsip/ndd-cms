@@ -23,7 +23,7 @@
 <script setup lang="ts">
 
 import { notify } from "@kyvg/vue3-notification";
-import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
+import { jsonEnt } from "@/share/EntType";
 import { itemName, itemKind } from "@/share/share";
 import TextLine from "@/components/TextLine.vue";
 import EditorSIF from "@/components/entity/4_SIF_Editor.vue";
@@ -42,12 +42,11 @@ onMounted(async () => {
 
     // edit existing item
     if (itemName.value?.length > 0 && itemKind.value?.length > 0) {
-        if (jsonHTML.SIF.length > 0) {
-            nEditor.value = jsonHTML.SIF.length;
+        if (jsonEnt.SIF.length > 0) {
+            nEditor.value = jsonEnt.SIF.length;
         } else {
             // add a new empty SIF element in json if empty SIF array loaded
-            jsonHTML.AddSIF();
-            jsonTEXT.AddSIF();
+            jsonEnt.AddSIF();
             nEditor.value = 1
         }
     }
@@ -64,7 +63,7 @@ const onMoreLessClick = (type: string) => {
     switch (type) {
         case "+":
             {
-                if (jsonTEXT.IsLastSIFEmpty()) {
+                if (jsonEnt.IsLastSIFEmpty()) {
                     notify({
                         title: "Note",
                         text: "please use available editor(s). if hidden, unfold it",
@@ -74,8 +73,7 @@ const onMoreLessClick = (type: string) => {
                 }
 
                 // add new SIF element in json
-                jsonHTML.AddSIF();
-                jsonTEXT.AddSIF();
+                jsonEnt.AddSIF();
 
                 nEditor.value++;
             }
@@ -93,8 +91,7 @@ const onMoreLessClick = (type: string) => {
                 }
 
                 // remove last SIF element in json
-                jsonHTML.RmSIFLast();
-                jsonTEXT.RmSIFLast();
+                jsonEnt.RmSIFLast();
 
                 nEditor.value--;
             }

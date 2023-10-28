@@ -17,7 +17,7 @@
 import { QuillEditor, Quill } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
-import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
+import { jsonEnt } from "@/share/EntType";
 import TextLine from "@/components/TextLine.vue";
 import { fitTextarea } from "@/share/util";
 
@@ -37,7 +37,7 @@ const props = defineProps({
 })
 
 onMounted(async () => {
-    const sif = jsonHTML.SIF[props.idx || 0];
+    const sif = jsonEnt.SIF[props.idx || 0];
     if (sif != undefined && sif != null) {
 
         // textarea
@@ -61,16 +61,12 @@ const onReadyCmt = (quill: Quill) => {
 
 const textChangeDef = (idx: number) => {
     const html = quillDef.root.innerHTML;
-    const text = quillDef.getText(0, 100000);
-    jsonHTML.SetSIF("html", idx, "**", html, "**", "**");
-    jsonTEXT.SetSIF("", idx, "**", text, "**", "**");
+    jsonEnt.SetSIF(idx, "**", html, "**", "**");
 };
 
 const textChangeCmt = (idx: number) => {
     const html = quillCmt.root.innerHTML;
-    const text = quillCmt.getText(0, 100000);
-    jsonHTML.SetSIF("html", idx, "**", "**", html, "**");
-    jsonTEXT.SetSIF("", idx, "**", "**", text, "**");
+    jsonEnt.SetSIF(idx, "**", "**", html, "**");
 };
 
 watchEffect(() => {
@@ -80,8 +76,7 @@ watchEffect(() => {
     const ds = datestamp.value;
 
     if (mounted) {
-        jsonTEXT.SetSIF("", idx || 0, xp, "**", "**", ds);
-        jsonHTML.SetSIF("html", idx || 0, xp, "**", "**", ds);
+        jsonEnt.SetSIF(idx || 0, xp, "**", "**", ds);
         fitTextarea(taXP.value!, xp);
         fitTextarea(taDS.value!, ds);
     }

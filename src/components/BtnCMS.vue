@@ -10,8 +10,8 @@
 <script setup lang="ts">
 
 import { notify } from "@kyvg/vue3-notification";
-import { jsonEntHTML, jsonEntTEXT } from "@/share/EntType";
-import { jsonColHTML, jsonColTEXT } from "@/share/ColType";
+import { jsonEnt } from "@/share/EntType";
+import { jsonCol } from "@/share/ColType";
 import { postDataToDic } from "@/share/share";
 import { URL_VIEW } from "@/share/ip";
 // import FileSaver from 'file-saver';
@@ -34,34 +34,20 @@ const SaveJSON = async () => {
 
     //////////////////////////////////////////////////
 
-    let jsTEXT = jsonEntTEXT.GenJSON(false)
-    let jsHTML = jsonEntHTML.GenJSON(true)
-
-    let item = JSON.parse(jsTEXT).Entity
+    let js = jsonEnt.GenJSON()
+    let item = JSON.parse(js).Entity
     if (item.length == 0) {
-        jsTEXT = jsonColTEXT.GenJSON(false)
-        jsHTML = jsonColHTML.GenJSON(true)
-        item = JSON.parse(jsTEXT).Entity
+        js = jsonCol.GenJSON()
+        item = JSON.parse(js).Entity
     }
 
     //////////////////////////////////////////////////
 
     {
-        const de = await postDataToDic(jsTEXT)
+        const de = await postDataToDic(js)
         if (de.error != null) {
             notify({
-                title: "Error: Post TEXT to Dictionary",
-                text: de.error,
-                type: "error"
-            })
-            return
-        }
-    }
-    {
-        const de = await postDataToDic(jsHTML)
-        if (de.error != null) {
-            notify({
-                title: "Error: Post HTML to Dictionary",
+                title: "Error: Post Candidate to Dictionary",
                 text: de.error,
                 type: "error"
             })

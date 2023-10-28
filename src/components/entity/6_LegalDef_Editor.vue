@@ -22,7 +22,7 @@
 import { QuillEditor, Quill } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
-import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
+import { jsonEnt } from "@/share/EntType";
 import TextLine from "@/components/TextLine.vue";
 import { fitTextarea } from "@/share/util";
 
@@ -46,7 +46,7 @@ const props = defineProps({
 })
 
 onMounted(async () => {
-    const ld = jsonHTML.LegalDefinitions[props.idx || 0];
+    const ld = jsonEnt.LegalDefinitions[props.idx || 0];
     if (ld != undefined && ld != null) {
 
         // textarea
@@ -74,21 +74,15 @@ const onReadyCmt = (quill: Quill) => {
 
 const textChangeCit = (idx: number) => {
     const html = quillCit.root.innerHTML;
-    const text = quillCit.getText(0, 100000);
-    jsonHTML.SetLegalDef(idx, "**", html, "**", "**", "**", "**");
-    jsonTEXT.SetLegalDef(idx, "**", text, "**", "**", "**", "**");
+    jsonEnt.SetLegalDef(idx, "**", html, "**", "**", "**", "**");
 };
 const textChangeDef = (idx: number) => {
     const html = quillDef.root.innerHTML;
-    const text = quillDef.getText(0, 100000);
-    jsonHTML.SetLegalDef(idx, "**", "**", "**", html, "**", "**");
-    jsonTEXT.SetLegalDef(idx, "**", "**", "**", text, "**", "**");
+    jsonEnt.SetLegalDef(idx, "**", "**", "**", html, "**", "**");
 };
 const textChangeCmt = (idx: number) => {
     const html = quillCmt.root.innerHTML;
-    const text = quillCmt.getText(0, 100000);
-    jsonHTML.SetLegalDef(idx, "**", "**", "**", "**", html, "**");
-    jsonTEXT.SetLegalDef(idx, "**", "**", "**", "**", text, "**");
+    jsonEnt.SetLegalDef(idx, "**", "**", "**", "**", html, "**");
 };
 
 watchEffect(() => {
@@ -97,8 +91,7 @@ watchEffect(() => {
     const lk = link.value;
     const ds = datestamp.value;
     if (mounted) {
-        jsonHTML.SetLegalDef(idx || 0, ln, "**", lk, "**", "**", ds);
-        jsonTEXT.SetLegalDef(idx || 0, ln, "**", lk, "**", "**", ds);
+        jsonEnt.SetLegalDef(idx || 0, ln, "**", lk, "**", "**", ds);
         fitTextarea(taLN.value!, ln);
         fitTextarea(taLK.value!, lk);
         fitTextarea(taDS.value!, ds);

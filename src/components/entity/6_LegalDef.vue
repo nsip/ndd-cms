@@ -23,7 +23,7 @@
 <script setup lang="ts">
 
 import { notify } from "@kyvg/vue3-notification";
-import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
+import { jsonEnt } from "@/share/EntType";
 import { itemName, itemKind } from "@/share/share";
 import TextLine from "@/components/TextLine.vue";
 import EditorLegDef from "@/components/entity/6_LegalDef_Editor.vue";
@@ -42,11 +42,10 @@ onMounted(async () => {
 
     // edit existing item
     if (itemName.value?.length > 0 && itemKind.value?.length > 0) {
-        if (jsonHTML.LegalDefinitions.length > 0) {
-            nEditor.value = jsonHTML.LegalDefinitions.length;
+        if (jsonEnt.LegalDefinitions.length > 0) {
+            nEditor.value = jsonEnt.LegalDefinitions.length;
         } else {
-            jsonHTML.AddLegalDef();
-            jsonTEXT.AddLegalDef();
+            jsonEnt.AddLegalDef();
             nEditor.value = 1
         }
     }
@@ -63,7 +62,7 @@ const onMoreLessClick = (type: string) => {
     switch (type) {
         case "+":
             {
-                if (jsonTEXT.IsLastLegalDefEmpty()) {
+                if (jsonEnt.IsLastLegalDefEmpty()) {
                     notify({
                         title: "Note",
                         text: "please use available editor(s). if hidden, unfold it",
@@ -73,8 +72,7 @@ const onMoreLessClick = (type: string) => {
                 }
 
                 // add new LegalDefinition element in json
-                jsonHTML.AddLegalDef();
-                jsonTEXT.AddLegalDef();
+                jsonEnt.AddLegalDef();
 
                 nEditor.value++;
             }
@@ -92,8 +90,7 @@ const onMoreLessClick = (type: string) => {
                 }
 
                 // remove last LegalDefinition element in json
-                jsonHTML.RmLegalDefLast();
-                jsonTEXT.RmLegalDefLast();
+                jsonEnt.RmLegalDefLast();
 
                 nEditor.value--;
             }

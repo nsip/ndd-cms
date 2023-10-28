@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 
-import { jsonColHTML, jsonColTEXT } from "@/share/ColType";
+import { jsonCol } from "@/share/ColType";
 import TextLine from "@/components/TextLine.vue";
 
 const identifier = ref("");
@@ -18,7 +18,7 @@ const taTP = ref<HTMLTextAreaElement | null>(null);
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 
 onMounted(async () => {
-    const meta = jsonColHTML.Metadata;
+    const meta = jsonCol.Metadata;
 
     // textarea
     identifier.value = meta.Identifier;
@@ -31,8 +31,7 @@ watchEffect(() => {
     const id = identifier.value;
     const typ = type.value;
     if (mounted) {
-        jsonColHTML.SetMeta(id, typ);
-        jsonColTEXT.SetMeta(id, typ);
+        jsonCol.SetMeta(id, typ);
     }
 });
 

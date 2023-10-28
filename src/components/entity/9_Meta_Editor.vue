@@ -17,7 +17,7 @@
 
 <script setup lang="ts">
 
-import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
+import { jsonEnt } from "@/share/EntType";
 import TextLine from "@/components/TextLine.vue";
 import { fitTextarea } from "@/share/util";
 
@@ -36,7 +36,7 @@ const taRE = ref<HTMLTextAreaElement | null>(null);
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 
 onMounted(async () => {
-    const meta = jsonHTML.Metadata;
+    const meta = jsonEnt.Metadata;
 
     // textarea
     identifier.value = meta.Identifier;
@@ -57,8 +57,7 @@ watchEffect(() => {
     const re = refentities.value;
 
     if (mounted) {
-        jsonHTML.SetMeta("html", id, t, ea, sc, re);
-        jsonTEXT.SetMeta("", id, t, ea, sc, re);
+        jsonEnt.SetMeta(id, t, ea, sc, re);
         fitTextarea(taEA.value!, ea);
         fitTextarea(taSC.value!, sc);
         fitTextarea(taRE.value!, re);

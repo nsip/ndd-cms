@@ -17,7 +17,7 @@
 import { QuillEditor, Quill } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
-import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
+import { jsonEnt } from "@/share/EntType";
 
 const holder = "entity definition";
 const icon = ref("chevron-down");
@@ -28,12 +28,11 @@ const onReady = (quill: Quill) => {
     quillDef = quill;
 
     // fill existing html text into quill, format could change by quill
-    quillDef.root.innerHTML = jsonHTML.Definition;
+    quillDef.root.innerHTML = jsonEnt.Definition;
 };
 
 const textChange = () => {
-    jsonHTML.SetDefinition(quillDef.root.innerHTML);
-    jsonTEXT.SetDefinition(quillDef.getText(0, 100000));
+    jsonEnt.SetDefinition(quillDef.root.innerHTML);  // quillDef.getText(0, 100000)
 };
 
 const onToggleVisible = () => {

@@ -6,6 +6,11 @@ export const addSpacesAtStartP = (p: string, n: number) => {
     return p.replace('<p>', '<p>' + spaces)
 }
 
+export const isHTMLStr = (s: string) => {
+    const htmlRegex = /<[a-z][\s\S]*>/i;
+    return htmlRegex.test(s);
+}
+
 const pad2 = (n: number) => {
     return n < 10 ? "0" + n : n;
 };

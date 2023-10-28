@@ -18,8 +18,8 @@
 import { useCookies } from "vue3-cookies";
 import { notify } from "@kyvg/vue3-notification";
 import { Mode, loginAuth, loginToken, loginUser, getSelfName, itemName, itemKind, getItemContent } from "@/share/share";
-import { EntType, jsonEntHTML, jsonEntTEXT } from "@/share/EntType";
-import { ColType, jsonColHTML, jsonColTEXT } from "@/share/ColType";
+import { EntType, jsonEnt } from "@/share/EntType";
+import { ColType, jsonCol } from "@/share/ColType";
 import MainTitle from "@/components/MainTitle.vue";
 import Preview from "@/components/PreviewArea.vue";
 import BtnCMS from "@/components/BtnCMS.vue";
@@ -108,25 +108,16 @@ onMounted(async () => {
                         }
                         const entity = de.data as EntType;
 
-                        jsonEntHTML.AssignName("html", entity.Entity);
-                        jsonEntHTML.AssignOtherNames("html", entity.OtherNames);
-                        jsonEntHTML.AssignDefinition("html", entity.Definition);
-                        jsonEntHTML.AssignSIF("html", entity.SIF);
-                        jsonEntHTML.AssignOtherStd("html", entity.OtherStandards);
-                        jsonEntHTML.AssignLegalDef("html", entity.LegalDefinitions);
-                        jsonEntHTML.AssignSensi("html", entity.Sensitivity);
-                        jsonEntHTML.AssignCol("html", entity.Collections);
-                        jsonEntHTML.AssignMeta("html", entity.Metadata);
+                        jsonEnt.SetName(entity.Entity);
+                        jsonEnt.AssignOtherNames(entity.OtherNames);
+                        jsonEnt.SetDefinition(entity.Definition);
+                        jsonEnt.AssignSIF(entity.SIF);
+                        jsonEnt.AssignOtherStd(entity.OtherStandards);
+                        jsonEnt.AssignLegalDef(entity.LegalDefinitions);
+                        jsonEnt.AssignSensi(entity.Sensitivity);
+                        jsonEnt.AssignCol(entity.Collections);
+                        jsonEnt.AssignMeta(entity.Metadata);
 
-                        jsonEntTEXT.AssignName("text", entity.Entity);
-                        jsonEntTEXT.AssignOtherNames("text", entity.OtherNames);
-                        jsonEntTEXT.AssignDefinition("text", entity.Definition);
-                        jsonEntTEXT.AssignSIF("text", entity.SIF);
-                        jsonEntTEXT.AssignOtherStd("text", entity.OtherStandards);
-                        jsonEntTEXT.AssignLegalDef("text", entity.LegalDefinitions);
-                        jsonEntTEXT.AssignSensi("text", entity.Sensitivity);
-                        jsonEntTEXT.AssignCol("text", entity.Collections);
-                        jsonEntTEXT.AssignMeta("text", entity.Metadata);
                     }
                     break;
 
@@ -143,17 +134,11 @@ onMounted(async () => {
                         }
                         const collection = de.data as ColType;
 
-                        jsonColHTML.AssignName("html", collection.Entity);
-                        jsonColHTML.AssignDefinition("html", collection.Definition);
-                        jsonColHTML.AssignUrls("html", collection.URL);
-                        jsonColHTML.AssignMeta("html", collection.Metadata);
-                        jsonColHTML.AssignEntities("html", collection.Entities);
-
-                        jsonColTEXT.AssignName("text", collection.Entity);
-                        jsonColTEXT.AssignDefinition("text", collection.Definition);
-                        jsonColTEXT.AssignUrls("text", collection.URL);
-                        jsonColTEXT.AssignMeta("text", collection.Metadata);
-                        jsonColTEXT.AssignEntities("text", collection.Entities);
+                        jsonCol.SetName(collection.Entity);
+                        jsonCol.SetDefinition(collection.Definition);
+                        jsonCol.AssignUrls(collection.URL);
+                        jsonCol.AssignMeta(collection.Metadata);
+                        jsonCol.AssignEntities(collection.Entities);
                     }
                     break;
 

@@ -1,23 +1,21 @@
 <template>
     <div class="lbl_type">
         <label>Preview:</label>
-        <input class="selection" type="radio" name="type" value="text" checked @click="select('text')" />
-        <label>plain text json</label>
-        <input class="selection" type="radio" name="type" value="html" @click="select('html')" />
-        <label>html value json</label>
+        <input class="selection" type="radio" name="type" value="json" checked @click="select('json')" />
+        <label>json</label>
         <input class="selection" type="radio" name="type" value="preview" @click="select('preview')" />
         <label>effect</label>
     </div>
     <hr />
-    <pre v-if="selMode == 'text' || selMode == 'html'">{{ genJSON(selMode) }}</pre>
+    <pre v-if="selMode == 'json'">{{ genJSON() }}</pre>
     <EntVisualContent v-if="selMode == 'preview' && Kind == 'entity'" />
     <ColVisualContent v-if="selMode == 'preview' && Kind == 'collection'" />
 </template>
 
 <script setup lang="ts">
 
-import { jsonEntHTML, jsonEntTEXT } from "@/share/EntType";
-import { jsonColHTML, jsonColTEXT } from "@/share/ColType";
+import { jsonEnt } from "@/share/EntType";
+import { jsonCol } from "@/share/ColType";
 import EntVisualContent from "@/components/entity/VisualContent.vue";
 import ColVisualContent from "@/components/collection/VisualContent.vue";
 
@@ -25,24 +23,16 @@ const props = defineProps({
     Kind: String,
 })
 
-const selMode = ref("text"); // default (checked) json type
+const selMode = ref("json"); // default (checked) json type
 
-const text = props.Kind == 'entity' ? jsonEntTEXT : jsonColTEXT;
-const html = props.Kind == 'entity' ? jsonEntHTML : jsonColHTML;
+const select = (Mode: string) => { selMode.value = Mode; };
 
-const genJSON = (Mode: string) => {
-    switch (Mode) {
-        case "text":
-            return text.GenJSON(false);
-        case "html":
-            return html.GenJSON(true);
-        default:
-            return "";
+const genJSON = () => {
+    if (selMode.value == "json") {
+        const object = props.Kind == 'entity' ? jsonEnt : jsonCol;
+        return object.GenJSON()
     }
-};
-
-const select = (Mode: string) => {
-    selMode.value = Mode;
+    return ""
 };
 
 </script>

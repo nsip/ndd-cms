@@ -4,165 +4,155 @@
 
 <script setup lang="ts">
 
-import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
-import { addSpacesAtStartP } from "@/share/util";
+import { jsonEnt } from "@/share/EntType";
+import { addSpacesAtStartP, isHTMLStr } from "@/share/util";
 
-const nonEmptyHtml = (label4: string, text: string, html: string) => {
-    if (text == undefined || text.trim().length == 0) {
-        return "";
+const field_title_html = (label: string) => {
+    return `<h4 style='font-size:large; font-style:italic; background-color: darkgray'><pre> ${label} </pre></h4>`
+}
+
+const field_subtitle_html = (label: string) => {
+    label = `>> ${label}:`
+    return `<h4 style='margin-left:10px; font-style:italic'> + ${label} + </h4>`
+}
+
+const field_value_html = (value: any) => {
+    const htmlFlag = isHTMLStr(`${value}`)
+    if (!htmlFlag) {
+        if (Array.isArray(value) && value.length > 0) {
+            const elems: string[] = [];
+            value.forEach(e => { elems.push(e) })
+            return `<p> ${elems.join("<br>")} <p>`
+        } else if (value.length > 0) {
+            return `<p> ${value} <p>`
+        } else {
+            return ""
+        }
+    } else {
+        if (Array.isArray(value) && value.length > 0) {
+            const elems: string[] = [];
+            value.forEach(e => { elems.push(e) })
+            return elems.join("<br>")
+        } else if (value.length > 0) {
+            return value
+        } else {
+            return ""
+        }
     }
-    html = html.replaceAll("<p><br></p>", "");
-    html = html.replaceAll(/<h\d><br><\/h\d>/g, "");
-    if (label4 == undefined || label4.length == 0) {
-        return addSpacesAtStartP(html, 2);
-    }
-    return "<h4 style='margin-left:10px; font-style:italic'>" + label4 + "</h4>" + addSpacesAtStartP(html, 2);
-};
+}
+
+const field_sep_line = () => {
+    return "<hr style='border-top: 1px dashed;'>"
+}
 
 /////////////////////////////////////////////////
 
 const prevEntity = () => {
-    return (
-        "<h4 style='font-size:large; font-style:italic; background-color: darkgray'><pre> Entity</pre></h4>" +
-        nonEmptyHtml("", jsonTEXT.Entity, jsonHTML.Entity)
-    );
+    return field_title_html('Entity') + field_value_html(jsonEnt.Entity);
 };
 
 const prevOtherNames = () => {
-    const head = "<h4 style='font-size:large; font-style:italic; background-color: darkgray'><pre> Other Names</pre></h4>";
-    const n = jsonTEXT.CntOtherName();
-    const eles: string[] = [];
-    for (let i = 0; i < n; i++) {
-        const ele = nonEmptyHtml("", jsonTEXT.OtherNames[i], jsonHTML.OtherNames[i]);
-        eles.push(ele);
-    }
-    const body = eles.join("<br>"); // here, other names' html value is plain text
-    if (body.length > 0) {
-        return head + body;
-    }
-    return head;
+    return field_title_html('Other Names') + field_value_html(jsonEnt.OtherNames);
 };
 
 const prevDefinition = () => {
-    return ("<h4 style='font-size:large; font-style:italic; background-color: darkgray'><pre> Definition</pre></h4>" +
-        nonEmptyHtml("", jsonTEXT.Definition, jsonHTML.Definition)
-    );
+    return field_title_html('Definition') + field_value_html(jsonEnt.Definition);
 };
 
 const prevSIF = () => {
-    const head = "<h4 style='font-size:large; font-style:italic; background-color: darkgray'><pre> SIF</pre></h4>";
-    const n = jsonTEXT.CntSIF();
-    let eles: string[] = [];
+    let rt = field_title_html('SIF');
+    const n = jsonEnt.CntSIF();
+    let elems: string[] = [];
     for (let i = 0; i < n; i++) {
-        const jt = jsonTEXT.SIF[i];
-        const jh = jsonHTML.SIF[i];
-        eles[i] = "";
-        eles[i] += (jt.XPath != null && jh.XPath != null) ? nonEmptyHtml(">> xpath:", jt.XPath.join(""), jh.XPath.join("")) : "";
-        eles[i] += nonEmptyHtml(">> definition:", jt.Definition, jh.Definition);
-        eles[i] += nonEmptyHtml(">> commentary:", jt.Commentary, jh.Commentary);
-        eles[i] += nonEmptyHtml(">> datestamp:", jt.Datestamp, jh.Datestamp);
+        const sub_obj = jsonEnt.SIF[i];
+        let sub_str = field_subtitle_html('xpath') + field_value_html(sub_obj.XPath)
+        sub_str += field_subtitle_html('definition') + field_value_html(sub_obj.Definition)
+        sub_str += field_subtitle_html('commentary') + field_value_html(sub_obj.Commentary)
+        sub_str += field_subtitle_html('datestamp') + field_value_html(sub_obj.Datestamp)
+        elems.push(sub_str);
     }
-    const body = eles.join("<hr style='border-top: 1px dashed;'>");
-    if (body.length > 0) {
-        return head + body;
-    }
-    return head;
+    rt += elems.join(field_sep_line());
+    return rt
 };
 
 const prevOtherStandards = () => {
-    const head = "<h4 style='font-size:large; font-style:italic; background-color: darkgray'><pre> Other Standards</pre></h4>";
-    const n = jsonTEXT.CntOtherStd();
-    let eles: string[] = [];
+    let rt = field_title_html('Other Standards');
+    const n = jsonEnt.CntOtherStd();
+    let elems: string[] = [];
     for (let i = 0; i < n; i++) {
-        const jt = jsonTEXT.OtherStandards[i];
-        const jh = jsonHTML.OtherStandards[i];
-        eles[i] = "";
-        eles[i] += nonEmptyHtml(">> standard:", jt.Standard, jh.Standard);
-        eles[i] += (jt.Link != null && jh.Link != null) ? nonEmptyHtml(">> link:", jt.Link.join(""), jh.Link.join("")) : "";
-        eles[i] += (jt.Path != null && jh.Path != null) ? nonEmptyHtml(">> path:", jt.Path.join(""), jh.Path.join("")) : "";
-        eles[i] += nonEmptyHtml(">> definition:", jt.Definition, jh.Definition);
-        eles[i] += nonEmptyHtml(">> commentary:", jt.Commentary, jh.Commentary);
+        const sub_obj = jsonEnt.OtherStandards[i];
+        let sub_str = field_subtitle_html('standard') + field_value_html(sub_obj.Standard)
+        sub_str += field_subtitle_html('link') + field_value_html(sub_obj.Link)
+        sub_str += field_subtitle_html('path') + field_value_html(sub_obj.Path)
+        sub_str += field_subtitle_html('definition') + field_value_html(sub_obj.Definition)
+        sub_str += field_subtitle_html('commentary') + field_value_html(sub_obj.Commentary)
+        elems.push(sub_str);
     }
-    const body = eles.join("<hr style='border-top: 1px dashed;'>");
-    if (body.length > 0) {
-        return head + body;
-    }
-    return head;
+    rt += elems.join(field_sep_line());
+    return rt
 };
 
 const prevLegalDefinition = () => {
-    const head =
-        "<h4 style='font-size:large; font-style:italic; background-color: darkgray'><pre> Legal Definitions</pre></h4>";
-    const n = jsonTEXT.CntLegalDef();
-    let eles: string[] = [];
+    let rt = field_title_html('Legal Definitions');
+    const n = jsonEnt.CntLegalDef();
+    let elems: string[] = [];
     for (let i = 0; i < n; i++) {
-        const jt = jsonTEXT.LegalDefinitions[i];
-        const jh = jsonHTML.LegalDefinitions[i];
-        eles[i] = "";
-        eles[i] += nonEmptyHtml(">> legislationName:", jt.LegislationName, jh.LegislationName);
-        eles[i] += nonEmptyHtml(">> citation:", jt.Citation, jh.Citation);
-        eles[i] += nonEmptyHtml(">> link:", jt.Link, jh.Link);
-        eles[i] += nonEmptyHtml(">> definition:", jt.Definition, jh.Definition);
-        eles[i] += nonEmptyHtml(">> commentary:", jt.Commentary, jh.Commentary);
-        eles[i] += nonEmptyHtml(">> datestamp:", jt.Datestamp, jh.Datestamp);
+        const sub_obj = jsonEnt.LegalDefinitions[i];
+        let sub_str = field_subtitle_html('legislationName') + field_value_html(sub_obj.LegislationName)
+        sub_str += field_subtitle_html('citation') + field_value_html(sub_obj.Citation)
+        sub_str += field_subtitle_html('link') + field_value_html(sub_obj.Link)
+        sub_str += field_subtitle_html('definition') + field_value_html(sub_obj.Definition)
+        sub_str += field_subtitle_html('commentary') + field_value_html(sub_obj.Commentary)
+        sub_str += field_subtitle_html('datestamp') + field_value_html(sub_obj.Datestamp)
+        elems.push(sub_str);
     }
-    const body = eles.join("<hr style='border-top: 1px dashed;'>");
-    if (body.length > 0) {
-        return head + body;
-    }
-    return head;
+    rt += elems.join(field_sep_line());
+    return rt
 };
 
 const prevSensitivity = () => {
-    const head = "<h4 style='font-size:large; font-style:italic; background-color: darkgray'><pre> Sensitivity</pre></h4>";
-    const n = jsonTEXT.CntSensi();
-    let eles: string[] = [];
+    let rt = field_title_html('Sensitivity');
+    const n = jsonEnt.CntSensi();
+    let elems: string[] = [];
     for (let i = 0; i < n; i++) {
-        const jt = jsonTEXT.Sensitivity[i];
-        const jh = jsonHTML.Sensitivity[i];
-        eles[i] = "";
-        eles[i] += nonEmptyHtml(">> locale:", jt.Locale, jh.Locale);
-        eles[i] += nonEmptyHtml(">> value:", jt.Value, jh.Value);
-        eles[i] += nonEmptyHtml(">> commentary:", jt.Commentary, jh.Commentary);
+        const sub_obj = jsonEnt.Sensitivity[i];
+        let sub_str = field_subtitle_html('locale') + field_value_html(sub_obj.Locale)
+        sub_str += field_subtitle_html('value') + field_value_html(sub_obj.Value)
+        sub_str += field_subtitle_html('commentary') + field_value_html(sub_obj.Commentary)
+        elems.push(sub_str);
     }
-    const body = eles.join("<hr style='border-top: 1px dashed;'>");
-    if (body.length > 0) {
-        return head + body;
-    }
-    return head;
+    rt += elems.join(field_sep_line());
+    return rt
 }
 
 const prevCollections = () => {
-    const head = "<h4 style='font-size:large; font-style:italic; background-color: darkgray'><pre> Collections</pre></h4>";
-    const n = jsonTEXT.CntCol();
-    let eles: string[] = [];
+
+    let rt = field_title_html('Collections');
+    const n = jsonEnt.CntCol();
+    let elems: string[] = [];
     for (let i = 0; i < n; i++) {
-        const jt = jsonTEXT.Collections[i];
-        const jh = jsonHTML.Collections[i];
-        eles[i] = "";
-        eles[i] += nonEmptyHtml(">> name:", jt.Name, jh.Name);
-        eles[i] += nonEmptyHtml(">> description:", jt.Description, jh.Description);
-        eles[i] += nonEmptyHtml(">> standard:", jt.Standard, jh.Standard);
-        eles[i] += (jt.Elements != null && jh.Elements != null) ? nonEmptyHtml(">> elements:", jt.Elements.join(""), jh.Elements.join("")) : "";
-        eles[i] += (jt.Elements != null && jh.Elements != null) ? nonEmptyHtml(">> business rules:", jt.BusinessRules.join(""), jh.BusinessRules.join("")) : "";
-        eles[i] += nonEmptyHtml(">> definition modification:", jt.DefinitionModification, jh.DefinitionModification);
+        const sub_obj = jsonEnt.Collections[i];
+        let sub_str = field_subtitle_html('name') + field_value_html(sub_obj.Name)
+        sub_str += field_subtitle_html('description') + field_value_html(sub_obj.Description)
+        sub_str += field_subtitle_html('standard') + field_value_html(sub_obj.Standard)
+        sub_str += field_subtitle_html('elements') + field_value_html(sub_obj.Elements)
+        sub_str += field_subtitle_html('business rules') + field_value_html(sub_obj.BusinessRules)
+        sub_str += field_subtitle_html('definition modification') + field_value_html(sub_obj.DefinitionModification)
+        elems.push(sub_str);
     }
-    const body = eles.join("<hr style='border-top: 1px dashed;'>");
-    if (body.length > 0) {
-        return head + body;
-    }
-    return head;
+    rt += elems.join(field_sep_line());
+    return rt
 };
 
 const prevMetadata = () => {
-    const jt = jsonTEXT.Metadata;
-    const jh = jsonHTML.Metadata;
-    const id = nonEmptyHtml(">> identifier:", jt.Identifier, jh.Identifier);
-    const type = nonEmptyHtml(">> type:", jt.Type, jh.Type);
-    const ea = (jt.ExpectedAttributes != null && jh.ExpectedAttributes != null) ? nonEmptyHtml(">> expected attributes:", jt.ExpectedAttributes.join(""), jh.ExpectedAttributes.join("")) : "";
-    const sc = (jt.Superclass != null && jh.Superclass != null) ? nonEmptyHtml(">> superclass:", jt.Superclass.join(""), jh.Superclass.join("")) : "";
-    const ce = (jt.CrossrefEntities != null && jh.CrossrefEntities != null) ? nonEmptyHtml(">> cross ref entities:", jt.CrossrefEntities.join(""), jh.CrossrefEntities.join("")) : "";
-    return ("<h4 style='font-size:large; font-style:italic; background-color: darkgray'><pre> Meta Data</pre></h4>" + id + type + ea + sc + ce);
+    let rt = field_title_html('Meta Data');
+    const sub_obj = jsonEnt.Metadata;
+    let sub_str = field_subtitle_html('identifier') + field_value_html(sub_obj.Identifier)
+    sub_str += field_subtitle_html('type') + field_value_html(sub_obj.Type)
+    sub_str += field_subtitle_html('expected attributes') + field_value_html(sub_obj.ExpectedAttributes)
+    sub_str += field_subtitle_html('superclass') + field_value_html(sub_obj.Superclass)
+    sub_str += field_subtitle_html('cross ref entities') + field_value_html(sub_obj.CrossrefEntities)
+    return rt + sub_str
 };
 
 //////////

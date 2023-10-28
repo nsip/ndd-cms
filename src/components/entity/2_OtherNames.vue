@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
 
-import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
+import { jsonEnt } from "@/share/EntType";
 import { fitTextarea } from "@/share/util";
 
 const icon = ref("chevron-down");
@@ -27,7 +27,7 @@ const onToggleVisible = () => {
 };
 
 onMounted(async () => {
-    other_names.value = jsonTEXT.OtherNames != null ? jsonTEXT.OtherNames.join("\n") : "";
+    other_names.value = jsonEnt.OtherNames != null ? jsonEnt.OtherNames.join("\n") : "";
     mounted = true;
 });
 
@@ -35,8 +35,7 @@ watchEffect(() => {
     const str4arr = other_names.value
     if (mounted) {
         // update data
-        jsonTEXT.SetOtherName(str4arr);
-        jsonHTML.SetOtherName(str4arr);
+        jsonEnt.SetOtherNames(str4arr);
         fitTextarea(taON.value!, str4arr);
     }
 });

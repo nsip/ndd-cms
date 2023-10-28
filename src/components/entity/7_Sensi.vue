@@ -23,7 +23,7 @@
 <script setup lang="ts">
 
 import { notify } from "@kyvg/vue3-notification";
-import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
+import { jsonEnt } from "@/share/EntType";
 import { itemName, itemKind } from "@/share/share";
 import TextLine from "@/components/TextLine.vue";
 import EditorSensi from "@/components/entity/7_Sensi_Editor.vue";
@@ -42,11 +42,10 @@ onMounted(async () => {
 
     // edit existing item
     if (itemName.value?.length > 0 && itemKind.value?.length > 0) {
-        if (jsonHTML.Sensitivity.length > 0) {
-            nEditor.value = jsonHTML.Sensitivity.length;
+        if (jsonEnt.Sensitivity.length > 0) {
+            nEditor.value = jsonEnt.Sensitivity.length;
         } else {
-            jsonHTML.AddSensi()
-            jsonTEXT.AddSensi()
+            jsonEnt.AddSensi()
             nEditor.value = 1
         }
     }
@@ -63,7 +62,7 @@ const onMoreLessClick = (type: string) => {
     switch (type) {
         case "+":
             {
-                if (jsonTEXT.IsLastSensiEmpty()) {
+                if (jsonEnt.IsLastSensiEmpty()) {
                     notify({
                         title: "Note",
                         text: "please use available editor(s). if hidden, unfold it",
@@ -73,8 +72,7 @@ const onMoreLessClick = (type: string) => {
                 }
 
                 // add new Sensitivity element in json
-                jsonHTML.AddSensi();
-                jsonTEXT.AddSensi();
+                jsonEnt.AddSensi();
 
                 nEditor.value++;
             }
@@ -92,8 +90,7 @@ const onMoreLessClick = (type: string) => {
                 }
 
                 // remove last Sensitivity element in json
-                jsonHTML.RmSensiLast();
-                jsonTEXT.RmSensiLast();
+                jsonEnt.RmSensiLast();
 
                 nEditor.value--;
             }

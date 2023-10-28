@@ -23,7 +23,7 @@
 import { QuillEditor, Quill } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
-import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
+import { jsonEnt } from "@/share/EntType";
 import TextLine from "@/components/TextLine.vue";
 import { fitTextarea } from "@/share/util";
 
@@ -46,7 +46,7 @@ const props = defineProps({
 })
 
 onMounted(async () => {
-    const col = jsonHTML.Collections[props.idx || 0];
+    const col = jsonEnt.Collections[props.idx || 0];
     if (col != undefined && col != null) {
 
         // textarea
@@ -68,8 +68,7 @@ watchEffect(() => {
     const s = standard.value;
     const e = elements.value;
     if (mounted) {
-        jsonHTML.SetCol("html", idx || 0, n, "**", s, e, "**", "**");
-        jsonTEXT.SetCol("", idx || 0, n, "**", s, e, "**", "**");
+        jsonEnt.SetCol(idx || 0, n, "**", s, e, "**", "**");
         fitTextarea(taN.value!, n);
         fitTextarea(taS.value!, s);
         fitTextarea(taE.value!, e);
@@ -88,21 +87,15 @@ const onReadyDM = (quill: Quill) => {
 
 const textChangeDes = (idx: number) => {
     const html = quillDes.root.innerHTML;
-    const text = quillDes.getText(0, 100000);
-    jsonHTML.SetCol("html", idx, "**", html, "**", "**", "**", "**");
-    jsonTEXT.SetCol("", idx, "**", text, "**", "**", "**", "**");
+    jsonEnt.SetCol(idx, "**", html, "**", "**", "**", "**");
 };
 const textChangeBR = (idx: number) => {
     const html = quillBR.root.innerHTML;
-    const text = quillBR.getText(0, 100000);
-    jsonHTML.SetCol("html", idx, "**", "**", "**", "**", html, "**");
-    jsonTEXT.SetCol("", idx, "**", "**", "**", "**", text, "**");
+    jsonEnt.SetCol(idx, "**", "**", "**", "**", html, "**");
 };
 const textChangeDM = (idx: number) => {
     const html = quillDM.root.innerHTML;
-    const text = quillDM.getText(0, 100000);
-    jsonHTML.SetCol("html", idx, "**", "**", "**", "**", "**", html);
-    jsonTEXT.SetCol("", idx, "**", "**", "**", "**", "**", text);
+    jsonEnt.SetCol(idx, "**", "**", "**", "**", "**", html);
 };
 
 </script>

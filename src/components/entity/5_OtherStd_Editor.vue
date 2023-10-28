@@ -20,7 +20,7 @@
 import { QuillEditor, Quill } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
-import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
+import { jsonEnt } from "@/share/EntType";
 import TextLine from "@/components/TextLine.vue";
 import { fitTextarea } from "@/share/util";
 
@@ -42,7 +42,7 @@ const props = defineProps({
 })
 
 onMounted(async () => {
-    const os = jsonHTML.OtherStandards[props.idx || 0];
+    const os = jsonEnt.OtherStandards[props.idx || 0];
     if (os != undefined && os != null) {
 
         // textarea
@@ -63,9 +63,7 @@ const onReadyDef = (quill: Quill) => {
 
 const textChangeDef = (idx: number) => {
     const html = quillDef.root.innerHTML;
-    const text = quillDef.getText(0, 100000);
-    jsonHTML.SetOtherStd("html", idx, "**", "**", "**", html, "**");
-    jsonTEXT.SetOtherStd("", idx, "**", "**", "**", text, "**");
+    jsonEnt.SetOtherStd(idx, "**", "**", "**", html, "**");
 };
 
 const onReadyCmt = (quill: Quill) => {
@@ -74,9 +72,7 @@ const onReadyCmt = (quill: Quill) => {
 
 const textChangeCmt = (idx: number) => {
     const html = quillCmt.root.innerHTML;
-    const text = quillCmt.getText(0, 100000);
-    jsonHTML.SetOtherStd("html", idx, "**", "**", "**", "**", html);
-    jsonTEXT.SetOtherStd("", idx, "**", "**", "**", "**", text);
+    jsonEnt.SetOtherStd(idx, "**", "**", "**", "**", html);
 };
 
 watchEffect(() => {
@@ -87,8 +83,7 @@ watchEffect(() => {
     const p = paths.value;
 
     if (mounted) {
-        jsonHTML.SetOtherStd("html", idx || 0, s, l, p, "**", "**");
-        jsonTEXT.SetOtherStd("", idx || 0, s, l, p, "**", "**");
+        jsonEnt.SetOtherStd(idx || 0, s, l, p, "**", "**");
         fitTextarea(taS.value!, s);
         fitTextarea(taL.value!, l);
         fitTextarea(taP.value!, p);

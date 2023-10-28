@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 
-import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
+import { jsonEnt } from "@/share/EntType";
 import { Mode } from "@/share/share";
 
 const entity = ref("");
@@ -16,7 +16,7 @@ const entInput = ref();
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 
 onMounted(async () => {
-    entity.value = jsonTEXT.Entity;
+    entity.value = jsonEnt.Entity;
     entInput.value.focus();
     mounted = true
 });
@@ -24,8 +24,7 @@ onMounted(async () => {
 watchEffect(() => {
     const name = entity.value;
     if (mounted) {
-        jsonHTML.SetName(name);
-        jsonTEXT.SetName(name);
+        jsonEnt.SetName(name);
     }
 });
 

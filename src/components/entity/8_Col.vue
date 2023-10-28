@@ -23,7 +23,7 @@
 <script setup lang="ts">
 
 import { notify } from "@kyvg/vue3-notification";
-import { jsonEntHTML as jsonHTML, jsonEntTEXT as jsonTEXT } from "@/share/EntType";
+import { jsonEnt } from "@/share/EntType";
 import { itemName, itemKind } from "@/share/share";
 import TextLine from "@/components/TextLine.vue";
 import EditorCol from "@/components/entity/8_Col_Editor.vue";
@@ -42,11 +42,10 @@ onMounted(async () => {
 
     // edit existing item
     if (itemName.value?.length > 0 && itemKind.value?.length > 0) {
-        if (jsonHTML.Collections.length > 0) {
-            nEditor.value = jsonHTML.Collections.length;
+        if (jsonEnt.Collections.length > 0) {
+            nEditor.value = jsonEnt.Collections.length;
         } else {
-            jsonHTML.AddCol()
-            jsonTEXT.AddCol()
+            jsonEnt.AddCol()
             nEditor.value = 1
         }
     }
@@ -63,7 +62,7 @@ const onMoreLessClick = (type: string) => {
     switch (type) {
         case "+":
             {
-                if (jsonTEXT.IsLastColEmpty()) {
+                if (jsonEnt.IsLastColEmpty()) {
                     notify({
                         title: "Note",
                         text: "please use available editor(s). if hidden, unfold it",
@@ -73,8 +72,7 @@ const onMoreLessClick = (type: string) => {
                 }
 
                 // add new Collection element in json
-                jsonHTML.AddCol();
-                jsonTEXT.AddCol();
+                jsonEnt.AddCol();
 
                 nEditor.value++;
             }
@@ -92,8 +90,7 @@ const onMoreLessClick = (type: string) => {
                 }
 
                 // remove last Collection element in json
-                jsonHTML.RmColLast();
-                jsonTEXT.RmColLast();
+                jsonEnt.RmColLast();
 
                 nEditor.value--;
             }
