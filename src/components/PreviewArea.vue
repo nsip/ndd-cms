@@ -8,8 +8,8 @@
     </div>
     <hr />
     <pre v-if="selMode == 'json'">{{ genJSON() }}</pre>
-    <EntVisualContent v-if="selMode == 'preview' && Kind == 'entity'" />
-    <ColVisualContent v-if="selMode == 'preview' && Kind == 'collection'" />
+    <EntVisualContent v-if="selMode == 'preview' && props.Kind == 'entity'" />
+    <ColVisualContent v-if="selMode == 'preview' && props.Kind == 'collection'" />
 </template>
 
 <script setup lang="ts">
@@ -25,12 +25,11 @@ const props = defineProps({
 
 const selMode = ref("json"); // default (checked) json type
 
-const select = (Mode: string) => { selMode.value = Mode; };
+const select = (mode: string) => { selMode.value = mode; };
 
 const genJSON = () => {
     if (selMode.value == "json") {
-        const object = props.Kind == 'entity' ? jsonEnt : jsonCol;
-        return object.GenJSON()
+        return (props.Kind == 'entity' ? jsonEnt : jsonCol).GenJSON()
     }
     return ""
 };

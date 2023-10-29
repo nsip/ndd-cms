@@ -5,7 +5,7 @@
 <script setup lang="ts">
 
 import { jsonCol } from "@/share/ColType";
-import { padStartSpaceP, isHTMLStr } from "@/share/util";
+import { padStartSpaceP, isHTMLStr, hasSomeValue } from "@/share/util";
 
 const field_title_html = (label: string) => {
     return `<h4 style='font-size:large; font-style:italic; background-color: darkgray'><pre>  ${label}  </pre></h4>`
@@ -63,8 +63,8 @@ const prevMetadata = () => {
     let rt = field_title_html('Meta Data');
     const sub_obj = jsonCol.Metadata;
     let sub_str = "";
-    sub_str += sub_obj.Identifier.length > 0 ? field_subtitle_html('identifier') + field_value_html(sub_obj.Identifier) : ""
-    sub_str += sub_obj.Type.length > 0 ? field_subtitle_html('type') + field_value_html(sub_obj.Type) : ""
+    sub_str += hasSomeValue(sub_obj, "Identifier") ? field_subtitle_html('identifier') + field_value_html(sub_obj.Identifier) : ""
+    sub_str += hasSomeValue(sub_obj, "Type") ? field_subtitle_html('type') + field_value_html(sub_obj.Type) : ""
     return rt + sub_str
 };
 

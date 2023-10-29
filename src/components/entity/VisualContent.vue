@@ -5,7 +5,7 @@
 <script setup lang="ts">
 
 import { jsonEnt } from "@/share/EntType";
-import { padStartSpaceP, isHTMLStr } from "@/share/util";
+import { padStartSpaceP, isHTMLStr, hasSomeValue } from "@/share/util";
 
 const field_title_html = (label: string) => {
     return `<h4 style='font-size:large; font-style:italic; background-color: darkgray'><pre>  ${label}  </pre></h4>`
@@ -66,10 +66,10 @@ const prevSIF = () => {
     for (let i = 0; i < n; i++) {
         const sub_obj = jsonEnt.SIF[i];
         let sub_str = "";
-        sub_str += sub_obj.XPath.length > 0 ? field_subtitle_html('xpath') + field_value_html(sub_obj.XPath) : ""
-        sub_str += sub_obj.Definition.length > 0 ? field_subtitle_html('definition') + field_value_html(sub_obj.Definition) : ""
-        sub_str += sub_obj.Commentary.length > 0 ? field_subtitle_html('commentary') + field_value_html(sub_obj.Commentary) : ""
-        sub_str += sub_obj.Datestamp.length > 0 ? field_subtitle_html('datestamp') + field_value_html(sub_obj.Datestamp) : ""
+        sub_str += hasSomeValue(sub_obj, "XPath") ? field_subtitle_html('xpath') + field_value_html(sub_obj.XPath) : ""
+        sub_str += hasSomeValue(sub_obj, "Definition") ? field_subtitle_html('definition') + field_value_html(sub_obj.Definition) : ""
+        sub_str += hasSomeValue(sub_obj, "Commentary") ? field_subtitle_html('commentary') + field_value_html(sub_obj.Commentary) : ""
+        sub_str += hasSomeValue(sub_obj, "Datestamp") ? field_subtitle_html('datestamp') + field_value_html(sub_obj.Datestamp) : ""
         elems.push(sub_str);
     }
     rt += elems.join(field_sep_line());
@@ -83,11 +83,11 @@ const prevOtherStandards = () => {
     for (let i = 0; i < n; i++) {
         const sub_obj = jsonEnt.OtherStandards[i];
         let sub_str = "";
-        sub_str += sub_obj.Standard.length > 0 ? field_subtitle_html('standard') + field_value_html(sub_obj.Standard) : ""
-        sub_str += sub_obj.Link.length > 0 ? field_subtitle_html('link') + field_value_html(sub_obj.Link) : ""
-        sub_str += sub_obj.Path.length > 0 ? field_subtitle_html('path') + field_value_html(sub_obj.Path) : ""
-        sub_str += sub_obj.Definition.length > 0 ? field_subtitle_html('definition') + field_value_html(sub_obj.Definition) : ""
-        sub_str += sub_obj.Commentary.length > 0 ? field_subtitle_html('commentary') + field_value_html(sub_obj.Commentary) : ""
+        sub_str += hasSomeValue(sub_obj, "Standard") ? field_subtitle_html('standard') + field_value_html(sub_obj.Standard) : ""
+        sub_str += hasSomeValue(sub_obj, "Link") ? field_subtitle_html('link') + field_value_html(sub_obj.Link) : ""
+        sub_str += hasSomeValue(sub_obj, "Path") ? field_subtitle_html('path') + field_value_html(sub_obj.Path) : ""
+        sub_str += hasSomeValue(sub_obj, "Definition") ? field_subtitle_html('definition') + field_value_html(sub_obj.Definition) : ""
+        sub_str += hasSomeValue(sub_obj, "Commentary") ? field_subtitle_html('commentary') + field_value_html(sub_obj.Commentary) : ""
         elems.push(sub_str);
     }
     rt += elems.join(field_sep_line());
@@ -101,12 +101,12 @@ const prevLegalDefinition = () => {
     for (let i = 0; i < n; i++) {
         const sub_obj = jsonEnt.LegalDefinitions[i];
         let sub_str = "";
-        sub_str += sub_obj.LegislationName.length > 0 ? field_subtitle_html('legislationName') + field_value_html(sub_obj.LegislationName) : ""
-        sub_str += sub_obj.Citation.length > 0 ? field_subtitle_html('citation') + field_value_html(sub_obj.Citation) : ""
-        sub_str += sub_obj.Link.length > 0 ? field_subtitle_html('link') + field_value_html(sub_obj.Link) : ""
-        sub_str += sub_obj.Definition.length > 0 ? field_subtitle_html('definition') + field_value_html(sub_obj.Definition) : ""
-        sub_str += sub_obj.Commentary.length > 0 ? field_subtitle_html('commentary') + field_value_html(sub_obj.Commentary) : ""
-        sub_str += sub_obj.Datestamp.length > 0 ? field_subtitle_html('datestamp') + field_value_html(sub_obj.Datestamp) : ""
+        sub_str += hasSomeValue(sub_obj, "LegislationName") ? field_subtitle_html('legislationName') + field_value_html(sub_obj.LegislationName) : ""
+        sub_str += hasSomeValue(sub_obj, "Citation") ? field_subtitle_html('citation') + field_value_html(sub_obj.Citation) : ""
+        sub_str += hasSomeValue(sub_obj, "Link") ? field_subtitle_html('link') + field_value_html(sub_obj.Link) : ""
+        sub_str += hasSomeValue(sub_obj, "Definition") ? field_subtitle_html('definition') + field_value_html(sub_obj.Definition) : ""
+        sub_str += hasSomeValue(sub_obj, "Commentary") ? field_subtitle_html('commentary') + field_value_html(sub_obj.Commentary) : ""
+        sub_str += hasSomeValue(sub_obj, "Datestamp") ? field_subtitle_html('datestamp') + field_value_html(sub_obj.Datestamp) : ""
         elems.push(sub_str);
     }
     rt += elems.join(field_sep_line());
@@ -120,9 +120,9 @@ const prevSensitivity = () => {
     for (let i = 0; i < n; i++) {
         const sub_obj = jsonEnt.Sensitivity[i];
         let sub_str = "";
-        sub_str += sub_obj.Locale.length > 0 ? field_subtitle_html('locale') + field_value_html(sub_obj.Locale) : ""
-        sub_str += sub_obj.Value.length > 0 ? field_subtitle_html('value') + field_value_html(sub_obj.Value) : ""
-        sub_str += sub_obj.Commentary.length > 0 ? field_subtitle_html('commentary') + field_value_html(sub_obj.Commentary) : ""
+        sub_str += hasSomeValue(sub_obj, "Locale") ? field_subtitle_html('locale') + field_value_html(sub_obj.Locale) : ""
+        sub_str += hasSomeValue(sub_obj, "Value") ? field_subtitle_html('value') + field_value_html(sub_obj.Value) : ""
+        sub_str += hasSomeValue(sub_obj, "Commentary") ? field_subtitle_html('commentary') + field_value_html(sub_obj.Commentary) : ""
         elems.push(sub_str);
     }
     rt += elems.join(field_sep_line());
@@ -130,19 +130,18 @@ const prevSensitivity = () => {
 }
 
 const prevCollections = () => {
-
     let rt = field_title_html('Collections');
     const n = jsonEnt.CntCol();
     let elems: string[] = [];
     for (let i = 0; i < n; i++) {
         const sub_obj = jsonEnt.Collections[i];
         let sub_str = "";
-        sub_str += sub_obj.Name.length > 0 ? field_subtitle_html('name') + field_value_html(sub_obj.Name) : ""
-        sub_str += sub_obj.Description.length > 0 ? field_subtitle_html('description') + field_value_html(sub_obj.Description) : ""
-        sub_str += sub_obj.Standard.length > 0 ? field_subtitle_html('standard') + field_value_html(sub_obj.Standard) : ""
-        sub_str += sub_obj.Elements.length > 0 ? field_subtitle_html('elements') + field_value_html(sub_obj.Elements) : ""
-        sub_str += sub_obj.BusinessRules.length > 0 ? field_subtitle_html('business rules') + field_value_html(sub_obj.BusinessRules) : ""
-        sub_str += sub_obj.DefinitionModification.length > 0 ? field_subtitle_html('definition modification') + field_value_html(sub_obj.DefinitionModification) : ""
+        sub_str += hasSomeValue(sub_obj, "Name") ? field_subtitle_html('name') + field_value_html(sub_obj.Name) : ""
+        sub_str += hasSomeValue(sub_obj, "Description") ? field_subtitle_html('description') + field_value_html(sub_obj.Description) : ""
+        sub_str += hasSomeValue(sub_obj, "Standard") ? field_subtitle_html('standard') + field_value_html(sub_obj.Standard) : ""
+        sub_str += hasSomeValue(sub_obj, "Elements") ? field_subtitle_html('elements') + field_value_html(sub_obj.Elements) : ""
+        sub_str += hasSomeValue(sub_obj, "BusinessRules") ? field_subtitle_html('business rules') + field_value_html(sub_obj.BusinessRules) : ""
+        sub_str += hasSomeValue(sub_obj, "DefinitionModification") ? field_subtitle_html('definition modification') + field_value_html(sub_obj.DefinitionModification) : ""
         elems.push(sub_str);
     }
     rt += elems.join(field_sep_line());
@@ -153,11 +152,11 @@ const prevMetadata = () => {
     let rt = field_title_html('Meta Data');
     const sub_obj = jsonEnt.Metadata;
     let sub_str = "";
-    sub_str += sub_obj.Identifier.length > 0 ? field_subtitle_html('identifier') + field_value_html(sub_obj.Identifier) : ""
-    sub_str += sub_obj.Type.length > 0 ? field_subtitle_html('type') + field_value_html(sub_obj.Type) : ""
-    sub_str += sub_obj.ExpectedAttributes.length > 0 ? field_subtitle_html('expected attributes') + field_value_html(sub_obj.ExpectedAttributes) : ""
-    sub_str += sub_obj.Superclass.length > 0 ? field_subtitle_html('superclass') + field_value_html(sub_obj.Superclass) : ""
-    sub_str += sub_obj.CrossrefEntities.length > 0 ? field_subtitle_html('cross ref entities') + field_value_html(sub_obj.CrossrefEntities) : ""
+    sub_str += hasSomeValue(sub_obj, "Identifier") ? field_subtitle_html('identifier') + field_value_html(sub_obj.Identifier) : ""
+    sub_str += hasSomeValue(sub_obj, "Type") ? field_subtitle_html('type') + field_value_html(sub_obj.Type) : ""
+    sub_str += hasSomeValue(sub_obj, "ExpectedAttributes") ? field_subtitle_html('expected attributes') + field_value_html(sub_obj.ExpectedAttributes) : ""
+    sub_str += hasSomeValue(sub_obj, "Superclass") ? field_subtitle_html('superclass') + field_value_html(sub_obj.Superclass) : ""
+    sub_str += hasSomeValue(sub_obj, "CrossrefEntities") ? field_subtitle_html('cross ref entities') + field_value_html(sub_obj.CrossrefEntities) : ""
     return rt + sub_str
 };
 
