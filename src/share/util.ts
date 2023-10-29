@@ -123,7 +123,7 @@ export const fitTextarea = (ta: HTMLTextAreaElement, str: string) => {
 export const hasSomeValue = (obj: any, field: string) => {
     if (obj.hasOwnProperty(field)) {
         const v = obj[field]
-        return v != undefined && v != null && v.length > 0
+        return v != undefined && v != null && v.length > 0 && v != "<p><br></p>"
     }
     return false
 }
