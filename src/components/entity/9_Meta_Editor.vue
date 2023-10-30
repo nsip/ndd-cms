@@ -1,9 +1,9 @@
 <template>
     <TextLine text="identifier:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
-    <textarea class="content" ref="taID" v-model="identifier" placeholder="identifier"></textarea>
+    <textarea class="content" ref="taID" v-model="identifier" placeholder="identifier, number"></textarea>
 
     <TextLine text="type:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
-    <textarea class="content" ref="taTP" v-model="type" placeholder="type"></textarea>
+    <textarea class="content" ref="taTP" v-model="type" placeholder="type, one of ['Element', 'Object', 'Abstract Element']"></textarea>
 
     <TextLine text="expected attributes:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
     <textarea class="content" ref="taEA" v-model="attributes" placeholder="expected attributes"></textarea>

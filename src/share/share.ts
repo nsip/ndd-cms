@@ -47,10 +47,10 @@ export const postDataToDic = async (data: string) => {
     };
 };
 
-export const getItemContent = async (name: string, kind: string, dbcol: string) => {
+export const getItemContent = async (name: string, kind: string, phase: string) => {
     const mParam = new Map<string, any>([
         ["name", name],
-        ["dbcol", dbcol],
+        ["phase", phase],
     ]);
     const rt = await fetchNoBody("api/dictionary/pub/one", "GET", mParam, loginAuth.value);
     const err = await fetchErr(rt, onExpired)
