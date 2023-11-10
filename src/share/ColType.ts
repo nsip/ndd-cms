@@ -1,4 +1,4 @@
-import { cvtHtml2Plain, cvtArrayHtml2Plain, validStr, validStrHTMLArr, validStrTEXTArr } from "@/share/util";
+import { validStr, validStrTEXTArr } from "@/share/util";
 
 // identical to db 'collections'
 export class ColType {
