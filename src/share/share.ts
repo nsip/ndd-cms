@@ -8,7 +8,7 @@ export const loginUser = ref("");
 export const loginAuth = ref("");
 export const loginToken = ref("");
 export const itemName = ref("");
-export const itemKind = ref("");
+export const itemType = ref("");
 
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -47,14 +47,14 @@ export const postDataToDic = async (data: string) => {
     };
 };
 
-export const getItemContent = async (name: string, kind: string, phase: string) => {
+export const getItemContent = async (name: string, type: string, phase: string) => {
     const mParam = new Map<string, any>([
         ["name", name],
         ["phase", phase],
     ]);
     const rt = await fetchNoBody("api/dictionary/pub/one", "GET", mParam, loginAuth.value);
     const err = await fetchErr(rt, onExpired)
-    switch (kind) {
+    switch (type) {
         case "entity":
             return {
                 'data': err == null ? (rt as any[])[0] as EntType : null,
@@ -68,7 +68,7 @@ export const getItemContent = async (name: string, kind: string, phase: string) 
         default:
             return {
                 'data': null,
-                'error': "[kind] can only be 'entity' or 'collection'"
+                'error': "[type] can only be 'entity' or 'collection'"
             };
     }
 };
