@@ -4,7 +4,7 @@
         <button class="hide-editor" @click="onToggleVisible()">
             <font-awesome-icon :icon="icon" />
         </button>
-        <span class="hint2">[identifier, type, ExpectedAttributes(list), superclass(list), crossrefEntities(list)]</span>
+        <span class="hint2">[type, ExpectedAttributes(list), SuperClass, DefaultParent, CrossRefEntities(list)]</span>
         <div v-if="visEditor">
             <EditorMeta />
         </div>

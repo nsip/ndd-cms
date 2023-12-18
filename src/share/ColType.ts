@@ -2,11 +2,11 @@ import { validStr, validStrTEXTArr } from "@/share/util";
 
 // identical to db 'collections'
 export class ColType {
+    
     Entity = "";
     Definition = "";
     URL: string[] = [];
     Metadata: metaType = new metaType();
-    Entities: string[] = [];
 
     //
     // Name ---------------------------------------------------------
@@ -44,29 +44,12 @@ export class ColType {
     // Meta Data ---------------------------------------------------
     //
 
-    SetMeta(id: string, type: string) {
-        this.Metadata.Identifier = validStr(id, this.Metadata.Identifier);
+    SetMeta(type: string) {
         this.Metadata.Type = validStr(type, this.Metadata.Type);
     }
 
     AssignMeta(meta: metaType) {
         this.Metadata = meta != null ? meta : new metaType();
-    }
-
-    //
-    // Entities ---------------------------------------------------
-    //
-
-    SetEntities(entitiesStr: string) {
-        this.Entities = validStrTEXTArr(entitiesStr, this.Entities);
-    }
-
-    CntEntities() {
-        return this.Entities.length;
-    }
-
-    AssignEntities(entities: string[]) {
-        this.Entities = entities != null ? entities : EmptyStrArr();
     }
 
     ////
@@ -91,7 +74,6 @@ export class ColType {
 }
 
 class metaType {
-    Identifier = "";
     Type = "";
 }
 

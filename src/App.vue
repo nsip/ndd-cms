@@ -138,7 +138,6 @@ onMounted(async () => {
                         jsonCol.SetDefinition(collection.Definition);
                         jsonCol.AssignUrls(collection.URL);
                         jsonCol.AssignMeta(collection.Metadata);
-                        jsonCol.AssignEntities(collection.Entities);
                     }
                     break;
 

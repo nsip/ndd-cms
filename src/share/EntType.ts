@@ -336,17 +336,17 @@ export class EntType {
     //
 
     SetMeta(
-        id: string,
         type: string,
         attrStr: string,
-        superclass: string,
-        crossref: string
+        superClass: string,
+        defaultParent: string,
+        crossRef: string
     ) {
-        this.Metadata.Identifier = validStr(id, this.Metadata.Identifier);
         this.Metadata.Type = validStr(type, this.Metadata.Type);
         this.Metadata.ExpectedAttributes = validStrTEXTArr(attrStr, this.Metadata.ExpectedAttributes);
-        this.Metadata.Superclass = validStrTEXTArr(superclass, this.Metadata.Superclass);
-        this.Metadata.CrossrefEntities = validStrTEXTArr(crossref, this.Metadata.CrossrefEntities);
+        this.Metadata.SuperClass = validStr(superClass, this.Metadata.SuperClass);
+        this.Metadata.DefaultParent = validStr(defaultParent, this.Metadata.DefaultParent);
+        this.Metadata.CrossRefEntities = validStrTEXTArr(crossRef, this.Metadata.CrossRefEntities);
     }
 
     AssignMeta(meta: metaType) {
@@ -414,11 +414,11 @@ class colType {
 }
 
 class metaType {
-    Identifier = "";
     Type = "";
     ExpectedAttributes: string[] = [];
-    Superclass: string[] = [];
-    CrossrefEntities: string[] = [];
+    SuperClass = "";
+    DefaultParent = "";
+    CrossRefEntities: string[] = [];
 }
 
 const EmptyStrArr = (): string[] => { return [] }

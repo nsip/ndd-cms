@@ -153,11 +153,11 @@ const prevMetadata = () => {
     let rt = field_title_html('Meta Data');
     const sub_obj = jsonEnt.Metadata;
     let sub_str = "";
-    sub_str += hasSomeValue(sub_obj, "Identifier") ? field_subtitle_html('identifier') + field_value_html(sub_obj.Identifier) : ""
     sub_str += hasSomeValue(sub_obj, "Type") ? field_subtitle_html('type') + field_value_html(sub_obj.Type) : ""
     sub_str += hasSomeValue(sub_obj, "ExpectedAttributes") ? field_subtitle_html('expected attributes') + field_value_html(sub_obj.ExpectedAttributes) : ""
-    sub_str += hasSomeValue(sub_obj, "Superclass") ? field_subtitle_html('superclass') + field_value_html(sub_obj.Superclass) : ""
-    sub_str += hasSomeValue(sub_obj, "CrossrefEntities") ? field_subtitle_html('cross ref entities') + field_value_html(sub_obj.CrossrefEntities) : ""
+    sub_str += hasSomeValue(sub_obj, "SuperClass") ? field_subtitle_html('super class') + field_value_html(sub_obj.SuperClass) : ""
+    sub_str += hasSomeValue(sub_obj, "DefaultParent") ? field_subtitle_html('default parent') + field_value_html(sub_obj.DefaultParent) : ""
+    sub_str += hasSomeValue(sub_obj, "CrossRefEntities") ? field_subtitle_html('cross ref entities') + field_value_html(sub_obj.CrossRefEntities) : ""
     return rt + sub_str
 };
 

@@ -4,7 +4,7 @@
         <button class="hide-editor" @click="onToggleVisible()">
             <font-awesome-icon :icon="icon" />
         </button>
-        <span class="hint2">[identifier, type]</span>
+        <span class="hint2"></span>
         <div v-if="visEditor">
             <EditorMeta />
         </div>

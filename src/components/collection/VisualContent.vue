@@ -64,13 +64,8 @@ const prevMetadata = () => {
     let rt = field_title_html('Meta Data');
     const sub_obj = jsonCol.Metadata;
     let sub_str = "";
-    sub_str += hasSomeValue(sub_obj, "Identifier") ? field_subtitle_html('identifier') + field_value_html(sub_obj.Identifier) : ""
     sub_str += hasSomeValue(sub_obj, "Type") ? field_subtitle_html('type') + field_value_html(sub_obj.Type) : ""
     return rt + sub_str
-};
-
-const prevEntities = () => {
-    return field_title_html('Entities') + field_value_html(jsonCol.Entities);
 };
 
 // //////////
@@ -80,8 +75,7 @@ const wholeContent = () => {
         prevCollection() +
         prevDefinition() +
         prevURLs() +
-        prevMetadata() +
-        prevEntities()
+        prevMetadata()
     );
 };
 
