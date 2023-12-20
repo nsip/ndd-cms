@@ -57,12 +57,12 @@ export const getItemContent = async (name: string, type: string, phase: string) 
     switch (type) {
         case "entity":
             return {
-                'data': err == null ? (rt as any[])[0] as EntType : null,
+                'data': err == null ? (rt as any[])[0] as string : null,
                 'error': err
             };
         case "collection":
             return {
-                'data': err == null ? (rt as any[])[0] as ColType : null,
+                'data': err == null ? (rt as any[])[0] as string : null,
                 'error': err
             };
         default:

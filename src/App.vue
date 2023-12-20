@@ -90,7 +90,7 @@ onMounted(async () => {
 
         if (itemName.value?.length > 0 && itemType.value?.length > 0) {
 
-            // console.log(`edit mode: ${name} : ${type}`)
+            // console.log(`edit mode: ${itemName.value} : ${itemType.value}`)
 
             Mode.value = "edit";
 
@@ -106,7 +106,7 @@ onMounted(async () => {
                             })
                             return
                         }
-                        const entity = de.data as EntType;
+                        const entity = JSON.parse(de.data!);
 
                         jsonEnt.SetName(entity.Entity);
                         jsonEnt.AssignOtherNames(entity.OtherNames);
@@ -117,7 +117,6 @@ onMounted(async () => {
                         jsonEnt.AssignSensi(entity.Sensitivity);
                         jsonEnt.AssignCol(entity.Collections);
                         jsonEnt.AssignMeta(entity.Metadata);
-
                     }
                     break;
 
@@ -132,7 +131,7 @@ onMounted(async () => {
                             })
                             return
                         }
-                        const collection = de.data as ColType;
+                        const collection = JSON.parse(de.data!);
 
                         jsonCol.SetName(collection.Entity);
                         jsonCol.SetDefinition(collection.Definition);
