@@ -1,7 +1,5 @@
 import { fetchBodyJsonStr, fetchNoBody, mEmpty, fetchErr } from "@/share/fetch";
 import { URL_SIGN } from "@/share/ip"
-import { EntType } from "@/share/EntType";
-import { ColType } from "@/share/ColType";
 
 export const Mode = ref(""); // 'new' or 'edit'
 export const loginUser = ref("");
@@ -9,6 +7,7 @@ export const loginAuth = ref("");
 export const loginToken = ref("");
 export const itemName = ref("");
 export const itemType = ref("");
+export const itemPhase = ref("");
 
 //////////////////////////////////////////////////////////////////////////////////////
 

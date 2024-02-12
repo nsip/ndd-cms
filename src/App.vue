@@ -17,9 +17,9 @@
 
 import { useCookies } from "vue3-cookies";
 import { notify } from "@kyvg/vue3-notification";
-import { Mode, loginAuth, loginToken, loginUser, getSelfName, itemName, itemType, getItemContent } from "@/share/share";
-import { EntType, jsonEnt } from "@/share/EntType";
-import { ColType, jsonCol } from "@/share/ColType";
+import { Mode, loginAuth, loginToken, loginUser, getSelfName, itemName, itemType, itemPhase, getItemContent } from "@/share/share";
+import { jsonEnt } from "@/share/EntType";
+import { jsonCol } from "@/share/ColType";
 import MainTitle from "@/components/MainTitle.vue";
 import Preview from "@/components/PreviewArea.vue";
 import BtnCMS from "@/components/BtnCMS.vue";
@@ -57,10 +57,12 @@ onMounted(async () => {
     loginAuth.value = "Bearer " + token;
     itemType.value = cookies.get("type");
     itemName.value = cookies.get("name");
+    itemPhase.value = cookies.get('phase');
 
     console.log("[App.vue] Token:", window.location.hostname, " -- ", cookies.get("token"))
     console.log("[App.vue] item type:", itemType.value)
     console.log("[App.vue] item name:", itemName.value)
+    console.log("[App.vue] item phase:", itemPhase.value)
 
     if (loginToken.value.length < 128) {
 
@@ -97,7 +99,7 @@ onMounted(async () => {
             switch (itemType.value) {
                 case "entity":
                     {
-                        const de = await getItemContent(itemName.value, itemType.value, "existing")
+                        const de = await getItemContent(itemName.value, itemType.value, itemPhase.value)
                         if (de.error != null) {
                             notify({
                                 title: "Error: Get Entity Item Content",
@@ -122,7 +124,7 @@ onMounted(async () => {
 
                 case "collection":
                     {
-                        const de = await getItemContent(itemName.value, itemType.value, "existing")
+                        const de = await getItemContent(itemName.value, itemType.value, itemPhase.value)
                         if (de.error != null) {
                             notify({
                                 title: "Error: Get Collection Item Content",
