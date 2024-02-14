@@ -92,7 +92,7 @@ onMounted(async () => {
 
         if (itemName.value?.length > 0 && itemType.value?.length > 0) {
 
-            // console.log(`edit mode: ${itemName.value} : ${itemType.value}`)
+            // console.log(`edit mode: ${itemName.value} : ${itemType.value} : ${itemPhase.value}`)
 
             Mode.value = "edit";
 
