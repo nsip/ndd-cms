@@ -112,7 +112,7 @@ onMounted(async () => {
 
                         jsonEnt.SetName(entity.Entity);
                         jsonEnt.AssignOtherNames(entity.OtherNames);
-                        jsonEnt.SetDefinition(entity.Definition);
+                        jsonEnt.AssignDef(entity.Definition);
                         jsonEnt.AssignSIF(entity.SIF);
                         jsonEnt.AssignOtherStd(entity.OtherStandards);
                         jsonEnt.AssignLegalDef(entity.LegalDefinitions);
@@ -136,7 +136,7 @@ onMounted(async () => {
                         const collection = JSON.parse(de.data!);
 
                         jsonCol.SetName(collection.Entity);
-                        jsonCol.SetDefinition(collection.Definition);
+                        jsonCol.AssignDef(collection.Definition);
                         jsonCol.AssignUrls(collection.URL);
                         jsonCol.AssignMeta(collection.Metadata);
                     }
