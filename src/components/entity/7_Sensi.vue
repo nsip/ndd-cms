@@ -10,7 +10,7 @@
         <button class="more-editor" @click="onMoreLessClick('+')">
             <font-awesome-icon icon="circle-plus" />
         </button>
-        <span class="hint2">list of [locale, value, commentary]</span>
+        <span class="hint2">list of Sensitivity [locale, value, commentary]</span>
         <div v-if="visEditor">
             <div v-for="(n, i) in nEditor" :key="i">
                 <TextLine :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="1.5px" />
@@ -73,7 +73,6 @@ const onMoreLessClick = (type: string) => {
 
                 // add new Sensitivity element in json
                 jsonEnt.AddSensi();
-
                 nEditor.value++;
             }
             break;
@@ -91,7 +90,6 @@ const onMoreLessClick = (type: string) => {
 
                 // remove last Sensitivity element in json
                 jsonEnt.RmSensiLast();
-
                 nEditor.value--;
             }
             break;

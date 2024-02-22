@@ -10,7 +10,7 @@
         <button class="more-editor" @click="onMoreLessClick('+')">
             <font-awesome-icon icon="circle-plus" />
         </button>
-        <span class="hint2">list of [standard, link(list), path(list), definition, commentary]</span>
+        <span class="hint2">list of OtherStandard [standard, link(list), path(list), definition, commentary]</span>
         <div v-if="visEditor">
             <div v-for="(n, i) in nEditor" :key="i">
                 <TextLine :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="1.5px" />
@@ -73,7 +73,6 @@ const onMoreLessClick = (type: string) => {
 
                 // add new OtherStandard element in json
                 jsonEnt.AddOtherStd();
-
                 nEditor.value++;
             }
             break;
@@ -91,7 +90,6 @@ const onMoreLessClick = (type: string) => {
 
                 // remove last OtherStandard element in json
                 jsonEnt.RmOtherStdLast();
-
                 nEditor.value--;
             }
             break;

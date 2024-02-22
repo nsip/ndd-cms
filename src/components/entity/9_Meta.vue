@@ -4,7 +4,7 @@
         <button class="hide-editor" @click="onToggleVisible()">
             <font-awesome-icon :icon="icon" />
         </button>
-        <span class="hint2">[type, ExpectedAttributes(list), SuperClass, DefaultParent, CrossRefEntities(list)]</span>
+        <span class="hint2"> MetaData [type, ExpectedAttributes(list), SuperClass, DefaultParent, CrossRefEntities(list)]</span>
         <div v-if="visEditor">
             <EditorMeta />
         </div>
@@ -32,6 +32,4 @@ const onToggleVisible = () => {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-
-</style>
+<style scoped></style>

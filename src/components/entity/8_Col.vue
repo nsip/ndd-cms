@@ -10,7 +10,7 @@
         <button class="more-editor" @click="onMoreLessClick('+')">
             <font-awesome-icon icon="circle-plus" />
         </button>
-        <span class="hint2">list of [name, description, standard, elements(list), businessRules(list), definitionModification]</span>
+        <span class="hint2">list of Collection [name, description, standard, elements(list), businessRules(list), definitionModification]</span>
         <div v-if="visEditor">
             <div v-for="(n, i) in nEditor" :key="i">
                 <TextLine :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="1.5px" />
@@ -73,7 +73,6 @@ const onMoreLessClick = (type: string) => {
 
                 // add new Collection element in json
                 jsonEnt.AddCol();
-
                 nEditor.value++;
             }
             break;
@@ -91,7 +90,6 @@ const onMoreLessClick = (type: string) => {
 
                 // remove last Collection element in json
                 jsonEnt.RmColLast();
-
                 nEditor.value--;
             }
             break;

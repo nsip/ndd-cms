@@ -57,7 +57,18 @@ const prevOtherNames = () => {
 };
 
 const prevDefinition = () => {
-    return field_title_html('Definition') + field_value_html(jsonEnt.Definition);
+    let rt = field_title_html('Definition');
+    const n = jsonEnt.CntDef();
+    let elems: string[] = [];
+    for (let i = 0; i < n; i++) {
+        const sub_obj = jsonEnt.Definition[i];
+        let sub_str = "";
+        sub_str += hasSomeValue(sub_obj, "Text") ? field_subtitle_html('text') + field_value_html(sub_obj.Text) : ""
+        sub_str += hasSomeValue(sub_obj, "Scope") ? field_subtitle_html('scope') + field_value_html(sub_obj.Scope) : ""
+        elems.push(sub_str);
+    }
+    rt += elems.join(field_sep_line());
+    return rt
 };
 
 const prevSIF = () => {

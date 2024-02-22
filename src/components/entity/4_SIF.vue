@@ -10,7 +10,7 @@
         <button class="more-editor" @click="onMoreLessClick('+')">
             <font-awesome-icon icon="circle-plus" />
         </button>
-        <span class="hint2">list of [xpath(list), definition, commentary, datestamp]</span>
+        <span class="hint2">list of SIF [xpath(list), definition, commentary, datestamp]</span>
         <div v-if="visEditor">
             <div v-for="(n, i) in nEditor" :key="i">
                 <TextLine :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="1.5px" />
@@ -74,7 +74,6 @@ const onMoreLessClick = (type: string) => {
 
                 // add new SIF element in json
                 jsonEnt.AddSIF();
-
                 nEditor.value++;
             }
             break;
@@ -92,7 +91,6 @@ const onMoreLessClick = (type: string) => {
 
                 // remove last SIF element in json
                 jsonEnt.RmSIFLast();
-
                 nEditor.value--;
             }
             break;
@@ -105,8 +103,4 @@ const onMoreLessClick = (type: string) => {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h2 {
-    text-align: center;
-}
-</style>
+<style scoped></style>
