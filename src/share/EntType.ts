@@ -1,4 +1,4 @@
-import { validStr, validStrHTMLArr, validStrTEXTArr } from "@/share/util";
+import { validStr, validStrHTMLArr, validStrTEXTArr, oriName } from "@/share/util";
 
 export class EntType {
 
@@ -17,7 +17,11 @@ export class EntType {
     //
 
     SetName(name: string) {
-        this.Entity = validStr(name, this.Entity);
+        if (name.includes(')=>')) { // changing name 
+            this.Entity = validStr(name, this.Entity);
+        } else {
+            this.Entity = oriName(validStr(name, this.Entity));
+        }
     }
 
     //
@@ -30,6 +34,7 @@ export class EntType {
 
     AssignOtherNames(on: string[]) {
         this.OtherNames = on != null ? on : EmptyStrArr();
+        this.OtherNames = this.OtherNames.map(on => oriName(on));
     }
 
     CntOtherName() {
@@ -389,6 +394,10 @@ export class EntType {
 
     AssignMeta(meta: metaType) {
         this.Metadata = meta != null ? meta : new metaType();
+        this.Metadata.SuperClass = oriName(this.Metadata.SuperClass);
+        this.Metadata.ExpectedAttributes = this.Metadata.ExpectedAttributes.map(attr => oriName(attr));
+        this.Metadata.DefaultParent = oriName(this.Metadata.DefaultParent);
+        this.Metadata.CrossRefEntities = this.Metadata.CrossRefEntities.map(cre => oriName(cre));
     }
 
     ////

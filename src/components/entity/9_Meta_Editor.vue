@@ -50,14 +50,14 @@ onMounted(async () => {
 
 watchEffect(() => {
 
-    const t = type.value;
+    const tp = type.value;
     const ea = attributes.value;
     const sc = superclasses.value;
     const dp = defaultparent.value;
     const re = refentities.value;
 
     if (mounted) {
-        jsonEnt.SetMeta(t, ea, sc, dp, re);
+        jsonEnt.SetMeta(tp, ea, sc, dp, re);
         fitTextarea(taEA.value!, ea);
         fitTextarea(taSC.value!, sc);
         fitTextarea(taDP.value!, dp);

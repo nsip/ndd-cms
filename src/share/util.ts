@@ -140,3 +140,15 @@ export const isSomeValue = (v: any) => {
 export const hasSomeValue = (obj: any, field: string) => {
     return obj.hasOwnProperty(field) ? isSomeValue(obj[field]) : false
 }
+
+export const oriName = (name: string) => {
+    if (name.includes('(') && name.endsWith(')')) {
+        const o = name.lastIndexOf('(')
+        const c = name.lastIndexOf(')')
+        const v = name.slice(o + 1, c)
+        if (!isNaN(Number(v))) {
+            return name.slice(0, o)
+        }
+    }
+    return name
+}
