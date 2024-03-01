@@ -1,7 +1,4 @@
 <template>
-    <TextLine text="identifier:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
-    <textarea class="content" ref="taID" v-model="identifier" placeholder="identifier"></textarea>
-
     <TextLine text="type:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
     <textarea class="content" ref="taTP" v-model="type" placeholder="type"></textarea>
 </template>
@@ -11,27 +8,21 @@
 import { jsonCol } from "@/share/ColType";
 import TextLine from "@/components/TextLine.vue";
 
-const identifier = ref("");
 const type = ref("");
-const taID = ref<HTMLTextAreaElement | null>(null);
 const taTP = ref<HTMLTextAreaElement | null>(null);
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 
 onMounted(async () => {
     const meta = jsonCol.Metadata;
-
     // textarea
-    identifier.value = meta.Identifier;
     type.value = meta.Type;
-
     mounted = true
 });
 
 watchEffect(() => {
-    const id = identifier.value;
     const typ = type.value;
     if (mounted) {
-        jsonCol.SetMeta(id, typ);
+        jsonCol.SetMeta(typ);
     }
 });
 

@@ -10,7 +10,7 @@
         <button class="more-editor" @click="onMoreLessClick('+')">
             <font-awesome-icon icon="circle-plus" />
         </button>
-        <span class="hint2">list of [xpath(list), definition, commentary, datestamp]</span>
+        <span class="hint2">list of SIF [xpath(list), definition, commentary, datestamp]</span>
         <div v-if="visEditor">
             <div v-for="(n, i) in nEditor" :key="i">
                 <TextLine :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="1.5px" />
@@ -24,7 +24,7 @@
 
 import { notify } from "@kyvg/vue3-notification";
 import { jsonEnt } from "@/share/EntType";
-import { itemName, itemKind } from "@/share/share";
+import { itemName, itemType } from "@/share/share";
 import TextLine from "@/components/TextLine.vue";
 import EditorSIF from "@/components/entity/4_SIF_Editor.vue";
 
@@ -41,7 +41,7 @@ onMounted(async () => {
     }
 
     // edit existing item
-    if (itemName.value?.length > 0 && itemKind.value?.length > 0) {
+    if (itemName.value?.length > 0 && itemType.value?.length > 0) {
         if (jsonEnt.SIF.length > 0) {
             nEditor.value = jsonEnt.SIF.length;
         } else {
@@ -74,7 +74,6 @@ const onMoreLessClick = (type: string) => {
 
                 // add new SIF element in json
                 jsonEnt.AddSIF();
-
                 nEditor.value++;
             }
             break;
@@ -92,7 +91,6 @@ const onMoreLessClick = (type: string) => {
 
                 // remove last SIF element in json
                 jsonEnt.RmSIFLast();
-
                 nEditor.value--;
             }
             break;
@@ -105,8 +103,4 @@ const onMoreLessClick = (type: string) => {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
-h2 {
-    text-align: center;
-}
-</style>
+<style scoped></style>

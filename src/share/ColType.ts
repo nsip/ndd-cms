@@ -1,12 +1,12 @@
-import { cvtHtml2Plain, cvtArrayHtml2Plain, validStr, validStrHTMLArr, validStrTEXTArr } from "@/share/util";
+import { validStr, validStrTEXTArr } from "@/share/util";
 
 // identical to db 'collections'
 export class ColType {
+
     Entity = "";
-    Definition = "";
+    Definition: defType[] = [new defType()];
     URL: string[] = [];
     Metadata: metaType = new metaType();
-    Entities: string[] = [];
 
     //
     // Name ---------------------------------------------------------
@@ -20,8 +20,46 @@ export class ColType {
     // Definition ---------------------------------------------------
     //
 
-    SetDefinition(definition: string) {
-        this.Definition = validStr(definition, this.Definition);
+    AddDef() {
+        this.Definition.push(new defType());
+    }
+
+    RmDefLast() {
+        this.Definition.splice(-1);
+    }
+
+    SetDefinition(
+        i: number,
+        text: string,
+        scope: string
+    ) {
+        if (this.CntDef() == 0) {
+            return
+        }
+        const ele = this.Definition[i];
+        ele.Text = validStr(text, ele.Text);
+        ele.Scope = validStr(scope, ele.Scope);
+    }
+
+    CntDef() {
+        return this.Definition.length;
+    }
+
+    IsDefEmpty(i: number) {
+        const ele = this.Definition[i];
+        if (ele == undefined) {
+            return true;
+        }
+        return ele.Text.trim().length == 0 && ele.Scope.trim().length == 0;
+    }
+
+    IsLastDefEmpty() {
+        const n = this.CntDef();
+        return n == 0 || this.IsDefEmpty(n - 1);
+    }
+
+    AssignDef(def: defType[]) {
+        this.Definition = def != null ? def : EmptyDef();
     }
 
     //
@@ -44,29 +82,12 @@ export class ColType {
     // Meta Data ---------------------------------------------------
     //
 
-    SetMeta(id: string, type: string) {
-        this.Metadata.Identifier = validStr(id, this.Metadata.Identifier);
+    SetMeta(type: string) {
         this.Metadata.Type = validStr(type, this.Metadata.Type);
     }
 
     AssignMeta(meta: metaType) {
         this.Metadata = meta != null ? meta : new metaType();
-    }
-
-    //
-    // Entities ---------------------------------------------------
-    //
-
-    SetEntities(entitiesStr: string) {
-        this.Entities = validStrTEXTArr(entitiesStr, this.Entities);
-    }
-
-    CntEntities() {
-        return this.Entities.length;
-    }
-
-    AssignEntities(entities: string[]) {
-        this.Entities = entities != null ? entities : EmptyStrArr();
     }
 
     ////
@@ -90,13 +111,16 @@ export class ColType {
     }
 }
 
+class defType {
+    Text = "";
+    Scope = "";
+}
+
 class metaType {
-    Identifier = "";
     Type = "";
 }
 
-const EmptyStrArr = (): string[] => {
-    return []
-}
+const EmptyStrArr = (): string[] => { return [] }
+const EmptyDef = (): defType[] => { return [] }
 
 export const jsonCol = reactive(new ColType());

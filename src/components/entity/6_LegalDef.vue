@@ -10,7 +10,7 @@
         <button class="more-editor" @click="onMoreLessClick('+')">
             <font-awesome-icon icon="circle-plus" />
         </button>
-        <span class="hint2">list of [legislationName, citation, link, definition, commentary, datestamp]</span>
+        <span class="hint2">list of LegislationDefinition [legislationName, citation, link, definition, commentary, datestamp]</span>
         <div v-if="visEditor">
             <div v-for="(n, i) in nEditor" :key="i">
                 <TextLine :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="1.5px" />
@@ -24,7 +24,7 @@
 
 import { notify } from "@kyvg/vue3-notification";
 import { jsonEnt } from "@/share/EntType";
-import { itemName, itemKind } from "@/share/share";
+import { itemName, itemType } from "@/share/share";
 import TextLine from "@/components/TextLine.vue";
 import EditorLegDef from "@/components/entity/6_LegalDef_Editor.vue";
 
@@ -41,7 +41,7 @@ onMounted(async () => {
     }
 
     // edit existing item
-    if (itemName.value?.length > 0 && itemKind.value?.length > 0) {
+    if (itemName.value?.length > 0 && itemType.value?.length > 0) {
         if (jsonEnt.LegalDefinitions.length > 0) {
             nEditor.value = jsonEnt.LegalDefinitions.length;
         } else {
@@ -73,7 +73,6 @@ const onMoreLessClick = (type: string) => {
 
                 // add new LegalDefinition element in json
                 jsonEnt.AddLegalDef();
-
                 nEditor.value++;
             }
             break;
@@ -91,7 +90,6 @@ const onMoreLessClick = (type: string) => {
 
                 // remove last LegalDefinition element in json
                 jsonEnt.RmLegalDefLast();
-
                 nEditor.value--;
             }
             break;

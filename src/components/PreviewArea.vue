@@ -8,8 +8,8 @@
     </div>
     <hr />
     <pre v-if="selMode == 'json'">{{ genJSON() }}</pre>
-    <EntVisualContent v-if="selMode == 'preview' && props.Kind == 'entity'" />
-    <ColVisualContent v-if="selMode == 'preview' && props.Kind == 'collection'" />
+    <EntVisualContent v-if="selMode == 'preview' && props.Type == 'entity'" />
+    <ColVisualContent v-if="selMode == 'preview' && props.Type == 'collection'" />
 </template>
 
 <script setup lang="ts">
@@ -20,7 +20,7 @@ import EntVisualContent from "@/components/entity/VisualContent.vue";
 import ColVisualContent from "@/components/collection/VisualContent.vue";
 
 const props = defineProps({
-    Kind: String,
+    Type: String,
 })
 
 const selMode = ref("json"); // default (checked) json type
@@ -29,7 +29,7 @@ const select = (mode: string) => { selMode.value = mode; };
 
 const genJSON = () => {
     if (selMode.value == "json") {
-        return (props.Kind == 'entity' ? jsonEnt : jsonCol).GenJSON()
+        return (props.Type == 'entity' ? jsonEnt : jsonCol).GenJSON()
     }
     return ""
 };

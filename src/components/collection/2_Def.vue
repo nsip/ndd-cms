@@ -4,39 +4,98 @@
         <button class="hide-editor" @click="onToggleVisible()">
             <font-awesome-icon :icon="icon" />
         </button>
-        <span class="hint1"></span>
+        <button class="less-editor" @click="onMoreLessClick('-')">
+            <font-awesome-icon icon="circle-minus" />
+        </button>
+        <button class="more-editor" @click="onMoreLessClick('+')">
+            <font-awesome-icon icon="circle-plus" />
+        </button>
+        <span class="hint2">list of Definition [text, scope]</span>
         <div v-if="visEditor">
-            <!-- essential, minimal, full, and "" -->
-            <QuillEditor theme="snow" toolbar="essential" placeholder="collection definition" @ready="onReady" @textChange="textChange" />
+            <div v-for="(n, i) in nEditor" :key="i">
+                <TextLine :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="1.5px" />
+                <EditorDef :idx="i" />
+            </div>
         </div>
     </div>
 </template>
 
 <script setup lang="ts">
 
-import { QuillEditor, Quill } from "@vueup/vue-quill";
-import "@vueup/vue-quill/dist/vue-quill.snow.css";
-import "@vueup/vue-quill/dist/vue-quill.bubble.css";
+import { notify } from "@kyvg/vue3-notification";
 import { jsonCol } from "@/share/ColType";
+import { itemName, itemType } from "@/share/share";
+import TextLine from "@/components/TextLine.vue";
+import EditorDef from "@/components/collection/2_Def_Editor.vue";
 
 const icon = ref("chevron-down");
 const visEditor = ref(false);
-let quillDef: Quill;
+const nEditor = ref(0);
+let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 
-const onReady = (quill: Quill) => {
-    quillDef = quill;
+onMounted(async () => {
 
-    // fill existing html text into quill, format could change by quill
-    quillDef.root.innerHTML = jsonCol.Definition;
-};
+    // add new item
+    if (itemName.value === null) {
+        nEditor.value = 1
+    }
 
-const textChange = () => {
-    jsonCol.SetDefinition(quillDef.root.innerHTML); // quillDef.getText(0, 100000)
-};
+    // edit existing item
+    if (itemName.value?.length > 0 && itemType.value?.length > 0) {
+        if (jsonCol.Definition.length > 0) {
+            nEditor.value = jsonCol.Definition.length;
+        } else {
+            // add a new empty Definition element in json if empty Definition array loaded
+            jsonCol.AddDef();
+            nEditor.value = 1
+        }
+    }
+
+    mounted = true;
+});
 
 const onToggleVisible = () => {
     visEditor.value = !visEditor.value;
     icon.value = icon.value == "chevron-down" ? "chevron-up" : "chevron-down";
+};
+
+const onMoreLessClick = (type: string) => {
+    switch (type) {
+        case "+":
+            {
+                if (jsonCol.IsLastDefEmpty()) {
+                    notify({
+                        title: "Note",
+                        text: "please use available editor(s). if hidden, unfold it",
+                        type: "warn"
+                    })
+                    break;
+                }
+                // add new Definition element in json
+                jsonCol.AddDef();
+                nEditor.value++;
+            }
+            break;
+
+        case "-":
+            {
+                if (nEditor.value <= 1) {
+                    notify({
+                        title: "Note",
+                        text: "no more editor group to remove",
+                        type: "warn"
+                    })
+                    break;
+                }
+                // remove last Definition element in json
+                jsonCol.RmDefLast();
+                nEditor.value--;
+            }
+            break;
+
+        default:
+    }
+    // console.log('editor count:', nEditor.value)
 };
 
 </script>

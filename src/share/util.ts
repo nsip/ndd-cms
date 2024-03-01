@@ -90,24 +90,24 @@ export const validStrTEXTArr = (val: string, defaultVal: string[]) => {
 
 // return (ons.match(/\n/g) || []).length
 
-export const cvtHtml2Plain = (html: string) => {
+export const html2plain = (html: string) => {
     // Create a new div element
-    const tempDivElement = document.createElement("div");
+    const tempElem = document.createElement("div");
 
     // Set the HTML content with the given value
-    tempDivElement.innerHTML = html;
+    tempElem.innerHTML = html;
 
     // Retrieve the text property of the element
-    return tempDivElement.textContent || tempDivElement.innerText || "";
+    return tempElem.textContent || tempElem.innerText || "";
 };
 
-export const cvtArrayHtml2Plain = (htmls: string[]) => {
+export const htmls2plain = (htmls: string[]) => {
     const plains: string[] = [];
     if (htmls == null || htmls.length == 0) {
         return plains;
     }
     htmls.forEach((val) => {
-        plains.push(cvtHtml2Plain(val));
+        plains.push(html2plain(val));
     });
     return plains;
 };
@@ -120,10 +120,35 @@ export const fitTextarea = (ta: HTMLTextAreaElement, str: string) => {
     }
 }
 
-export const hasSomeValue = (obj: any, field: string) => {
-    if (obj.hasOwnProperty(field)) {
-        const v = obj[field]
-        return v != undefined && v != null && v.length > 0 && v != "<p><br></p>"
+export const isSomeValue = (v: any) => {
+    if (v == undefined || v == null) {
+        return false
     }
-    return false
+    if (Array.isArray(v)) {
+        return v.length > 0
+    }
+    switch (typeof v) {
+        case "string":
+            return isHTMLStr(v) ? html2plain(v).trim().length > 0 : v.trim().length > 0
+        case "object":
+            return Object.keys(v).length > 0
+        default:
+            return true
+    }
+}
+
+export const hasSomeValue = (obj: any, field: string) => {
+    return obj.hasOwnProperty(field) ? isSomeValue(obj[field]) : false
+}
+
+export const oriName = (name: string) => {
+    if (name.includes('(') && name.endsWith(')')) {
+        const o = name.lastIndexOf('(')
+        const c = name.lastIndexOf(')')
+        const v = name.slice(o + 1, c)
+        if (!isNaN(Number(v))) {
+            return name.slice(0, o)
+        }
+    }
+    return name
 }

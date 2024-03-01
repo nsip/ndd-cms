@@ -1,14 +1,13 @@
 import { fetchBodyJsonStr, fetchNoBody, mEmpty, fetchErr } from "@/share/fetch";
 import { URL_SIGN } from "@/share/ip"
-import { EntType } from "@/share/EntType";
-import { ColType } from "@/share/ColType";
 
 export const Mode = ref(""); // 'new' or 'edit'
 export const loginUser = ref("");
 export const loginAuth = ref("");
 export const loginToken = ref("");
 export const itemName = ref("");
-export const itemKind = ref("");
+export const itemType = ref("");
+export const itemPhase = ref("");
 
 //////////////////////////////////////////////////////////////////////////////////////
 
@@ -47,28 +46,28 @@ export const postDataToDic = async (data: string) => {
     };
 };
 
-export const getItemContent = async (name: string, kind: string, phase: string) => {
+export const getItemContent = async (name: string, type: string, phase: string) => {
     const mParam = new Map<string, any>([
         ["name", name],
         ["phase", phase],
     ]);
     const rt = await fetchNoBody("api/dictionary/pub/one", "GET", mParam, loginAuth.value);
     const err = await fetchErr(rt, onExpired)
-    switch (kind) {
+    switch (type) {
         case "entity":
             return {
-                'data': err == null ? (rt as any[])[0] as EntType : null,
+                'data': err == null ? (rt as any[])[0] as string : null,
                 'error': err
             };
         case "collection":
             return {
-                'data': err == null ? (rt as any[])[0] as ColType : null,
+                'data': err == null ? (rt as any[])[0] as string : null,
                 'error': err
             };
         default:
             return {
                 'data': null,
-                'error': "[kind] can only be 'entity' or 'collection'"
+                'error': "[type] can only be 'entity' or 'collection'"
             };
     }
 };

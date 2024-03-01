@@ -1,10 +1,10 @@
-import { cvtHtml2Plain, cvtArrayHtml2Plain, validStr, validStrHTMLArr, validStrTEXTArr, } from "@/share/util";
+import { validStr, validStrHTMLArr, validStrTEXTArr, oriName } from "@/share/util";
 
 export class EntType {
 
     Entity = "";
     OtherNames: string[] = [];
-    Definition = "";
+    Definition: defType[] = [new defType()];
     SIF: sifType[] = [new sifType()];
     OtherStandards: otherStdType[] = [new otherStdType()];
     LegalDefinitions: legalDefType[] = [new legalDefType()];
@@ -17,7 +17,11 @@ export class EntType {
     //
 
     SetName(name: string) {
-        this.Entity = validStr(name, this.Entity);
+        if (name.includes(')=>')) { // changing name 
+            this.Entity = validStr(name, this.Entity);
+        } else {
+            this.Entity = oriName(validStr(name, this.Entity));
+        }
     }
 
     //
@@ -30,6 +34,7 @@ export class EntType {
 
     AssignOtherNames(on: string[]) {
         this.OtherNames = on != null ? on : EmptyStrArr();
+        this.OtherNames = this.OtherNames.map(on => oriName(on));
     }
 
     CntOtherName() {
@@ -40,8 +45,46 @@ export class EntType {
     // Definition ---------------------------------------------------
     //
 
-    SetDefinition(definition: string) {
-        this.Definition = validStr(definition, this.Definition);
+    AddDef() {
+        this.Definition.push(new defType());
+    }
+
+    RmDefLast() {
+        this.Definition.splice(-1);
+    }
+
+    SetDefinition(
+        i: number,
+        text: string,
+        scope: string
+    ) {
+        if (this.CntDef() == 0) {
+            return
+        }
+        const ele = this.Definition[i];
+        ele.Text = validStr(text, ele.Text);
+        ele.Scope = validStr(scope, ele.Scope);
+    }
+
+    CntDef() {
+        return this.Definition.length;
+    }
+
+    IsDefEmpty(i: number) {
+        const ele = this.Definition[i];
+        if (ele == undefined) {
+            return true;
+        }
+        return ele.Text.trim().length == 0 && ele.Scope.trim().length == 0;
+    }
+
+    IsLastDefEmpty() {
+        const n = this.CntDef();
+        return n == 0 || this.IsDefEmpty(n - 1);
+    }
+
+    AssignDef(def: defType[]) {
+        this.Definition = def != null ? def : EmptyDef();
     }
 
     //
@@ -336,21 +379,25 @@ export class EntType {
     //
 
     SetMeta(
-        id: string,
         type: string,
         attrStr: string,
-        superclass: string,
-        crossref: string
+        superClass: string,
+        defaultParent: string,
+        crossRef: string
     ) {
-        this.Metadata.Identifier = validStr(id, this.Metadata.Identifier);
         this.Metadata.Type = validStr(type, this.Metadata.Type);
         this.Metadata.ExpectedAttributes = validStrTEXTArr(attrStr, this.Metadata.ExpectedAttributes);
-        this.Metadata.Superclass = validStrTEXTArr(superclass, this.Metadata.Superclass);
-        this.Metadata.CrossrefEntities = validStrTEXTArr(crossref, this.Metadata.CrossrefEntities);
+        this.Metadata.SuperClass = validStr(superClass, this.Metadata.SuperClass);
+        this.Metadata.DefaultParent = validStr(defaultParent, this.Metadata.DefaultParent);
+        this.Metadata.CrossRefEntities = validStrTEXTArr(crossRef, this.Metadata.CrossRefEntities);
     }
 
     AssignMeta(meta: metaType) {
         this.Metadata = meta != null ? meta : new metaType();
+        this.Metadata.SuperClass = oriName(this.Metadata.SuperClass);
+        this.Metadata.ExpectedAttributes = this.Metadata.ExpectedAttributes.map(attr => oriName(attr));
+        this.Metadata.DefaultParent = oriName(this.Metadata.DefaultParent);
+        this.Metadata.CrossRefEntities = this.Metadata.CrossRefEntities.map(cre => oriName(cre));
     }
 
     ////
@@ -372,6 +419,11 @@ export class EntType {
     //     json = json.replaceAll(/\[\s*""\s*\]/g, "[]");
     //     return json;
     // }
+}
+
+class defType {
+    Text = "";
+    Scope = "";
 }
 
 class sifType {
@@ -414,14 +466,15 @@ class colType {
 }
 
 class metaType {
-    Identifier = "";
     Type = "";
     ExpectedAttributes: string[] = [];
-    Superclass: string[] = [];
-    CrossrefEntities: string[] = [];
+    SuperClass = "";
+    DefaultParent = "";
+    CrossRefEntities: string[] = [];
 }
 
 const EmptyStrArr = (): string[] => { return [] }
+const EmptyDef = (): defType[] => { return [] }
 const EmptySIF = (): sifType[] => { return [] }
 const EmptyOS = (): otherStdType[] => { return [] }
 const EmptyLD = (): legalDefType[] => { return [] }

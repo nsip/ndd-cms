@@ -8,12 +8,12 @@
 
 <script setup lang="ts">
 
-import { Mode, itemKind, loginUser } from "@/share/share";
+import { Mode, itemType, loginUser } from "@/share/share";
 
 // console.log("[PageTitle.vue] mode:", Mode.value)
-// console.log("[PageTitle.vue] item kind:", itemKind.value)
+// console.log("[PageTitle.vue] item type:", itemType.value)
 
-const typeName = itemKind.value == "entity" ? "Entity" : "Collection";
+const typeName = itemType.value == "entity" ? "Entity" : "Collection";
 const title = Mode.value == "edit" ? `${typeName} Edit` : `New ${typeName}`;
 
 </script>
