@@ -153,12 +153,20 @@ export const oriName = (name: string) => {
     return name
 }
 
-export const isUrl = (url: string) => {
+export const isUrl = (url: string, ...prefixes: string[]) => {
     try {
         new URL(url);
-        return true;
+        if (prefixes.length == 0) {
+            return true
+        }
+        for (const prefix of prefixes) {
+            if (url.startsWith(prefix)) {
+                return true
+            }
+        }
+        return false
     } catch (error) {
-        return false;
+        return false
     }
 }
 

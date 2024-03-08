@@ -47,11 +47,11 @@ const SaveJSON = async () => {
     {
         const de = await postDataToDic(js)
         if (de.error != null) {
-            if (isUrl(de.error)) {
+            if (isUrl(de.error, "http:", "https:")) {
                 download_file(de.error, "report.log");
                 notify({
                     title: "Validation Failed",
-                    text: "refer to downloaded report for fixing",
+                    text: "refer to downloaded report for issues",
                     type: "error"
                 })
             } else {
