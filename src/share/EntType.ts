@@ -380,13 +380,11 @@ export class EntType {
 
     SetMeta(
         type: string,
-        attrStr: string,
         superClass: string,
         isAttributeOf: string,
         crossRef: string
     ) {
         this.Metadata.Type = validStr(type, this.Metadata.Type);
-        this.Metadata.ExpectedAttributes = validStrTEXTArr(attrStr, this.Metadata.ExpectedAttributes);
         this.Metadata.SuperClass = validStr(superClass, this.Metadata.SuperClass);
         this.Metadata.IsAttributeOf = validStrTEXTArr(isAttributeOf, this.Metadata.IsAttributeOf);
         this.Metadata.CrossRefEntities = validStrTEXTArr(crossRef, this.Metadata.CrossRefEntities);
@@ -395,7 +393,6 @@ export class EntType {
     AssignMeta(meta: metaType) {
         this.Metadata = meta != null ? meta : new metaType();
         this.Metadata.SuperClass = oriName(this.Metadata.SuperClass);
-        this.Metadata.ExpectedAttributes = this.Metadata.ExpectedAttributes.map(attr => oriName(attr));
         this.Metadata.IsAttributeOf = this.Metadata.IsAttributeOf.map(obj => oriName(obj));
         this.Metadata.CrossRefEntities = this.Metadata.CrossRefEntities.map(cre => oriName(cre));
     }
@@ -467,7 +464,6 @@ class colType {
 
 class metaType {
     Type = "";
-    ExpectedAttributes: string[] = [];
     SuperClass = "";
     IsAttributeOf: string[] = [];
     CrossRefEntities: string[] = [];
