@@ -1,9 +1,9 @@
 <template>
     <TextLine text="locale:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
-    <textarea class="content" v-model="locale" placeholder="locale"></textarea>
+    <input type="text"  class="content" v-model="locale" placeholder="locale" />
 
     <TextLine text="value:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
-    <textarea class="content" v-model="val" placeholder="value"></textarea>
+    <input type="text"  class="content" v-model="val" placeholder="value" />
 
     <TextLine text="commentary:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="commentary" @ready="onReadyC" @textChange="textChangeC(idx || 0)" />
@@ -71,18 +71,5 @@ watchEffect(() => {
 <style scoped>
 h2 {
     text-align: center;
-}
-
-.content {
-    margin-top: 1%;
-    margin-left: 0px;
-    padding-left: 1%;
-    resize: vertical;
-    display: block;
-    overflow: hidden;
-    width: 98%;
-    min-height: 15px;
-    line-height: 20px;
-    white-space: nowrap;
 }
 </style>

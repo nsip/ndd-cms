@@ -1,12 +1,12 @@
 <template>
     <TextLine text="name:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
-    <textarea class="content" ref="taN" v-model="name" placeholder="name"></textarea>
+    <input type="text" class="content" ref="taN" v-model="name" placeholder="name" />
 
     <TextLine text="description:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="description" @ready="onReadyDes" @textChange="textChangeDes(idx || 0)" />
 
     <TextLine text="standard:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
-    <textarea class="content" ref="taS" v-model="standard" placeholder="standard"></textarea>
+    <input type="text"  class="content" ref="taS" v-model="standard" placeholder="standard" />
 
     <TextLine text="elements:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
     <textarea class="content" ref="taE" v-model="elements" placeholder="elements"></textarea>
@@ -104,18 +104,5 @@ const textChangeDM = (idx: number) => {
 <style scoped>
 h2 {
     text-align: center;
-}
-
-.content {
-    margin-top: 1%;
-    margin-left: 0px;
-    padding-left: 1%;
-    resize: vertical;
-    display: block;
-    overflow: hidden;
-    width: 98%;
-    min-height: 15px;
-    line-height: 20px;
-    white-space: nowrap;
 }
 </style>

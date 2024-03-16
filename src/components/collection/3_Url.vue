@@ -45,15 +45,4 @@ watchEffect(() => {
 .label {
     margin-left: 5px;
 }
-
-.content {
-    margin-left: 0px;
-    padding-left: 1%;
-    resize: vertical;
-    display: block;
-    overflow: hidden;
-    width: 98%;
-    min-height: 15px;
-    line-height: 20px;
-}
 </style>

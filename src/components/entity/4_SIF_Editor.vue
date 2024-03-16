@@ -9,7 +9,7 @@
     <QuillEditor theme="snow" toolbar="essential" placeholder="commentary" @ready="onReadyCmt" @textChange="textChangeCmt(idx || 0)" />
 
     <TextLine text="datestamp:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
-    <textarea class="content" ref="taDS" v-model="datestamp" placeholder="datestamp"></textarea>
+    <input type="text" class="content" ref="taDS" v-model="datestamp" placeholder="datestamp" />
 </template>
 
 <script setup lang="ts">
@@ -90,14 +90,4 @@ h2 {
     text-align: center;
 }
 
-.content {
-    margin-left: 0px;
-    padding-left: 1%;
-    resize: vertical;
-    display: block;
-    overflow: hidden;
-    width: 98%;
-    min-height: 15px;
-    line-height: 20px;
-}
 </style>

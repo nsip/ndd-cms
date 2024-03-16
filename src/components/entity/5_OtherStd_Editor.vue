@@ -1,6 +1,6 @@
 <template>
     <TextLine text="standard:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
-    <textarea class="content" ref="taS" v-model="std" placeholder="standard"></textarea>
+    <input type="text" class="content" ref="taS" v-model="std" placeholder="standard" />
 
     <TextLine text="link list:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
     <textarea class="content" ref="taL" v-model="links" placeholder="link list"></textarea>
@@ -96,19 +96,5 @@ watchEffect(() => {
 <style scoped>
 h2 {
     text-align: center;
-}
-
-.content {
-    margin-left: 0px;
-    padding-left: 1%;
-    /* padding-top: 1%;
-    padding-bottom: 1%; */
-    resize: vertical;
-    display: block;
-    overflow: hidden;
-    width: 98%;
-    min-height: 15px;
-    line-height: 20px;
-    word-wrap: normal;
 }
 </style>

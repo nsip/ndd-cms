@@ -34,6 +34,6 @@ const onToggleVisible = () => {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .meta-edit {
-    margin-top: -2%;
+    margin-top: -1%;
 }
 </style>

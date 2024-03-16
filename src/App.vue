@@ -301,4 +301,18 @@ border-bottom: 1px dotted black; */
     width: 22px;
     border: none;
 }
+
+.content {
+    margin-top: 0.7%;
+    margin-left: 3%;
+    padding-left: 1%;
+    resize: none;
+    display: block;
+    overflow: hidden;
+    width: 91%;
+    height: 24px;
+    min-height: 24px;
+    line-height: 20px;
+    text-align: center;
+}
 </style>

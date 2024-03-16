@@ -1,12 +1,12 @@
 <template>
     <TextLine text="legislationName:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
-    <textarea class="content" ref="taLN" v-model="legname" placeholder="standard"></textarea>
+    <input type="text" class="content" ref="taLN" v-model="legname" placeholder="legislation name" />
 
     <TextLine text="citation:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="citation" @ready="onReadyCit" @textChange="textChangeCit(idx || 0)" />
 
     <TextLine text="link:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
-    <textarea class="content" ref="taLK" v-model="link" placeholder="standard"></textarea>
+    <textarea class="content" ref="taLK" v-model="link" placeholder="link"></textarea>
 
     <TextLine text="definition:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="definition" @ready="onReadyDef" @textChange="textChangeDef(idx || 0)" />
@@ -15,7 +15,7 @@
     <QuillEditor theme="snow" toolbar="essential" placeholder="commentary" @ready="onReadyCmt" @textChange="textChangeCmt(idx || 0)" />
 
     <TextLine text="datestamp:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
-    <textarea class="content" ref="taDS" v-model="datestamp" placeholder="standard"></textarea>
+    <input type="text" class="content" ref="taDS" v-model="datestamp" placeholder="datestamp" />
 </template>
 
 <script setup lang="ts">
@@ -104,16 +104,5 @@ watchEffect(() => {
 <style scoped>
 h2 {
     text-align: center;
-}
-
-.content {
-    margin-left: 0px;
-    padding-left: 1%;
-    resize: vertical;
-    display: block;
-    overflow: hidden;
-    width: 98%;
-    min-height: 15px;
-    line-height: 20px;
 }
 </style>

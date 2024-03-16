@@ -10,7 +10,7 @@
 
     <div class="lbl">
         <label> Super Class: </label>
-        <input type="text" id="sc-input" v-model="superClass" placeholder="super class" :disabled="disTaSC" :title="tipTaSC" />
+        <input type="text" class="content" v-model="superClass" placeholder="super class" :disabled="disTaSC" :title="tipTaSC" />
     </div>
 
     <div class="lbl">
@@ -20,7 +20,7 @@
 
     <div class="lbl">
         <label> Cross Reference Entities: </label>
-        <textarea class="content" ref="taRE" v-model="refEntities" placeholder="cross ref entities" :disabled="disTaRE" :title="tipTaRE"></textarea>
+        <textarea class="content" ref="taRE" v-model="refEntities" placeholder="cross reference entities" :disabled="disTaRE" :title="tipTaRE"></textarea>
     </div>
 
 </template>
@@ -86,7 +86,6 @@ const select = () => { };
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
 .lbl {
     margin-top: 20px;
     margin-left: 20px;
@@ -100,24 +99,6 @@ const select = () => { };
 .type-input {
     margin-left: 20px;
     font-weight: normal;
-}
-
-#sc-input {
-    margin-left: 10px;
-    width: 80%;
-    padding-left: 1%;
-}
-
-.content {
-    margin-top: 0.7%;
-    margin-left: 1%;
-    padding-left: 1%;
-    resize: none;
-    display: block;
-    overflow: hidden;
-    width: 94%;
-    min-height: 15px;
-    line-height: 20px;
 }
 
 </style>

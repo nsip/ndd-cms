@@ -3,7 +3,7 @@
     <QuillEditor theme="snow" toolbar="essential" placeholder="definition content text" @ready="onReadyDef" @textChange="textChangeDef(idx || 0)" />
     
     <TextLine text="scope:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
-    <textarea class="content" ref="taScope" v-model="scope" placeholder="definition scope"></textarea>
+    <input type="text" class="content" ref="taScope" v-model="scope" placeholder="definition scope" />
 </template>
 
 <script setup lang="ts">
@@ -57,14 +57,4 @@ watchEffect(() => {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.content {
-    margin-left: 0px;
-    padding-left: 1%;
-    resize: vertical;
-    display: block;
-    overflow: hidden;
-    width: 98%;
-    min-height: 15px;
-    line-height: 20px;
-}
 </style>
