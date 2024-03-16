@@ -2,11 +2,11 @@
     <MainTitle v-if="display" />
     <div v-if="display" id="container">
         <div id="left">
-            <EntryEnt v-if="itemType == 'entity'" />
-            <EntryCol v-if="itemType == 'collection'" />
+            <EntryEnt v-if="itemCat == 'entity'" />
+            <EntryCol v-if="itemCat == 'collection'" />
         </div>
         <div id="right">
-            <Preview :Type="itemType" />
+            <Preview :Cat="itemCat" />
         </div>
     </div>
     <BtnCMS v-if="display" />
@@ -17,7 +17,7 @@
 
 import { useCookies } from "vue3-cookies";
 import { notify } from "@kyvg/vue3-notification";
-import { Mode, loginAuth, loginToken, loginUser, getSelfName, itemName, itemType, itemPhase, getItemContent } from "@/share/share";
+import { Mode, loginAuth, loginToken, loginUser, getSelfName, itemName, itemCat, itemPhase, getItemContent } from "@/share/share";
 import { jsonEnt } from "@/share/EntType";
 import { jsonCol } from "@/share/ColType";
 import MainTitle from "@/components/MainTitle.vue";
@@ -36,18 +36,18 @@ onMounted(async () => {
     // // ref: https://www.samanthaming.com/tidbits/86-window-location-cheatsheet/
 
     // const pName = window.location.href.indexOf("name=");
-    // const pType = window.location.href.indexOf("type=");
+    // const pCat = window.location.href.indexOf("cat=");
     // const pAuth = window.location.href.indexOf("auth=");
-    // // alert(`${pName} : ${pType} : ${pAuth}`)
+    // // alert(`${pName} : ${pCat} : ${pAuth}`)
 
-    // const name = pName >= 0 ? decodeURI(window.location.href.substring(pName + 5, pType - 1)) : "";
-    // const type = pType >= 0 ? decodeURI(window.location.href.substring(pType + 5, pAuth - 1)) : "";
+    // const name = pName >= 0 ? decodeURI(window.location.href.substring(pName + 5, pCat - 1)) : "";
+    // const cat = pCat >= 0 ? decodeURI(window.location.href.substring(pCat + 5, pAuth - 1)) : "";
     // const auth = pAuth >= 0 ? decodeURI(window.location.href.substring(pAuth + 5)) : "";
 
     // loginToken.value = auth;
     // loginAuth.value = "Bearer " + auth;
     // itemName.value = name;
-    // itemType.value = type;
+    // itemCat.value = cat;
 
     // *** from cookie ***
     // console.log(`${window.location.hostname} + ---> + ${cookies.keys()}`)
@@ -55,12 +55,12 @@ onMounted(async () => {
     const token = cookies.get("token");
     loginToken.value = token;
     loginAuth.value = "Bearer " + token;
-    itemType.value = cookies.get("type");
+    itemCat.value = cookies.get("cat");
     itemName.value = cookies.get("name");
     itemPhase.value = cookies.get('phase');
 
     console.log("[App.vue] Token:", window.location.hostname, " -- ", cookies.get("token"))
-    console.log("[App.vue] item type:", itemType.value)
+    console.log("[App.vue] item category:", itemCat.value)
     console.log("[App.vue] item name:", itemName.value)
     console.log("[App.vue] item phase:", itemPhase.value)
 
@@ -90,16 +90,16 @@ onMounted(async () => {
 
         await new Promise((f) => setTimeout(f, 500));
 
-        if (itemName.value?.length > 0 && itemType.value?.length > 0) {
+        if (itemName.value?.length > 0 && itemCat.value?.length > 0) {
 
-            // console.log(`edit mode: ${itemName.value} : ${itemType.value} : ${itemPhase.value}`)
+            // console.log(`edit mode: ${itemName.value} : ${itemCat.value} : ${itemPhase.value}`)
 
             Mode.value = "edit";
 
-            switch (itemType.value) {
+            switch (itemCat.value) {
                 case "entity":
                     {
-                        const de = await getItemContent(itemName.value, itemType.value, itemPhase.value)
+                        const de = await getItemContent(itemName.value, itemCat.value, itemPhase.value)
                         if (de.error != null) {
                             notify({
                                 title: "Error: Get Entity Item Content",
@@ -124,7 +124,7 @@ onMounted(async () => {
 
                 case "collection":
                     {
-                        const de = await getItemContent(itemName.value, itemType.value, itemPhase.value)
+                        const de = await getItemContent(itemName.value, itemCat.value, itemPhase.value)
                         if (de.error != null) {
                             notify({
                                 title: "Error: Get Collection Item Content",

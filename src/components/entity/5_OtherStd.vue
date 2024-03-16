@@ -24,7 +24,7 @@
 
 import { notify } from "@kyvg/vue3-notification";
 import { jsonEnt } from "@/share/EntType";
-import { itemName, itemType } from "@/share/share";
+import { itemName, itemCat } from "@/share/share";
 import TextLine from "@/components/TextLine.vue";
 import EditorOtherStd from "@/components/entity/5_OtherStd_Editor.vue";
 
@@ -41,7 +41,7 @@ onMounted(async () => {
     }
 
     // edit existing item
-    if (itemName.value?.length > 0 && itemType.value?.length > 0) {
+    if (itemName.value?.length > 0 && itemCat.value?.length > 0) {
         if (jsonEnt.OtherStandards.length > 0) {
             nEditor.value = jsonEnt.OtherStandards.length;
         } else {
