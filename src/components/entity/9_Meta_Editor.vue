@@ -1,30 +1,41 @@
 <template>
-    <TextLine text="type:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
-    <textarea class="content" ref="taTP" v-model="type" placeholder="type, e.g. 'Element', 'Object', 'Abstract Element'"></textarea>
 
-    <TextLine text="super class:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
-    <textarea class="content" ref="taSC" v-model="superClass" placeholder="super class" :disabled="disTaSC" :title="tipTaSC"></textarea>
+    <div class="lbl">
+        <label id="type-lbl">Type:</label>
+        <span class="type-input" v-for="choice in choices">
+            <input v-model="type" type="radio" name="type" :value="choice" @change="select" />
+            <label>{{ choice }}</label>
+        </span>
+    </div>
 
-    <TextLine text="is attribute of:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
-    <textarea class="content" ref="taAO" v-model="isAttrOf" placeholder="is attribute of" :disabled="disTaAO" :title="tipTaAO"></textarea>
+    <div class="lbl">
+        <label> Super Class: </label>
+        <input type="text" id="sc-input" v-model="superClass" placeholder="super class" :disabled="disTaSC" :title="tipTaSC" />
+    </div>
 
-    <TextLine text="cross ref entities:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
-    <textarea class="content" ref="taRE" v-model="refEntities" placeholder="cross ref entities" :disabled="disTaRE" :title="tipTaRE"></textarea>
+    <div class="lbl">
+        <label> Is Attribute Of: </label>
+        <textarea class="content" ref="taAO" v-model="isAttrOf" placeholder="is attribute of" :disabled="disTaAO" :title="tipTaAO"></textarea>
+    </div>
+
+    <div class="lbl">
+        <label> Cross Reference Entities: </label>
+        <textarea class="content" ref="taRE" v-model="refEntities" placeholder="cross ref entities" :disabled="disTaRE" :title="tipTaRE"></textarea>
+    </div>
+
 </template>
 
 <script setup lang="ts">
 
 import { jsonEnt } from "@/share/EntType";
-import TextLine from "@/components/TextLine.vue";
 import { fitTextarea } from "@/share/util";
+import { getListItemType, itemCat } from "@/share/share"
 
 const type = ref("");
 const superClass = ref("");
 const isAttrOf = ref("");
 const refEntities = ref("");
 
-const taTP = ref<HTMLTextAreaElement | null>(null);
-const taSC = ref<HTMLTextAreaElement | null>(null);
 const taAO = ref<HTMLTextAreaElement | null>(null);
 const taRE = ref<HTMLTextAreaElement | null>(null);
 
@@ -38,6 +49,8 @@ const tipTaSC = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name i
 const tipTaAO = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name is on changing stage, [IsAttributeOf] cannot be edited' : '');
 const tipTaRE = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name is on changing stage, [CrossRefEntities] cannot be edited' : '');
 
+const choices = ref();
+
 onMounted(async () => {
     const meta = jsonEnt.Metadata;
 
@@ -46,6 +59,9 @@ onMounted(async () => {
     superClass.value = meta.SuperClass;
     isAttrOf.value = meta.IsAttributeOf != null ? meta.IsAttributeOf.join("\n") : "";
     refEntities.value = meta.CrossRefEntities != null ? meta.CrossRefEntities.join("\n") : "";
+
+    // 'Type' radio button choices
+    choices.value = (await getListItemType(itemCat.value)).data as string[];
 
     mounted = true;
 });
@@ -59,23 +75,49 @@ watchEffect(() => {
 
     if (mounted) {
         jsonEnt.SetMeta(tp, sc, ao, re);
-        fitTextarea(taSC.value!, sc);
         fitTextarea(taAO.value!, ao);
         fitTextarea(taRE.value!, re);
     }
 });
 
+const select = () => { };
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.content {
+
+.lbl {
+    margin-top: 20px;
+    margin-left: 20px;
+    font-weight: bold;
+}
+
+#type-lbl {
+    margin-right: 50px;
+}
+
+.type-input {
+    margin-left: 20px;
+    font-weight: normal;
+}
+
+#sc-input {
+    margin-left: 10px;
+    width: 80%;
     padding-left: 1%;
-    resize: vertical;
+}
+
+.content {
+    margin-top: 0.7%;
+    margin-left: 1%;
+    padding-left: 1%;
+    resize: none;
     display: block;
     overflow: hidden;
-    width: 98%;
+    width: 94%;
     min-height: 15px;
     line-height: 20px;
 }
+
 </style>

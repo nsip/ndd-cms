@@ -5,7 +5,7 @@
             <font-awesome-icon :icon="icon" />
         </button>
         <span class="hint2"></span>
-        <div v-if="visEditor">
+        <div v-if="visEditor" class="meta-edit">
             <EditorMeta />
         </div>
     </div>
@@ -32,4 +32,8 @@ const onToggleVisible = () => {
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped>
+.meta-edit {
+    margin-top: -2%;
+}
+</style>

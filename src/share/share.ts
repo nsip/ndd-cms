@@ -55,10 +55,6 @@ export const getItemContent = async (name: string, cat: string, phase: string) =
     const err = await fetchErr(rt, onExpired)
     switch (cat) {
         case "entity":
-            return {
-                'data': err == null ? (rt as any[])[0] as string : null,
-                'error': err
-            };
         case "collection":
             return {
                 'data': err == null ? (rt as any[])[0] as string : null,
@@ -71,3 +67,15 @@ export const getItemContent = async (name: string, cat: string, phase: string) =
             };
     }
 };
+
+export const getListItemType = async (cat: string) => {
+    const mParam = new Map<string, any>([
+        ["cat", cat],
+    ]);
+    const rt = await fetchNoBody("api/dic/pub/item-types", "GET", mParam, "");
+    const err = await fetchErr(rt, onExpired)
+    return {
+        'data': err == null ? (rt as any[])[0] : null,
+        'error': err
+    };
+}

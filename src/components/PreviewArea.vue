@@ -1,9 +1,9 @@
 <template>
     <div class="lbl_type">
         <label>preview:</label>
-        <input class="selection" type="radio" name="type" value="json" checked @click="select('json')" />
+        <input class="selection" type="radio" name="prev-type" value="json" checked @click="select('json')" />
         <label>json</label>
-        <input class="selection" type="radio" name="type" value="preview" @click="select('preview')" />
+        <input class="selection" type="radio" name="prev-type" value="preview" @click="select('preview')" />
         <label>effect</label>
     </div>
     <hr />
