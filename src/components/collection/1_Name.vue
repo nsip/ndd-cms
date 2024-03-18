@@ -1,8 +1,6 @@
 <template>
     <div class="com">
-        <span class="label">Collection:</span>
-        <input class="content" type="text" v-model="collection" :readonly="Mode == 'edit'" placeholder="collection name"
-            ref="colInput" />
+        <input class="content" type="text" v-model="collection" :readonly="Mode == 'edit'" placeholder="collection name" ref="colInput" />
     </div>
 </template>
 
@@ -31,16 +29,4 @@ watchEffect(() => {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.label {
-    margin-top: 10px;
-}
-
-.content {
-    position: relative;
-    margin-left: 1%;
-    width: 88%;
-    padding-left: 1%;
-    font-weight: bold;
-    text-align: center;
-}
 </style>

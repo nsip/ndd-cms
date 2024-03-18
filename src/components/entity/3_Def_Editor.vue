@@ -1,9 +1,9 @@
-<template>
-    <TextLine text="text:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
-    <QuillEditor theme="snow" toolbar="essential" placeholder="definition content text" @ready="onReadyDef" @textChange="textChangeDef(idx || 0)" />
-    
+<template>   
     <TextLine text="scope:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
     <input type="text" class="content" ref="taScope" v-model="scope" placeholder="definition scope" />
+
+    <TextLine text="text:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
+    <QuillEditor theme="snow" toolbar="essential" placeholder="definition content text" @ready="onReadyDef" @textChange="textChangeDef(idx || 0)" />
 </template>
 
 <script setup lang="ts">

@@ -1,12 +1,6 @@
 <template>
     <div class="com">
-        <span class="label">Url:</span>
-        <button class="hide-editor" @click="onToggleVisible()">
-            <font-awesome-icon :icon="icon" />
-        </button>
-        <div v-if="visEditor">
-            <textarea class="content" ref="taURL" v-model="urls" placeholder="collection urls"></textarea>
-        </div>
+        <textarea class="content" ref="taURL" v-model="urls" placeholder="collection urls (new line, new one url)"></textarea>
     </div>
 </template>
 
@@ -14,16 +8,9 @@
 import { jsonCol } from "@/share/ColType";
 import { fitTextarea } from "@/share/util";
 
-const icon = ref("chevron-down");
-const visEditor = ref(false);
 const urls = ref("");
 const taURL = ref<HTMLTextAreaElement | null>(null); // fetch element
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
-
-const onToggleVisible = () => {
-    visEditor.value = !visEditor.value;
-    icon.value = icon.value == "chevron-down" ? "chevron-up" : "chevron-down";
-};
 
 onMounted(async () => {
     urls.value = jsonCol.URL != null ? jsonCol.URL.join("\n") : "";
