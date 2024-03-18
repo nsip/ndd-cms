@@ -1,8 +1,8 @@
-<template>   
-    <TextLine text="scope:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
+<template>
+    <TextLine text="scope:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
     <input type="text" class="content" ref="taScope" v-model="scope" placeholder="definition scope" />
 
-    <TextLine text="text:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
+    <TextLine text="text:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="definition content text" @ready="onReadyDef" @textChange="textChangeDef(idx || 0)" />
 </template>
 
@@ -57,4 +57,7 @@ watchEffect(() => {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.sub-title {
+    font-weight: bold;
+}
 </style>

@@ -100,5 +100,4 @@ const select = () => { };
     margin-left: 20px;
     font-weight: normal;
 }
-
 </style>

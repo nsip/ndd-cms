@@ -1,14 +1,14 @@
 <template>
-    <TextLine text="list of xpath:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
+    <TextLine text="list of xpath:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
     <textarea class="content" ref="taXP" v-model="xpath" placeholder="list of xpath"></textarea>
 
-    <TextLine text="definition:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
+    <TextLine text="definition:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="definition" @ready="onReadyDef" @textChange="textChangeDef(idx || 0)" />
 
-    <TextLine text="commentary:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
+    <TextLine text="commentary:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="commentary" @ready="onReadyCmt" @textChange="textChangeCmt(idx || 0)" />
 
-    <TextLine text="datestamp:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
+    <TextLine text="datestamp:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
     <input type="text" class="content" ref="taDS" v-model="datestamp" placeholder="datestamp" />
 </template>
 
@@ -86,8 +86,7 @@ watchEffect(() => {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h2 {
-    text-align: center;
+.sub-title {
+    font-weight: bold;
 }
-
 </style>
