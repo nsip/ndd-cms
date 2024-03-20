@@ -1,21 +1,15 @@
 <template>
     <div class="com">
-        <span class="label">Definition:</span>
-        <button class="hide-editor" @click="onToggleVisible()">
-            <font-awesome-icon :icon="icon" />
-        </button>
         <button class="less-editor" @click="onMoreLessClick('-')">
             <font-awesome-icon icon="circle-minus" />
         </button>
         <button class="more-editor" @click="onMoreLessClick('+')">
             <font-awesome-icon icon="circle-plus" />
         </button>
-        <span class="hint2">list of Definition [text, scope]</span>
-        <div v-if="visEditor">
-            <div v-for="(n, i) in nEditor" :key="i">
-                <TextLine :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="1.5px" />
-                <EditorDef :idx="i" />
-            </div>
+        <div v-for="(n, i) in nEditor" :key="i">
+            <br>
+            <TextLine :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="3px" />
+            <EditorDef :idx="i" />
         </div>
     </div>
 </template>
@@ -24,12 +18,10 @@
 
 import { notify } from "@kyvg/vue3-notification";
 import { jsonEnt } from "@/share/EntType";
-import { itemName, itemType } from "@/share/share";
+import { itemName, itemCat } from "@/share/share";
 import TextLine from "@/components/TextLine.vue";
 import EditorDef from "@/components/entity/3_Def_Editor.vue";
 
-const icon = ref("chevron-down");
-const visEditor = ref(false);
 const nEditor = ref(0);
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 
@@ -41,7 +33,7 @@ onMounted(async () => {
     }
 
     // edit existing item
-    if (itemName.value?.length > 0 && itemType.value?.length > 0) {
+    if (itemName.value?.length > 0 && itemCat.value?.length > 0) {
         if (jsonEnt.Definition.length > 0) {
             nEditor.value = jsonEnt.Definition.length;
         } else {
@@ -53,11 +45,6 @@ onMounted(async () => {
 
     mounted = true;
 });
-
-const onToggleVisible = () => {
-    visEditor.value = !visEditor.value;
-    icon.value = icon.value == "chevron-down" ? "chevron-up" : "chevron-down";
-};
 
 const onMoreLessClick = (type: string) => {
     switch (type) {

@@ -1,15 +1,15 @@
 <template>
     <div class="lbl_type">
         <label>preview:</label>
-        <input class="selection" type="radio" name="type" value="json" checked @click="select('json')" />
-        <label>json</label>
-        <input class="selection" type="radio" name="type" value="preview" @click="select('preview')" />
-        <label>effect</label>
+        <span class="type-input" v-for="choice in choices">
+            <input v-model="mode" type="radio" name="prev-mode" :value="choice" @change="select" />
+            <label>{{ choice }}</label>
+        </span>
     </div>
     <hr />
-    <pre v-if="selMode == 'json'">{{ genJSON() }}</pre>
-    <EntVisualContent v-if="selMode == 'preview' && props.Type == 'entity'" />
-    <ColVisualContent v-if="selMode == 'preview' && props.Type == 'collection'" />
+    <pre v-if="mode == 'json'">{{ genJSON() }}</pre>
+    <EntVisualContent v-if="mode == 'preview' && props.Cat == 'entity'" />
+    <ColVisualContent v-if="mode == 'preview' && props.Cat == 'collection'" />
 </template>
 
 <script setup lang="ts">
@@ -20,16 +20,21 @@ import EntVisualContent from "@/components/entity/VisualContent.vue";
 import ColVisualContent from "@/components/collection/VisualContent.vue";
 
 const props = defineProps({
-    Type: String,
+    Cat: String,
 })
 
-const selMode = ref("json"); // default (checked) json type
+const choices = reactive([
+    "json",
+    "preview"
+]);
 
-const select = (mode: string) => { selMode.value = mode; };
+const mode = ref(choices[0]);
+
+const select = () => { };
 
 const genJSON = () => {
-    if (selMode.value == "json") {
-        return (props.Type == 'entity' ? jsonEnt : jsonCol).GenJSON()
+    if (mode.value == "json") {
+        return (props.Cat == 'entity' ? jsonEnt : jsonCol).GenJSON()
     }
     return ""
 };

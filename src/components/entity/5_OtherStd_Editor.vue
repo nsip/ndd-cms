@@ -1,17 +1,17 @@
 <template>
-    <TextLine text="standard:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
-    <textarea class="content" ref="taS" v-model="std" placeholder="standard"></textarea>
+    <TextLine text="standard:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
+    <input type="text" class="content" ref="taS" v-model="std" placeholder="standard" />
 
-    <TextLine text="link list:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
+    <TextLine text="link list:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <textarea class="content" ref="taL" v-model="links" placeholder="link list"></textarea>
 
-    <TextLine text="path list:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
+    <TextLine text="path list:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <textarea class="content" ref="taP" v-model="paths" placeholder="path list"></textarea>
 
-    <TextLine text="definition:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
+    <TextLine text="definition:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="definition" @ready="onReadyDef" @textChange="textChangeDef(idx || 0)" />
 
-    <TextLine text="commentary:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
+    <TextLine text="commentary:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="commentary" @ready="onReadyCmt" @textChange="textChangeCmt(idx || 0)" />
 </template>
 
@@ -94,21 +94,7 @@ watchEffect(() => {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h2 {
-    text-align: center;
-}
-
-.content {
-    margin-left: 0px;
-    padding-left: 1%;
-    /* padding-top: 1%;
-    padding-bottom: 1%; */
-    resize: vertical;
-    display: block;
-    overflow: hidden;
-    width: 98%;
-    min-height: 15px;
-    line-height: 20px;
-    word-wrap: normal;
+.sub-title {
+    font-weight: bold;
 }
 </style>

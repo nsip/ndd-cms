@@ -1,21 +1,32 @@
 <template>
-    <TextLine text="type:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
-    <textarea class="content" ref="taTP" v-model="type" placeholder="type"></textarea>
+    <div class="lbl">
+        <label id="type-lbl">Type:</label>
+        <span class="type-input" v-for="choice in choices">
+            <input v-model="type" type="radio" name="type" :value="choice" @change="select" />
+            <label>{{ choice }}</label>
+        </span>
+    </div>
 </template>
 
 <script setup lang="ts">
 
 import { jsonCol } from "@/share/ColType";
-import TextLine from "@/components/TextLine.vue";
+import { getListItemType, itemCat } from "@/share/share"
 
 const type = ref("");
-const taTP = ref<HTMLTextAreaElement | null>(null);
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
+
+const choices = ref();
 
 onMounted(async () => {
     const meta = jsonCol.Metadata;
+
     // textarea
     type.value = meta.Type;
+
+    // 'Type' radio button choices
+    choices.value = (await getListItemType(itemCat.value)).data as string[];
+
     mounted = true
 });
 
@@ -26,19 +37,26 @@ watchEffect(() => {
     }
 });
 
+const select = () => { };
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.content {
-    padding-left: 1%;
-    padding-top: 1.5%;
-    resize: none;
-    white-space: nowrap;
-    display: block;
-    overflow: hidden;
-    width: 98%;
-    min-height: 8px;
-    line-height: 8px;
+
+.lbl {
+    margin-top: 20px;
+    margin-left: 20px;
+    font-weight: bold;
 }
+
+#type-lbl {
+    margin-right: 50px;
+}
+
+.type-input {
+    margin-left: 20px;
+    font-weight: normal;
+}
+
 </style>

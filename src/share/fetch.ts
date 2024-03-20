@@ -237,8 +237,8 @@ export const fetchNoBody = async (
 
 // (async () => {
 //     try {
-//         const itemType = 'entity'
-//         const rt = (await fetchNoBody(`api/dictionary/pub/list/${itemType}`, "GET", mEmpty, "")) as any[]
+//         const itemCat = 'entity'
+//         const rt = (await fetchNoBody(`api/dic/pub/list/${itemCat}`, "GET", mEmpty, "")) as any[]
 //         if (rt[1] != 200) {
 //             alert(rt[0])
 //             return
@@ -254,7 +254,7 @@ export const fetchNoBody = async (
 //         const mParam: Map<string, any> = new Map<string, any>([
 //             ["name", 'School']
 //         ])
-//         const rt = await fetchNoBody(`api/dictionary/pub/one`, "GET", mParam) as any[]
+//         const rt = await fetchNoBody(`api/dic/pub/one`, "GET", mParam) as any[]
 //         if (rt[1] != 200) {
 //             alert(rt[0])
 //             return

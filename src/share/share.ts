@@ -6,7 +6,7 @@ export const loginUser = ref("");
 export const loginAuth = ref("");
 export const loginToken = ref("");
 export const itemName = ref("");
-export const itemType = ref("");
+export const itemCat = ref("");
 export const itemPhase = ref("");
 
 //////////////////////////////////////////////////////////////////////////////////////
@@ -19,7 +19,7 @@ const onExpired = async () => {
 //////////////////////////////////////////////////////////////////////////////////////
 
 export const getPing = async () => {
-    const rt = await fetchNoBody(`/api/system/ver`, "GET", mEmpty, "");
+    const rt = await fetchNoBody(`/api/sys/ver`, "GET", mEmpty, "");
     const err = await fetchErr(rt, onExpired)
     return {
         'data': err == null ? (rt as any[])[0] : null,
@@ -38,7 +38,7 @@ export const getSelfName = async () => {
 };
 
 export const postDataToDic = async (data: string) => {
-    const rt = await fetchBodyJsonStr("api/dictionary/auth/upsert", "POST", mEmpty, data, loginAuth.value);
+    const rt = await fetchBodyJsonStr("api/dic/auth/upsert", "POST", mEmpty, data, loginAuth.value);
     const err = await fetchErr(rt, onExpired)
     return {
         'data': err == null ? (rt as any[])[0] : null,
@@ -46,19 +46,15 @@ export const postDataToDic = async (data: string) => {
     };
 };
 
-export const getItemContent = async (name: string, type: string, phase: string) => {
+export const getItemContent = async (name: string, cat: string, phase: string) => {
     const mParam = new Map<string, any>([
         ["name", name],
         ["phase", phase],
     ]);
-    const rt = await fetchNoBody("api/dictionary/pub/one", "GET", mParam, loginAuth.value);
+    const rt = await fetchNoBody("api/dic/pub/one", "GET", mParam, loginAuth.value);
     const err = await fetchErr(rt, onExpired)
-    switch (type) {
+    switch (cat) {
         case "entity":
-            return {
-                'data': err == null ? (rt as any[])[0] as string : null,
-                'error': err
-            };
         case "collection":
             return {
                 'data': err == null ? (rt as any[])[0] as string : null,
@@ -67,7 +63,19 @@ export const getItemContent = async (name: string, type: string, phase: string) 
         default:
             return {
                 'data': null,
-                'error': "[type] can only be 'entity' or 'collection'"
+                'error': "[cat] can only be 'entity' or 'collection'"
             };
     }
 };
+
+export const getListItemType = async (cat: string) => {
+    const mParam = new Map<string, any>([
+        ["cat", cat],
+    ]);
+    const rt = await fetchNoBody("api/dic/pub/item-types", "GET", mParam, "");
+    const err = await fetchErr(rt, onExpired)
+    return {
+        'data': err == null ? (rt as any[])[0] : null,
+        'error': err
+    };
+}

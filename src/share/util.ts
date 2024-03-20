@@ -152,3 +152,29 @@ export const oriName = (name: string) => {
     }
     return name
 }
+
+export const isUrl = (url: string, ...prefixes: string[]) => {
+    try {
+        new URL(url);
+        if (prefixes.length == 0) {
+            return true
+        }
+        for (const prefix of prefixes) {
+            if (url.startsWith(prefix)) {
+                return true
+            }
+        }
+        return false
+    } catch (error) {
+        return false
+    }
+}
+
+export const download_file = (url: string, file_name: string) => {
+    const anchor = document.createElement("a");
+    anchor.href = url;
+    anchor.download = file_name;
+    document.body.appendChild(anchor);
+    anchor.click();
+    document.body.removeChild(anchor);
+}

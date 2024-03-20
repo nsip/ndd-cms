@@ -14,6 +14,7 @@ import { jsonEnt } from "@/share/EntType";
 import { jsonCol } from "@/share/ColType";
 import { postDataToDic } from "@/share/share";
 import { URL_VIEW } from "@/share/ip";
+import { isUrl, download_file } from "@/share/util";
 // import FileSaver from 'file-saver';
 
 // npm install file-saver --save
@@ -46,11 +47,20 @@ const SaveJSON = async () => {
     {
         const de = await postDataToDic(js)
         if (de.error != null) {
-            notify({
-                title: "Error: Post Candidate to Dictionary",
-                text: de.error,
-                type: "error"
-            })
+            if (isUrl(de.error, "http:", "https:")) {
+                download_file(de.error, "report.log");
+                notify({
+                    title: "Validation Failed",
+                    text: "refer to downloaded report for issues",
+                    type: "error"
+                })
+            } else {
+                notify({
+                    title: "Submission Failed",
+                    text: de.error,
+                    type: "error"
+                })
+            }
             return
         }
     }

@@ -1,11 +1,11 @@
 <template>
-    <TextLine text="locale:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
-    <textarea class="content" v-model="locale" placeholder="locale"></textarea>
+    <TextLine text="locale:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
+    <input type="text"  class="content" v-model="locale" placeholder="locale" />
 
-    <TextLine text="value:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
-    <textarea class="content" v-model="val" placeholder="value"></textarea>
+    <TextLine text="value:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
+    <input type="text"  class="content" v-model="val" placeholder="value" />
 
-    <TextLine text="commentary:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
+    <TextLine text="commentary:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
     <QuillEditor theme="snow" toolbar="essential" placeholder="commentary" @ready="onReadyC" @textChange="textChangeC(idx || 0)" />
 </template>
 
@@ -69,20 +69,7 @@ watchEffect(() => {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h2 {
-    text-align: center;
-}
-
-.content {
-    margin-top: 1%;
-    margin-left: 0px;
-    padding-left: 1%;
-    resize: vertical;
-    display: block;
-    overflow: hidden;
-    width: 98%;
-    min-height: 15px;
-    line-height: 20px;
-    white-space: nowrap;
+.sub-title {
+    font-weight: bold;
 }
 </style>

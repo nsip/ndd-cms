@@ -1,59 +1,67 @@
 <template>
-    <TextLine text="type:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
-    <textarea class="content" ref="taTP" v-model="type" placeholder="type, e.g. 'Element', 'Object', 'Abstract Element'"></textarea>
 
-    <TextLine text="expected attributes:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
-    <textarea class="content" ref="taEA" v-model="attributes" placeholder="expected attributes" :disabled="disTaEA" :title="tipTaEA"></textarea>
+    <div class="lbl">
+        <label id="type-lbl">Type:</label>
+        <span class="type-input" v-for="choice in choices">
+            <input v-model="type" type="radio" name="type" :value="choice" @change="select" />
+            <label>{{ choice }}</label>
+        </span>
+    </div>
 
-    <TextLine text="superclasses:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
-    <textarea class="content" ref="taSC" v-model="superclasses" placeholder="super class" :disabled="disTaSC" :title="tipTaSC"></textarea>
+    <div class="lbl">
+        <label> Super Class: </label>
+        <input type="text" class="content" v-model="superClass" placeholder="super class" :disabled="disTaSC" :title="tipTaSC" />
+    </div>
 
-    <TextLine text="default parent:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
-    <textarea class="content" ref="taDP" v-model="defaultparent" placeholder="default parent" :disabled="disTaDP" :title="tipTaDP"></textarea>
+    <div class="lbl">
+        <label> Is Attribute Of: </label>
+        <textarea class="content" ref="taAO" v-model="isAttrOf" placeholder="is attribute of" :disabled="disTaAO" :title="tipTaAO"></textarea>
+    </div>
 
-    <TextLine text="cross ref entities:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" />
-    <textarea class="content" ref="taRE" v-model="refentities" placeholder="cross ref entities" :disabled="disTaRE" :title="tipTaRE"></textarea>
+    <div class="lbl">
+        <label> Cross Reference Entities: </label>
+        <textarea class="content" ref="taRE" v-model="refEntities" placeholder="cross reference entities" :disabled="disTaRE" :title="tipTaRE"></textarea>
+    </div>
+
 </template>
 
 <script setup lang="ts">
 
 import { jsonEnt } from "@/share/EntType";
-import TextLine from "@/components/TextLine.vue";
 import { fitTextarea } from "@/share/util";
+import { getListItemType, itemCat } from "@/share/share"
 
 const type = ref("");
-const attributes = ref("");
-const superclasses = ref("");
-const defaultparent = ref("");
-const refentities = ref("");
+const superClass = ref("");
+const isAttrOf = ref("");
+const refEntities = ref("");
 
-const taTP = ref<HTMLTextAreaElement | null>(null);
-const taEA = ref<HTMLTextAreaElement | null>(null);
-const taSC = ref<HTMLTextAreaElement | null>(null);
-const taDP = ref<HTMLTextAreaElement | null>(null);
+const taAO = ref<HTMLTextAreaElement | null>(null);
 const taRE = ref<HTMLTextAreaElement | null>(null);
 
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 
-const disTaEA = computed(() => false);
 const disTaSC = computed(() => jsonEnt.Entity.includes('=>'));
-const disTaDP = computed(() => false);
-const disTaRE = computed(() => false);
+const disTaAO = computed(() => jsonEnt.Entity.includes('=>'));
+const disTaRE = computed(() => jsonEnt.Entity.includes('=>'));
 
-const tipTaEA = computed(() => false ? 'If entity name is on changing stage, [Expected Attributes] cannot be edited now' : '');
-const tipTaSC = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name is on changing stage, [Super Class] cannot be edited now' : '');
-const tipTaDP = computed(() => false ? 'If entity name is on changing stage, [Default Parent] cannot be edited now' : '');
-const tipTaRE = computed(() => false ? 'If entity name is on changing stage, [Cross Ref Entities] cannot be edited now' : '');
+const tipTaSC = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name is on changing stage, [SuperClass] cannot be edited' : '');
+const tipTaAO = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name is on changing stage, [IsAttributeOf] cannot be edited' : '');
+const tipTaRE = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name is on changing stage, [CrossRefEntities] cannot be edited' : '');
+
+const choices = ref();
 
 onMounted(async () => {
     const meta = jsonEnt.Metadata;
 
     // textarea
     type.value = meta.Type;
-    attributes.value = meta.ExpectedAttributes != null ? meta.ExpectedAttributes.join("\n") : "";
-    superclasses.value = meta.SuperClass;
-    defaultparent.value = meta.DefaultParent;
-    refentities.value = meta.CrossRefEntities != null ? meta.CrossRefEntities.join("\n") : "";
+    superClass.value = meta.SuperClass;
+    isAttrOf.value = meta.IsAttributeOf != null ? meta.IsAttributeOf.join("\n") : "";
+    refEntities.value = meta.CrossRefEntities != null ? meta.CrossRefEntities.join("\n") : "";
+
+    // 'Type' radio button choices
+    choices.value = (await getListItemType(itemCat.value)).data as string[];
 
     mounted = true;
 });
@@ -61,31 +69,35 @@ onMounted(async () => {
 watchEffect(() => {
 
     const tp = type.value;
-    const ea = attributes.value;
-    const sc = superclasses.value;
-    const dp = defaultparent.value;
-    const re = refentities.value;
+    const sc = superClass.value;
+    const ao = isAttrOf.value;
+    const re = refEntities.value;
 
     if (mounted) {
-        jsonEnt.SetMeta(tp, ea, sc, dp, re);
-        fitTextarea(taEA.value!, ea);
-        fitTextarea(taSC.value!, sc);
-        fitTextarea(taDP.value!, dp);
+        jsonEnt.SetMeta(tp, sc, ao, re);
+        fitTextarea(taAO.value!, ao);
         fitTextarea(taRE.value!, re);
     }
 });
+
+const select = () => { };
 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.content {
-    padding-left: 1%;
-    resize: vertical;
-    display: block;
-    overflow: hidden;
-    width: 98%;
-    min-height: 15px;
-    line-height: 20px;
+.lbl {
+    margin-top: 20px;
+    margin-left: 20px;
+    font-weight: bold;
+}
+
+#type-lbl {
+    margin-right: 50px;
+}
+
+.type-input {
+    margin-left: 20px;
+    font-weight: normal;
 }
 </style>

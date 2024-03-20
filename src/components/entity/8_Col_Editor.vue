@@ -1,20 +1,20 @@
 <template>
-    <TextLine text="name:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
-    <textarea class="content" ref="taN" v-model="name" placeholder="name"></textarea>
+    <TextLine text="name:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
+    <input type="text" class="content" ref="taN" v-model="name" placeholder="name" />
 
-    <TextLine text="description:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
+    <TextLine text="description:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
     <QuillEditor theme="snow" toolbar="essential" placeholder="description" @ready="onReadyDes" @textChange="textChangeDes(idx || 0)" />
 
-    <TextLine text="standard:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
-    <textarea class="content" ref="taS" v-model="standard" placeholder="standard"></textarea>
+    <TextLine text="standard:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
+    <input type="text"  class="content" ref="taS" v-model="standard" placeholder="standard" />
 
-    <TextLine text="elements:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
+    <TextLine text="elements:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
     <textarea class="content" ref="taE" v-model="elements" placeholder="elements"></textarea>
 
-    <TextLine text="business rules:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
+    <TextLine text="business rules:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
     <QuillEditor theme="snow" toolbar="essential" placeholder="business rules" @ready="onReadyBR" @textChange="textChangeBR(idx || 0)" />
 
-    <TextLine text="definition modification:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" />
+    <TextLine text="definition modification:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
     <QuillEditor theme="snow" toolbar="essential" placeholder="definition modification" @ready="onReadyDM" @textChange="textChangeDM(idx || 0)" />
 </template>
 
@@ -102,20 +102,7 @@ const textChangeDM = (idx: number) => {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h2 {
-    text-align: center;
-}
-
-.content {
-    margin-top: 1%;
-    margin-left: 0px;
-    padding-left: 1%;
-    resize: vertical;
-    display: block;
-    overflow: hidden;
-    width: 98%;
-    min-height: 15px;
-    line-height: 20px;
-    white-space: nowrap;
+.sub-title {
+    font-weight: bold;
 }
 </style>
