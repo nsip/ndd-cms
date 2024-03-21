@@ -1,6 +1,6 @@
 <template>
     <div class="com">
-        <textarea class="content" ref="taON" v-model="other_names" placeholder="entity's other names (new line, new other name)"></textarea>
+        <textarea class="content" ref="taON" v-model="other_names" placeholder="entity's other names (new line, new one name)"></textarea>
     </div>
 </template>
 
