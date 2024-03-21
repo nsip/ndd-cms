@@ -7,17 +7,19 @@
         <button class="tab-links" @click="showTabContent"> {{ choices[3] }}</button>
     </div>
 
-    <div v-if="mTabShown.get(choices[0])" class="tab-content">
-        <ColName />
-    </div>
-    <div v-if="mTabShown.get(choices[1])" class="tab-content">
-        <ColDef />
-    </div>
-    <div v-if="mTabShown.get(choices[2])" class="tab-content">
-        <ColUrl />
-    </div>
-    <div v-if="mTabShown.get(choices[3])" class="tab-content">
-        <ColMeta />
+    <div id="entry-col">
+        <div v-if="mTabShown.get(choices[0])" class="tab-content">
+            <ColName />
+        </div>
+        <div v-if="mTabShown.get(choices[1])" class="tab-content">
+            <ColDef />
+        </div>
+        <div v-if="mTabShown.get(choices[2])" class="tab-content">
+            <ColUrl />
+        </div>
+        <div v-if="mTabShown.get(choices[3])" class="tab-content">
+            <ColMeta />
+        </div>
     </div>
 
 </template>
@@ -82,7 +84,7 @@ const setDefaultTab = async (id: string) => {
     overflow: hidden;
     border: 1px solid #ccc;
     background-color: #f1f1f1;
-    height: 5vh;
+    height: 4vh;
 }
 
 /* Style the buttons inside the tab */
@@ -113,5 +115,11 @@ const setDefaultTab = async (id: string) => {
     padding: 1px 1px;
     border: 1px solid #ccc;
     border-top: none;
+}
+
+#entry-col {
+    height: 87vh;
+    overflow-y: scroll;
+    scrollbar-width: none;
 }
 </style>

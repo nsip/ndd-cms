@@ -1,11 +1,3 @@
-export const padStartSpaceP = (s: string, n: number) => {
-    let spaces = ""
-    for (let i = 0; i < n; i++) {
-        spaces += "&nbsp;"
-    }
-    return s.replace('<p>', '<p>' + spaces)
-}
-
 export const isHTMLStr = (s: string) => {
     const htmlRegex = /<[a-z][\s\S]*>/i;
     return htmlRegex.test(s);

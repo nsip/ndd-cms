@@ -9,7 +9,7 @@
     <input type="text"  class="content" ref="taS" v-model="standard" placeholder="standard" />
 
     <TextLine text="elements:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
-    <textarea class="content" ref="taE" v-model="elements" placeholder="elements"></textarea>
+    <textarea class="content" ref="taE" v-model="elements" placeholder="elements" wrap="off" ></textarea>
 
     <TextLine text="business rules:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
     <QuillEditor theme="snow" toolbar="essential" placeholder="business rules" @ready="onReadyBR" @textChange="textChangeBR(idx || 0)" />

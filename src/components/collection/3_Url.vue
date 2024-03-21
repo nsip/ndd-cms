@@ -1,6 +1,6 @@
 <template>
     <div class="com">
-        <textarea class="content" ref="taURL" v-model="urls" placeholder="collection urls (new line, new one url)"></textarea>
+        <textarea class="content" ref="taURL" v-model="urls" placeholder="collection urls (new line, new one url)" wrap="off" ></textarea>
     </div>
 </template>
 

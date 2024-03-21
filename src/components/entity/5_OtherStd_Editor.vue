@@ -3,10 +3,10 @@
     <input type="text" class="content" ref="taS" v-model="std" placeholder="standard" />
 
     <TextLine text="link list:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
-    <textarea class="content" ref="taL" v-model="links" placeholder="link list"></textarea>
+    <textarea class="content" ref="taL" v-model="links" placeholder="link list" wrap="off" ></textarea>
 
     <TextLine text="path list:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
-    <textarea class="content" ref="taP" v-model="paths" placeholder="path list"></textarea>
+    <textarea class="content" ref="taP" v-model="paths" placeholder="path list" wrap="off" ></textarea>
 
     <TextLine text="definition:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="definition" @ready="onReadyDef" @textChange="textChangeDef(idx || 0)" />

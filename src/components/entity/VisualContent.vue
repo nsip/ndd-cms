@@ -5,7 +5,7 @@
 <script setup lang="ts">
 
 import { jsonEnt } from "@/share/EntType";
-import { padStartSpaceP, isHTMLStr, hasSomeValue, isSomeValue } from "@/share/util";
+import { isHTMLStr, hasSomeValue, isSomeValue } from "@/share/util";
 
 const field_title_html = (label: string) => {
     return `<h4 style='font-size:large; font-style:italic; background-color: darkgray'><pre>  ${label}  </pre></h4>`
@@ -17,13 +17,19 @@ const field_subtitle_html = (label: string) => {
 }
 
 const field_value_html = (value: any) => {
+
+    let spaces = ""
+    for (let i = 0; i < 4; i++) {
+        spaces += "&nbsp;"
+    }
+
     if (!isHTMLStr(`${value}`)) {
         if (Array.isArray(value) && value.length > 0) {
             const elems: string[] = [];
-            value.forEach(e => { elems.push(padStartSpaceP(`<p>${e}</p>`, 8)) })
+            value.forEach(e => { elems.push(`<p style="white-space: nowrap;"> ${spaces} ${e}</p>`) })
             return elems.join("")
         } else if (value.length > 0) {
-            return padStartSpaceP(`<p>${value}</p>`, 8)
+            return `<p style="white-space: nowrap;"> ${spaces} ${value}</p>`
         } else {
             return ""
         }

@@ -6,7 +6,7 @@
     <QuillEditor theme="snow" toolbar="essential" placeholder="citation" @ready="onReadyCit" @textChange="textChangeCit(idx || 0)" />
 
     <TextLine text="link:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
-    <textarea class="content" ref="taLK" v-model="link" placeholder="link"></textarea>
+    <textarea class="content" ref="taLK" v-model="link" placeholder="link" wrap="off" ></textarea>
 
     <TextLine text="definition:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
     <QuillEditor theme="snow" toolbar="essential" placeholder="definition" @ready="onReadyDef" @textChange="textChangeDef(idx || 0)" />

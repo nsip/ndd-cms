@@ -6,12 +6,16 @@
     </div>
 
     <div v-if="mTabShown.get(choices[0])" class="tab-content">
-        <EntVisualContent v-if="props.Cat == 'entity'" />
-        <ColVisualContent v-if="props.Cat == 'collection'" />
+        <div id="visual-content">
+            <EntVisualContent v-if="props.Cat == 'entity'" />
+            <ColVisualContent v-if="props.Cat == 'collection'" />
+        </div>
     </div>
 
     <div v-if="mTabShown.get(choices[1])" class="tab-content">
-        <pre>{{ genJSON() }}</pre>
+        <div id="json-content">
+            <pre>{{ genJSON() }}</pre>
+        </div>
     </div>
 
 </template>
@@ -111,5 +115,17 @@ const setDefaultTab = async (id: string) => {
     padding: 1px 1px;
     border: 1px solid #ccc;
     border-top: none;
+}
+
+#visual-content {
+    height: 87vh;
+    overflow-y: scroll;
+    scrollbar-width: none;
+}
+
+#json-content {
+    height: 87vh;
+    overflow-y: scroll;
+    scrollbar-width: none;
 }
 </style>

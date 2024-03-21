@@ -15,12 +15,12 @@
 
     <div class="lbl">
         <label> Is Attribute Of: </label>
-        <textarea class="content" ref="taAO" v-model="isAttrOf" placeholder="is attribute of" :disabled="disTaAO" :title="tipTaAO"></textarea>
+        <textarea class="content" ref="taAO" v-model="isAttrOf" placeholder="is attribute of" :disabled="disTaAO" :title="tipTaAO" wrap="off"></textarea>
     </div>
 
     <div class="lbl">
         <label> Cross Reference Entities: </label>
-        <textarea class="content" ref="taRE" v-model="refEntities" placeholder="cross reference entities" :disabled="disTaRE" :title="tipTaRE"></textarea>
+        <textarea class="content" ref="taRE" v-model="refEntities" placeholder="cross reference entities" :disabled="disTaRE" :title="tipTaRE" wrap="off"></textarea>
     </div>
 
 </template>

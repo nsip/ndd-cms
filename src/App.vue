@@ -172,20 +172,22 @@ onMounted(async () => {
 
 /* layout */
 
+html,
+body {
+    margin-top: 0.5vh;
+    overflow: hidden
+}
+
 #container {
     height: 100%;
     width: 100%;
     display: flex;
-    /* margin-top: -10px; */
 }
 
 #left {
     width: 50%;
     margin-right: 0.4%;
-    overflow: scroll;
     scrollbar-width: none;
-    /*   display: flex;
-flex-direction: column; */
 }
 
 #left::-webkit-scrollbar {
@@ -196,10 +198,7 @@ flex-direction: column; */
     width: 50%;
     margin-left: 0.4%;
     background-color: rgb(220, 220, 220);
-    overflow: scroll;
     scrollbar-width: none;
-    /*overflow-y: scroll;
-background-color: rgb(220, 220, 220); */
 }
 
 #right::-webkit-scrollbar {
@@ -313,6 +312,6 @@ border-bottom: 1px dotted black; */
     height: 24px;
     min-height: 24px;
     line-height: 20px;
-    text-align: center;
+    text-align: left;
 }
 </style>

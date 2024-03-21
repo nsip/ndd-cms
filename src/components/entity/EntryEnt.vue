@@ -12,32 +12,34 @@
         <button class="tab-links" @click="showTabContent"> {{ choices[8] }}</button>
     </div>
 
-    <div v-if="mTabShown.get(choices[0])" class="tab-content">
-        <EntName />
-    </div>
-    <div v-if="mTabShown.get(choices[1])" class="tab-content">
-        <EntOtherNames />
-    </div>
-    <div v-if="mTabShown.get(choices[2])" class="tab-content">
-        <EntDef />
-    </div>
-    <div v-if="mTabShown.get(choices[3])" class="tab-content">
-        <EntSIF />
-    </div>
-    <div v-if="mTabShown.get(choices[4])" class="tab-content">
-        <EntOtherStd />
-    </div>
-    <div v-if="mTabShown.get(choices[5])" class="tab-content">
-        <EntLegalDef />
-    </div>
-    <div v-if="mTabShown.get(choices[6])" class="tab-content">
-        <EntSensi />
-    </div>
-    <div v-if="mTabShown.get(choices[7])" class="tab-content">
-        <EntCol />
-    </div>
-    <div v-if="mTabShown.get(choices[8])" class="tab-content">
-        <EntMeta />
+    <div id="entry-ent">
+        <div v-if="mTabShown.get(choices[0])" class="tab-content">
+            <EntName />
+        </div>
+        <div v-if="mTabShown.get(choices[1])" class="tab-content">
+            <EntOtherNames />
+        </div>
+        <div v-if="mTabShown.get(choices[2])" class="tab-content">
+            <EntDef />
+        </div>
+        <div v-if="mTabShown.get(choices[3])" class="tab-content">
+            <EntSIF />
+        </div>
+        <div v-if="mTabShown.get(choices[4])" class="tab-content">
+            <EntOtherStd />
+        </div>
+        <div v-if="mTabShown.get(choices[5])" class="tab-content">
+            <EntLegalDef />
+        </div>
+        <div v-if="mTabShown.get(choices[6])" class="tab-content">
+            <EntSensi />
+        </div>
+        <div v-if="mTabShown.get(choices[7])" class="tab-content">
+            <EntCol />
+        </div>
+        <div v-if="mTabShown.get(choices[8])" class="tab-content">
+            <EntMeta />
+        </div>
     </div>
 
 </template>
@@ -117,7 +119,7 @@ const setDefaultTab = async (id: string) => {
     overflow: hidden;
     border: 1px solid #ccc;
     background-color: #f1f1f1;
-    height: 5vh;
+    height: 4vh;
 }
 
 /* Style the buttons inside the tab */
@@ -148,5 +150,11 @@ const setDefaultTab = async (id: string) => {
     padding: 1px 1px;
     border: 1px solid #ccc;
     border-top: none;
+}
+
+#entry-ent {
+    height: 87vh;
+    overflow-y: scroll;
+    scrollbar-width: none;
 }
 </style>
