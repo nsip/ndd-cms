@@ -52,7 +52,7 @@ const onMoreLessClick = (type: string) => {
                 if (jsonEnt.IsLastLegalDefEmpty()) {
                     notify({
                         title: "Note",
-                        text: "please use available editor(s). if hidden, unfold it",
+                        text: "use current blank editor(s). if hidden, unfold it",
                         type: "warn"
                     })
                     break;
