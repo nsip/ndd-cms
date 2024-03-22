@@ -185,7 +185,7 @@ body {
 }
 
 #left {
-    width: 50%;
+    width: 54%;
     margin-right: 0.4%;
     scrollbar-width: none;
 }
@@ -195,7 +195,7 @@ body {
 }
 
 #right {
-    width: 50%;
+    width: 46%;
     margin-left: 0.4%;
     background-color: rgb(220, 220, 220);
     scrollbar-width: none;

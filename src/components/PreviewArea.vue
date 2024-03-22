@@ -120,12 +120,14 @@ const setDefaultTab = async (id: string) => {
 #visual-content {
     height: 87vh;
     overflow-y: scroll;
-    scrollbar-width: none;
+    overflow-x: scroll;
+    scrollbar-width: thin;
 }
 
 #json-content {
     height: 87vh;
     overflow-y: scroll;
-    scrollbar-width: none;
+    overflow-x: scroll;
+    scrollbar-width: thin;
 }
 </style>

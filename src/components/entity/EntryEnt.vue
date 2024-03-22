@@ -131,8 +131,10 @@ const setDefaultTab = async (id: string) => {
     cursor: pointer;
     padding: 11px;
     transition: 0.3s;
-    font-size: 17px;
+    font-size: 16px;
     height: 100%;
+    font-style: italic;
+    font-weight: bold;
 }
 
 /* Change background color of buttons on hover */

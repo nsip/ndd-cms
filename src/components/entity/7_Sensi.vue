@@ -8,7 +8,7 @@
         </button>
         <div v-for="(n, i) in nEditor" :key="i">
             <br>
-            <TextLine :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="3px" />
+            <TextLine v-if="nEditor > 1" :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="3px" />
             <EditorSensi :idx="i" />
         </div>
     </div>
