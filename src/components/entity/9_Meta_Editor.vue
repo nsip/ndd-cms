@@ -63,6 +63,10 @@ onMounted(async () => {
     // 'Type' radio button choices
     choices.value = (await getListItemType(itemCat.value)).data as string[];
 
+    // set original textarea height
+    fitTextarea(taAO.value!, isAttrOf.value);
+    fitTextarea(taRE.value!, refEntities.value);
+
     mounted = true;
 });
 

@@ -14,6 +14,7 @@ let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 
 onMounted(async () => {
     urls.value = jsonCol.URL != null ? jsonCol.URL.join("\n") : "";
+    fitTextarea(taURL.value!, urls.value)
     mounted = true
 });
 

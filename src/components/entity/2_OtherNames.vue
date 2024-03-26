@@ -15,6 +15,7 @@ let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 
 onMounted(async () => {
     other_names.value = jsonEnt.OtherNames != null ? jsonEnt.OtherNames.join("\n") : "";
+    fitTextarea(taON.value!, other_names.value);
     mounted = true;
 });
 
