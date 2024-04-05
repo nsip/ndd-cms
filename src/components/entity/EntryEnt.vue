@@ -3,13 +3,14 @@
     <div class="tab">
         <button class="tab-links" id="tab-default" @click="showTabContent"> {{ choices[0] }}</button>
         <button class="tab-links" @click="showTabContent"> {{ choices[1] }}</button>
+        <button class="tab-links" @click="showTabContent"> {{ choices[9] }}</button>
         <button class="tab-links" @click="showTabContent"> {{ choices[2] }}</button>
         <button class="tab-links" @click="showTabContent"> {{ choices[3] }}</button>
         <button class="tab-links" @click="showTabContent"> {{ choices[4] }}</button>
         <button class="tab-links" @click="showTabContent"> {{ choices[5] }}</button>
         <button class="tab-links" @click="showTabContent"> {{ choices[6] }}</button>
         <button class="tab-links" @click="showTabContent"> {{ choices[7] }}</button>
-        <button class="tab-links" @click="showTabContent"> {{ choices[8] }}</button>
+        <button class="tab-links" @click="showTabContent"> {{ choices[8] }}</button>        
     </div>
 
     <div id="entry-ent">
@@ -18,6 +19,9 @@
         </div>
         <div v-if="mTabShown.get(choices[1])" class="tab-content">
             <EntOtherNames />
+        </div>
+        <div v-if="mTabShown.get(choices[9])" class="tab-content">
+            <EntValues />
         </div>
         <div v-if="mTabShown.get(choices[2])" class="tab-content">
             <EntDef />
@@ -55,6 +59,7 @@ import EntLegalDef from "@/components/entity/6_LegalDef.vue";
 import EntSensi from "@/components/entity/7_Sensi.vue"
 import EntCol from "@/components/entity/8_Col.vue";
 import EntMeta from "@/components/entity/9_Meta.vue";
+import EntValues from "@/components/entity/10_Values.vue";
 
 const choices = [
     "Entity",
@@ -66,6 +71,7 @@ const choices = [
     "Sensitivity",
     "Collections",
     "MetaData",
+    "Values"
 ]
 
 // tab content shown flag, key is tab-text
@@ -79,6 +85,7 @@ const mTabShown = ref(new Map([
     [choices[6], false],
     [choices[7], false],
     [choices[8], false],
+    [choices[9], false],
 ]));
 
 onMounted(async () => {

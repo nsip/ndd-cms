@@ -1,20 +1,26 @@
 <template>
-    <TextLine text="name:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
+    <TextLine text="name:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <input type="text" class="content" ref="taN" v-model="name" placeholder="name" />
 
-    <TextLine text="description:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
+    <TextLine text="description:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="description" @ready="onReadyDes" @textChange="textChangeDes(idx || 0)" />
 
-    <TextLine text="standard:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
-    <input type="text"  class="content" ref="taS" v-model="standard" placeholder="standard" />
+    <TextLine text="standard:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
+    <input type="text" class="content" ref="taS" v-model="standard" placeholder="standard" />
 
-    <TextLine text="elements:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
-    <textarea class="content" ref="taE" v-model="elements" placeholder="elements" wrap="off" ></textarea>
+    <TextLine text="element name:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
+    <input type="text" class="content" ref="taEN" v-model="elemname" placeholder="element name" />
 
-    <TextLine text="business rules:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
+    <TextLine text="elements:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
+    <textarea class="content" ref="taE" v-model="elements" placeholder="elements" wrap="off"></textarea>
+
+    <TextLine text="values:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
+    <textarea class="content" ref="taV" v-model="values" placeholder="values" wrap="off"></textarea>
+
+    <TextLine text="business rules:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="business rules" @ready="onReadyBR" @textChange="textChangeBR(idx || 0)" />
 
-    <TextLine text="definition modification:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
+    <TextLine text="definition modification:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="definition modification" @ready="onReadyDM" @textChange="textChangeDM(idx || 0)" />
 </template>
 
@@ -30,10 +36,14 @@ import { fitTextarea } from "@/share/util";
 const name = ref("");
 const standard = ref("");
 const elements = ref("");
+const elemname = ref("");
+const values = ref("");
 
 const taN = ref<HTMLTextAreaElement | null>(null); // fetch element
 const taS = ref<HTMLTextAreaElement | null>(null); // fetch element
 const taE = ref<HTMLTextAreaElement | null>(null); // fetch element
+const taEN = ref<HTMLTextAreaElement | null>(null); // fetch element
+const taV = ref<HTMLTextAreaElement | null>(null); // fetch element
 
 let quillDes: Quill;
 let quillBR: Quill;
@@ -53,6 +63,8 @@ onMounted(async () => {
         name.value = col.Name;
         standard.value = col.Standard;
         elements.value = col.Elements != null ? col.Elements.join("\n") : "";
+        elemname.value = col.ElementName;
+        values.value = col.Values != null ? col.Values.join("\n") : "";
 
         // quill
         quillDes.root.innerHTML = col.Description;
@@ -63,15 +75,24 @@ onMounted(async () => {
 });
 
 watchEffect(() => {
+
     const idx = props.idx;
+
     const n = name.value;
     const s = standard.value;
     const e = elements.value;
+    const en = elemname.value;
+    const v = values.value;
+
     if (mounted) {
-        jsonEnt.SetCol(idx || 0, n, "**", s, e, "**", "**");
+
+        jsonEnt.SetCol(idx || 0, n, "**", s, e, "**", "**", en, v);
+
         fitTextarea(taN.value!, n);
         fitTextarea(taS.value!, s);
         fitTextarea(taE.value!, e);
+        fitTextarea(taEN.value!, en);
+        fitTextarea(taV.value!, v);
     }
 });
 
@@ -87,15 +108,17 @@ const onReadyDM = (quill: Quill) => {
 
 const textChangeDes = (idx: number) => {
     const html = quillDes.root.innerHTML;
-    jsonEnt.SetCol(idx, "**", html, "**", "**", "**", "**");
+    jsonEnt.SetCol(idx, "**", html, "**", "**", "**", "**", "**", "**");
 };
+
 const textChangeBR = (idx: number) => {
     const html = quillBR.root.innerHTML;
-    jsonEnt.SetCol(idx, "**", "**", "**", "**", html, "**");
+    jsonEnt.SetCol(idx, "**", "**", "**", "**", html, "**", "**", "**");
 };
+
 const textChangeDM = (idx: number) => {
     const html = quillDM.root.innerHTML;
-    jsonEnt.SetCol(idx, "**", "**", "**", "**", "**", html);
+    jsonEnt.SetCol(idx, "**", "**", "**", "**", "**", html, "**", "**");
 };
 
 </script>

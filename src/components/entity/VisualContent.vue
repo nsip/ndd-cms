@@ -62,6 +62,10 @@ const prevOtherNames = () => {
     return field_title_html('Other Names') + field_value_html(jsonEnt.OtherNames);
 };
 
+const prevValues = () => {
+    return field_title_html('Values') + field_value_html(jsonEnt.Values);
+};
+
 const prevDefinition = () => {
     let rt = field_title_html('Definition');
     const n = jsonEnt.CntDef();
@@ -156,8 +160,10 @@ const prevCollections = () => {
         let sub_str = "";
         sub_str += hasSomeValue(sub_obj, "Name") ? field_subtitle_html('name') + field_value_html(sub_obj.Name) : ""
         sub_str += hasSomeValue(sub_obj, "Description") ? field_subtitle_html('description') + field_value_html(sub_obj.Description) : ""
+        sub_str += hasSomeValue(sub_obj, "ElementName") ? field_subtitle_html('element name') + field_value_html(sub_obj.ElementName) : ""
         sub_str += hasSomeValue(sub_obj, "Standard") ? field_subtitle_html('standard') + field_value_html(sub_obj.Standard) : ""
         sub_str += hasSomeValue(sub_obj, "Elements") ? field_subtitle_html('elements') + field_value_html(sub_obj.Elements) : ""
+        sub_str += hasSomeValue(sub_obj, "Values") ? field_subtitle_html('values') + field_value_html(sub_obj.Values) : ""
         sub_str += hasSomeValue(sub_obj, "BusinessRules") ? field_subtitle_html('business rules') + field_value_html(sub_obj.BusinessRules) : ""
         sub_str += hasSomeValue(sub_obj, "DefinitionModification") ? field_subtitle_html('definition modification') + field_value_html(sub_obj.DefinitionModification) : ""
         elems.push(sub_str);
@@ -183,6 +189,7 @@ const wholeContent = () => {
     return (
         prevEntity() +
         prevOtherNames() +
+        prevValues() +
         prevDefinition() +
         prevSIF() +
         prevOtherStandards() +
