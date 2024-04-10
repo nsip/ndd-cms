@@ -8,19 +8,23 @@
         </span>
     </div>
 
-    <!-- dropdown -->
+    <!-- TODO: dropdown -->
     <div class="lbl">
         <label> Super Class: </label>
-        <input type="text" class="content" v-model="superClass" placeholder="super class" :disabled="disTaSC" :title="tipTaSC" />
+        <!-- <input type="text" class="content" v-model="superClass" placeholder="super class" :disabled="disTaSC" :title="tipTaSC" /> -->
+        <select v-if="drop_list_ae?.length > 0" ref="scSelect" :disabled="disTaSC" :title="tipTaSC" @change="switchSC($event)">
+            <option value="-1" class="firstOpt">--- super class ({{ drop_list_ae?.length }} items)  ---</option>
+            <option v-for="(item, idx) in drop_list_ae" :key="idx"> {{ item }}</option>
+        </select>
     </div>
 
-    <!-- dropdown -->
+    <!-- TODO: dropdown -->
     <div class="lbl">
         <label> Is Attribute Of: </label>
         <textarea class="content" ref="taAO" v-model="isAttrOf" placeholder="is attribute of" :disabled="disTaAO" :title="tipTaAO" wrap="off"></textarea>
     </div>
 
-    <!-- dropdown -->
+    <!-- TODO: dropdown -->
     <div class="lbl">
         <label> Cross Reference Entities: </label>
         <textarea class="content" ref="taRE" v-model="refEntities" placeholder="cross reference entities" :disabled="disTaRE" :title="tipTaRE" wrap="off"></textarea>
@@ -31,7 +35,7 @@
 <script setup lang="ts">
 
 import { jsonEnt } from "@/share/EntType";
-import { fitTextarea } from "@/share/util";
+import { fitTextarea, UnionArrays } from "@/share/util";
 import { getListItemType, itemCat, getListItem } from "@/share/share"
 
 const type = ref("");
@@ -53,9 +57,29 @@ const tipTaAO = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name i
 const tipTaRE = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name is on changing stage, [CrossRefEntities] cannot be edited' : '');
 
 const choices = ref();
-const drop_list = ref();
+
+const drop_list_e = ref();
+const drop_list_a = ref();
+const drop_list_o = ref();
+const drop_list_c = ref();
+const drop_list_ae = ref();
+const drop_list_aeo = ref();
+
+const scSelect = ref(null);
+const switchSC = (event: any) => {
+    if (event.target.value != "-1") {
+        alert(event.target.value)
+
+        // const select = scSelect.value as HTMLSelectElement | null;
+        // if (select != null) {
+        //     select.selectedIndex = 0;
+        // }
+    }
+}
+
 
 onMounted(async () => {
+
     const meta = jsonEnt.Metadata;
 
     // textarea
@@ -68,7 +92,12 @@ onMounted(async () => {
     choices.value = (await getListItemType(itemCat.value)).data as string[];
 
     // dropdown list
-    drop_list.value = (await getListItem('abstract,element,object')).data as string[];
+    drop_list_a.value = ((await getListItem('abstract')).data as string[]).sort((a, b) => a.localeCompare(b));
+    drop_list_e.value = ((await getListItem('element')).data as string[]).sort((a, b) => a.localeCompare(b));
+    drop_list_o.value = ((await getListItem('object')).data as string[]).sort((a, b) => a.localeCompare(b));
+    drop_list_c.value = ((await getListItem('collection')).data as string[]).sort((a, b) => a.localeCompare(b));
+    drop_list_ae.value = (UnionArrays(drop_list_a.value, drop_list_e.value) as string[]).sort((a, b) => a.localeCompare(b));;
+    drop_list_aeo.value = (UnionArrays(drop_list_a.value, drop_list_e.value, drop_list_o.value) as string[]).sort((a, b) => a.localeCompare(b));
 
     // set original textarea height
     fitTextarea(taAO.value!, isAttrOf.value);

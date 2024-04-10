@@ -170,3 +170,11 @@ export const download_file = (url: string, file_name: string) => {
     anchor.click();
     document.body.removeChild(anchor);
 }
+
+export function UnionArrays<T>(...arrays: T[][]): T[] {
+    const set = new Set<T>();
+    arrays.forEach(arr => {
+        arr.forEach(item => set.add(item));
+    });
+    return Array.from(set);
+}
