@@ -1,5 +1,6 @@
 <template>
     <div class="com">
+
         <button class="less-editor" @click="onMoreLessClick('-')">
             <font-awesome-icon icon="circle-minus" />
         </button>
@@ -8,9 +9,13 @@
         </button>
         <div v-for="(n, i) in nEditor" :key="i">
             <br>
-            <TextLine v-if="nEditor > 1" :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="3px" />
+            <TextLine v-if="nEditor > 1" :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="2px" />
             <EditorDef :idx="i" />
         </div>
+
+        <TextLine text="Values:" textAlign="left" textColor="black" lineColor="black" lineHeight="4px" class="sub-title" />
+        <QuillEditor theme="snow" toolbar="essential" placeholder="values text" @ready="onReadyVal" @textChange="textChangeVal" />
+
     </div>
 </template>
 
@@ -21,8 +26,12 @@ import { jsonEnt } from "@/share/EntType";
 import { itemName, itemCat } from "@/share/share";
 import TextLine from "@/components/TextLine.vue";
 import EditorDef from "@/components/entity/2_Def_Editor.vue";
+import { QuillEditor, Quill } from "@vueup/vue-quill";
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
+import "@vueup/vue-quill/dist/vue-quill.bubble.css";
 
 const nEditor = ref(0);
+let quillVal: Quill;
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 
 onMounted(async () => {
@@ -41,6 +50,11 @@ onMounted(async () => {
             jsonEnt.AddDef();
             nEditor.value = 1
         }
+    }
+
+    const val = jsonEnt.Values
+    if (val != undefined && val != null && val.length > 0) {
+        quillVal.root.innerHTML = val
     }
 
     mounted = true;
@@ -85,7 +99,20 @@ const onMoreLessClick = (type: string) => {
     // console.log('editor count:', nEditor.value)
 };
 
+const onReadyVal = (quill: Quill) => {
+    quillVal = quill;
+};
+
+const textChangeVal = () => {
+    const html = quillVal.root.innerHTML;
+    jsonEnt.SetValues(html)
+};
+
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped></style>
+<style scoped>
+.sub-title {
+    font-weight: bold;
+}
+</style>
