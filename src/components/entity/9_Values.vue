@@ -5,7 +5,7 @@
 <script setup lang="ts">
 
 import { jsonEnt } from "@/share/EntType";
- import { QuillEditor, Quill } from "@vueup/vue-quill";
+import { QuillEditor, Quill } from "@vueup/vue-quill";
 import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
 

@@ -9,7 +9,7 @@
         <div v-for="(n, i) in nEditor" :key="i">
             <br>
             <TextLine v-if="nEditor > 1" :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="3px" />
-            <EditorSIF :idx="i" />
+            <EditorLegDef :idx="i" />
         </div>
     </div>
 </template>
@@ -20,7 +20,7 @@ import { notify } from "@kyvg/vue3-notification";
 import { jsonEnt } from "@/share/EntType";
 import { itemName, itemCat } from "@/share/share";
 import TextLine from "@/components/TextLine.vue";
-import EditorSIF from "@/components/entity/4_SIF_Editor.vue";
+import EditorLegDef from "@/components/entity/5_LegalDef_Editor.vue";
 
 const nEditor = ref(0);
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
@@ -34,11 +34,10 @@ onMounted(async () => {
 
     // edit existing item
     if (itemName.value?.length > 0 && itemCat.value?.length > 0) {
-        if (jsonEnt.SIF.length > 0) {
-            nEditor.value = jsonEnt.SIF.length;
+        if (jsonEnt.LegalDefinitions.length > 0) {
+            nEditor.value = jsonEnt.LegalDefinitions.length;
         } else {
-            // add a new empty SIF element in json if empty SIF array loaded
-            jsonEnt.AddSIF();
+            jsonEnt.AddLegalDef();
             nEditor.value = 1
         }
     }
@@ -50,7 +49,7 @@ const onMoreLessClick = (type: string) => {
     switch (type) {
         case "+":
             {
-                if (jsonEnt.IsLastSIFEmpty()) {
+                if (jsonEnt.IsLastLegalDefEmpty()) {
                     notify({
                         title: "Note",
                         text: "use current blank editor(s). if hidden, unfold it",
@@ -59,8 +58,8 @@ const onMoreLessClick = (type: string) => {
                     break;
                 }
 
-                // add new SIF element in json
-                jsonEnt.AddSIF();
+                // add new LegalDefinition element in json
+                jsonEnt.AddLegalDef();
                 nEditor.value++;
             }
             break;
@@ -76,15 +75,13 @@ const onMoreLessClick = (type: string) => {
                     break;
                 }
 
-                // remove last SIF element in json
-                jsonEnt.RmSIFLast();
+                // remove last LegalDefinition element in json
+                jsonEnt.RmLegalDefLast();
                 nEditor.value--;
             }
             break;
-
         default:
     }
-    // console.log('editor count:', nEditor.value)
 };
 
 </script>

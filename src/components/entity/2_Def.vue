@@ -9,7 +9,7 @@
         <div v-for="(n, i) in nEditor" :key="i">
             <br>
             <TextLine v-if="nEditor > 1" :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="3px" />
-            <EditorLegDef :idx="i" />
+            <EditorDef :idx="i" />
         </div>
     </div>
 </template>
@@ -20,7 +20,7 @@ import { notify } from "@kyvg/vue3-notification";
 import { jsonEnt } from "@/share/EntType";
 import { itemName, itemCat } from "@/share/share";
 import TextLine from "@/components/TextLine.vue";
-import EditorLegDef from "@/components/entity/6_LegalDef_Editor.vue";
+import EditorDef from "@/components/entity/2_Def_Editor.vue";
 
 const nEditor = ref(0);
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
@@ -34,10 +34,11 @@ onMounted(async () => {
 
     // edit existing item
     if (itemName.value?.length > 0 && itemCat.value?.length > 0) {
-        if (jsonEnt.LegalDefinitions.length > 0) {
-            nEditor.value = jsonEnt.LegalDefinitions.length;
+        if (jsonEnt.Definition.length > 0) {
+            nEditor.value = jsonEnt.Definition.length;
         } else {
-            jsonEnt.AddLegalDef();
+            // add a new empty Definition element in json if empty Definition array loaded
+            jsonEnt.AddDef();
             nEditor.value = 1
         }
     }
@@ -49,7 +50,7 @@ const onMoreLessClick = (type: string) => {
     switch (type) {
         case "+":
             {
-                if (jsonEnt.IsLastLegalDefEmpty()) {
+                if (jsonEnt.IsLastDefEmpty()) {
                     notify({
                         title: "Note",
                         text: "use current blank editor(s). if hidden, unfold it",
@@ -57,9 +58,8 @@ const onMoreLessClick = (type: string) => {
                     })
                     break;
                 }
-
-                // add new LegalDefinition element in json
-                jsonEnt.AddLegalDef();
+                // add new Definition element in json
+                jsonEnt.AddDef();
                 nEditor.value++;
             }
             break;
@@ -74,14 +74,15 @@ const onMoreLessClick = (type: string) => {
                     })
                     break;
                 }
-
-                // remove last LegalDefinition element in json
-                jsonEnt.RmLegalDefLast();
+                // remove last Definition element in json
+                jsonEnt.RmDefLast();
                 nEditor.value--;
             }
             break;
+
         default:
     }
+    // console.log('editor count:', nEditor.value)
 };
 
 </script>

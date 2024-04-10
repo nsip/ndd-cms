@@ -8,7 +8,7 @@
 
 <script setup lang="ts">
 
-import EditorMeta from "@/components/entity/9_Meta_Editor.vue";
+import EditorMeta from "@/components/entity/8_Meta_Editor.vue";
 
 // let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 

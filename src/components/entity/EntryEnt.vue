@@ -3,14 +3,12 @@
     <div class="tab">
         <button class="tab-links" id="tab-default" @click="showTabContent"> {{ choices[0] }}</button>
         <button class="tab-links" @click="showTabContent"> {{ choices[1] }}</button>
-        <button class="tab-links" @click="showTabContent"> {{ choices[9] }}</button>
         <button class="tab-links" @click="showTabContent"> {{ choices[2] }}</button>
         <button class="tab-links" @click="showTabContent"> {{ choices[3] }}</button>
         <button class="tab-links" @click="showTabContent"> {{ choices[4] }}</button>
         <button class="tab-links" @click="showTabContent"> {{ choices[5] }}</button>
         <button class="tab-links" @click="showTabContent"> {{ choices[6] }}</button>
         <button class="tab-links" @click="showTabContent"> {{ choices[7] }}</button>
-        <button class="tab-links" @click="showTabContent"> {{ choices[8] }}</button>        
     </div>
 
     <div id="entry-ent">
@@ -18,30 +16,24 @@
             <EntName />
         </div>
         <div v-if="mTabShown.get(choices[1])" class="tab-content">
-            <EntOtherNames />
-        </div>
-        <div v-if="mTabShown.get(choices[9])" class="tab-content">
-            <EntValues />
-        </div>
-        <div v-if="mTabShown.get(choices[2])" class="tab-content">
             <EntDef />
         </div>
-        <div v-if="mTabShown.get(choices[3])" class="tab-content">
+        <div v-if="mTabShown.get(choices[2])" class="tab-content">
             <EntSIF />
         </div>
-        <div v-if="mTabShown.get(choices[4])" class="tab-content">
+        <div v-if="mTabShown.get(choices[3])" class="tab-content">
             <EntOtherStd />
         </div>
-        <div v-if="mTabShown.get(choices[5])" class="tab-content">
+        <div v-if="mTabShown.get(choices[4])" class="tab-content">
             <EntLegalDef />
         </div>
-        <div v-if="mTabShown.get(choices[6])" class="tab-content">
+        <div v-if="mTabShown.get(choices[5])" class="tab-content">
             <EntSensi />
         </div>
-        <div v-if="mTabShown.get(choices[7])" class="tab-content">
+        <div v-if="mTabShown.get(choices[6])" class="tab-content">
             <EntCol />
         </div>
-        <div v-if="mTabShown.get(choices[8])" class="tab-content">
+        <div v-if="mTabShown.get(choices[7])" class="tab-content">
             <EntMeta />
         </div>
     </div>
@@ -51,27 +43,23 @@
 <script setup lang="ts">
 
 import EntName from "@/components/entity/1_Name.vue";
-import EntOtherNames from "@/components/entity/2_OtherNames.vue";
-import EntDef from "@/components/entity/3_Def.vue";
-import EntSIF from "@/components/entity/4_SIF.vue";
-import EntOtherStd from "@/components/entity/5_OtherStd.vue";
-import EntLegalDef from "@/components/entity/6_LegalDef.vue";
-import EntSensi from "@/components/entity/7_Sensi.vue"
-import EntCol from "@/components/entity/8_Col.vue";
-import EntMeta from "@/components/entity/9_Meta.vue";
-import EntValues from "@/components/entity/10_Values.vue";
+import EntDef from "@/components/entity/2_Def.vue";
+import EntSIF from "@/components/entity/3_SIF.vue";
+import EntOtherStd from "@/components/entity/4_OtherStd.vue";
+import EntLegalDef from "@/components/entity/5_LegalDef.vue";
+import EntSensi from "@/components/entity/6_Sensi.vue"
+import EntCol from "@/components/entity/7_Col.vue";
+import EntMeta from "@/components/entity/8_Meta.vue";
 
 const choices = [
     "Entity",
-    "OtherNames",
     "Definition",
     "SIF",
     "OtherStandards",
     "LegalDefinitions",
     "Sensitivity",
     "Collections",
-    "MetaData",
-    "Values"
+    "MetaData"
 ]
 
 // tab content shown flag, key is tab-text
@@ -84,8 +72,6 @@ const mTabShown = ref(new Map([
     [choices[5], false],
     [choices[6], false],
     [choices[7], false],
-    [choices[8], false],
-    [choices[9], false],
 ]));
 
 onMounted(async () => {

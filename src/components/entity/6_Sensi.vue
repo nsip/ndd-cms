@@ -9,7 +9,7 @@
         <div v-for="(n, i) in nEditor" :key="i">
             <br>
             <TextLine v-if="nEditor > 1" :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="3px" />
-            <EditorCol :idx="i" />
+            <EditorSensi :idx="i" />
         </div>
     </div>
 </template>
@@ -20,7 +20,7 @@ import { notify } from "@kyvg/vue3-notification";
 import { jsonEnt } from "@/share/EntType";
 import { itemName, itemCat } from "@/share/share";
 import TextLine from "@/components/TextLine.vue";
-import EditorCol from "@/components/entity/8_Col_Editor.vue";
+import EditorSensi from "@/components/entity/6_Sensi_Editor.vue";
 
 const nEditor = ref(0);
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
@@ -34,10 +34,10 @@ onMounted(async () => {
 
     // edit existing item
     if (itemName.value?.length > 0 && itemCat.value?.length > 0) {
-        if (jsonEnt.Collections.length > 0) {
-            nEditor.value = jsonEnt.Collections.length;
+        if (jsonEnt.Sensitivity.length > 0) {
+            nEditor.value = jsonEnt.Sensitivity.length;
         } else {
-            jsonEnt.AddCol()
+            jsonEnt.AddSensi()
             nEditor.value = 1
         }
     }
@@ -49,7 +49,7 @@ const onMoreLessClick = (type: string) => {
     switch (type) {
         case "+":
             {
-                if (jsonEnt.IsLastColEmpty()) {
+                if (jsonEnt.IsLastSensiEmpty()) {
                     notify({
                         title: "Note",
                         text: "use current blank editor(s). if hidden, unfold it",
@@ -58,8 +58,8 @@ const onMoreLessClick = (type: string) => {
                     break;
                 }
 
-                // add new Collection element in json
-                jsonEnt.AddCol();
+                // add new Sensitivity element in json
+                jsonEnt.AddSensi();
                 nEditor.value++;
             }
             break;
@@ -75,8 +75,8 @@ const onMoreLessClick = (type: string) => {
                     break;
                 }
 
-                // remove last Collection element in json
-                jsonEnt.RmColLast();
+                // remove last Sensitivity element in json
+                jsonEnt.RmSensiLast();
                 nEditor.value--;
             }
             break;

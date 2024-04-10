@@ -9,7 +9,7 @@
         <div v-for="(n, i) in nEditor" :key="i">
             <br>
             <TextLine v-if="nEditor > 1" :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="3px" />
-            <EditorDef :idx="i" />
+            <EditorCol :idx="i" />
         </div>
     </div>
 </template>
@@ -20,7 +20,7 @@ import { notify } from "@kyvg/vue3-notification";
 import { jsonEnt } from "@/share/EntType";
 import { itemName, itemCat } from "@/share/share";
 import TextLine from "@/components/TextLine.vue";
-import EditorDef from "@/components/entity/3_Def_Editor.vue";
+import EditorCol from "@/components/entity/7_Col_Editor.vue";
 
 const nEditor = ref(0);
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
@@ -34,11 +34,10 @@ onMounted(async () => {
 
     // edit existing item
     if (itemName.value?.length > 0 && itemCat.value?.length > 0) {
-        if (jsonEnt.Definition.length > 0) {
-            nEditor.value = jsonEnt.Definition.length;
+        if (jsonEnt.Collections.length > 0) {
+            nEditor.value = jsonEnt.Collections.length;
         } else {
-            // add a new empty Definition element in json if empty Definition array loaded
-            jsonEnt.AddDef();
+            jsonEnt.AddCol()
             nEditor.value = 1
         }
     }
@@ -50,7 +49,7 @@ const onMoreLessClick = (type: string) => {
     switch (type) {
         case "+":
             {
-                if (jsonEnt.IsLastDefEmpty()) {
+                if (jsonEnt.IsLastColEmpty()) {
                     notify({
                         title: "Note",
                         text: "use current blank editor(s). if hidden, unfold it",
@@ -58,8 +57,9 @@ const onMoreLessClick = (type: string) => {
                     })
                     break;
                 }
-                // add new Definition element in json
-                jsonEnt.AddDef();
+
+                // add new Collection element in json
+                jsonEnt.AddCol();
                 nEditor.value++;
             }
             break;
@@ -74,15 +74,15 @@ const onMoreLessClick = (type: string) => {
                     })
                     break;
                 }
-                // remove last Definition element in json
-                jsonEnt.RmDefLast();
+
+                // remove last Collection element in json
+                jsonEnt.RmColLast();
                 nEditor.value--;
             }
             break;
 
         default:
     }
-    // console.log('editor count:', nEditor.value)
 };
 
 </script>
