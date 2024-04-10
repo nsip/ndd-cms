@@ -1,4 +1,6 @@
 <template>
+
+    <!-- dropdown -->
     <TextLine text="name:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <input type="text" class="content" ref="taN" v-model="name" placeholder="name" />
 
@@ -15,13 +17,14 @@
     <textarea class="content" ref="taE" v-model="elements" placeholder="elements" wrap="off"></textarea>
 
     <TextLine text="values:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
-    <textarea class="content" ref="taV" v-model="values" placeholder="values" wrap="off"></textarea>
+    <QuillEditor theme="snow" toolbar="essential" placeholder="values" @ready="onReadyVal" @textChange="textChangeVal(idx || 0)" />
 
     <TextLine text="business rules:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="business rules" @ready="onReadyBR" @textChange="textChangeBR(idx || 0)" />
 
     <TextLine text="definition modification:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="definition modification" @ready="onReadyDM" @textChange="textChangeDM(idx || 0)" />
+
 </template>
 
 <script setup lang="ts">
@@ -37,17 +40,16 @@ const name = ref("");
 const standard = ref("");
 const elements = ref("");
 const elemname = ref("");
-const values = ref("");
 
 const taN = ref<HTMLTextAreaElement | null>(null); // fetch element
 const taS = ref<HTMLTextAreaElement | null>(null); // fetch element
 const taE = ref<HTMLTextAreaElement | null>(null); // fetch element
 const taEN = ref<HTMLTextAreaElement | null>(null); // fetch element
-const taV = ref<HTMLTextAreaElement | null>(null); // fetch element
 
 let quillDes: Quill;
 let quillBR: Quill;
 let quillDM: Quill;
+let quillVal: Quill;
 
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 
@@ -64,12 +66,12 @@ onMounted(async () => {
         standard.value = col.Standard;
         elements.value = col.Elements != null ? col.Elements.join("\n") : "";
         elemname.value = col.ElementName;
-        values.value = col.Values != null ? col.Values.join("\n") : "";
 
         // quill
         quillDes.root.innerHTML = col.Description;
         quillBR.root.innerHTML = col.BusinessRules != null ? col.BusinessRules.join("\n") : "";
         quillDM.root.innerHTML = col.DefinitionModification;
+        quillVal.root.innerHTML = col.Values;
     }
     mounted = true;
 });
@@ -82,17 +84,15 @@ watchEffect(() => {
     const s = standard.value;
     const e = elements.value;
     const en = elemname.value;
-    const v = values.value;
 
     if (mounted) {
 
-        jsonEnt.SetCol(idx || 0, n, "**", s, e, "**", "**", en, v);
+        jsonEnt.SetCol(idx || 0, n, "**", s, e, "**", "**", en, "**");
 
         fitTextarea(taN.value!, n);
         fitTextarea(taS.value!, s);
         fitTextarea(taE.value!, e);
         fitTextarea(taEN.value!, en);
-        fitTextarea(taV.value!, v);
     }
 });
 
@@ -105,6 +105,9 @@ const onReadyBR = (quill: Quill) => {
 const onReadyDM = (quill: Quill) => {
     quillDM = quill;
 };
+const onReadyVal = (quill: Quill) => {
+    quillVal = quill;
+}
 
 const textChangeDes = (idx: number) => {
     const html = quillDes.root.innerHTML;
@@ -120,6 +123,11 @@ const textChangeDM = (idx: number) => {
     const html = quillDM.root.innerHTML;
     jsonEnt.SetCol(idx, "**", "**", "**", "**", "**", html, "**", "**");
 };
+
+const textChangeVal = (idx: number) => {
+    const html = quillVal.root.innerHTML;
+    jsonEnt.SetCol(idx, "**", "**", "**", "**", "**", "**", "**", html);
+}
 
 </script>
 

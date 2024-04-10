@@ -1,32 +1,31 @@
 <template>
-    <div class="com">
-        <textarea class="content" ref="taV" v-model="values" placeholder="entity's values (new line, new one value)" wrap="off" ></textarea>
-    </div>
+    <QuillEditor theme="snow" toolbar="essential" placeholder="values text" @ready="onReadyVal" @textChange="textChangeVal" />
 </template>
 
 <script setup lang="ts">
 
 import { jsonEnt } from "@/share/EntType";
-import { fitTextarea } from "@/share/util";
+ import { QuillEditor, Quill } from "@vueup/vue-quill";
+import "@vueup/vue-quill/dist/vue-quill.snow.css";
+import "@vueup/vue-quill/dist/vue-quill.bubble.css";
 
-const values = ref(""); // text area content (left)
-const taV = ref<HTMLTextAreaElement | null>(null); // fetch element
-let mounted = false; // flag: let 'watchEffect' after 'onMounted'
+let quillVal: Quill;
 
 onMounted(async () => {
-    values.value = jsonEnt.Values != null ? jsonEnt.Values.join("\n") : "";
-    fitTextarea(taV.value!, values.value);
-    mounted = true;
-});
-
-watchEffect(() => {
-    const str4arr = values.value
-    if (mounted) {
-        // update data
-        jsonEnt.SetValues(str4arr);
-        fitTextarea(taV.value!, str4arr);
+    const val = jsonEnt.Values
+    if (val != undefined && val != null && val.length > 0) {
+        quillVal.root.innerHTML = val
     }
 });
+
+const onReadyVal = (quill: Quill) => {
+    quillVal = quill;
+};
+
+const textChangeVal = () => {
+    const html = quillVal.root.innerHTML;
+    jsonEnt.SetValues(html)
+};
 
 </script>
 

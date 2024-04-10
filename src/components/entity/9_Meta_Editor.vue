@@ -8,16 +8,19 @@
         </span>
     </div>
 
+    <!-- dropdown -->
     <div class="lbl">
         <label> Super Class: </label>
         <input type="text" class="content" v-model="superClass" placeholder="super class" :disabled="disTaSC" :title="tipTaSC" />
     </div>
 
+    <!-- dropdown -->
     <div class="lbl">
         <label> Is Attribute Of: </label>
         <textarea class="content" ref="taAO" v-model="isAttrOf" placeholder="is attribute of" :disabled="disTaAO" :title="tipTaAO" wrap="off"></textarea>
     </div>
 
+    <!-- dropdown -->
     <div class="lbl">
         <label> Cross Reference Entities: </label>
         <textarea class="content" ref="taRE" v-model="refEntities" placeholder="cross reference entities" :disabled="disTaRE" :title="tipTaRE" wrap="off"></textarea>
@@ -29,7 +32,7 @@
 
 import { jsonEnt } from "@/share/EntType";
 import { fitTextarea } from "@/share/util";
-import { getListItemType, itemCat } from "@/share/share"
+import { getListItemType, itemCat, getListItem } from "@/share/share"
 
 const type = ref("");
 const superClass = ref("");
@@ -50,6 +53,7 @@ const tipTaAO = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name i
 const tipTaRE = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name is on changing stage, [CrossRefEntities] cannot be edited' : '');
 
 const choices = ref();
+const drop_list = ref();
 
 onMounted(async () => {
     const meta = jsonEnt.Metadata;
@@ -62,6 +66,9 @@ onMounted(async () => {
 
     // 'Type' radio button choices
     choices.value = (await getListItemType(itemCat.value)).data as string[];
+
+    // dropdown list
+    drop_list.value = (await getListItem('abstract,element,object')).data as string[];
 
     // set original textarea height
     fitTextarea(taAO.value!, isAttrOf.value);

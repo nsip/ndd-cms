@@ -111,6 +111,7 @@ onMounted(async () => {
                         const entity = JSON.parse(de.data!);
 
                         jsonEnt.SetName(entity.Entity);
+                        jsonEnt.SetValues(entity.Values);
                         jsonEnt.AssignOtherNames(entity.OtherNames);
                         jsonEnt.AssignDef(entity.Definition);
                         jsonEnt.AssignSIF(entity.SIF);

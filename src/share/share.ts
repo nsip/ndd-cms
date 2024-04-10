@@ -79,3 +79,15 @@ export const getListItemType = async (cat: string) => {
         'error': err
     };
 }
+
+export const getListItem = async (types: string) => {
+    const mParam = new Map<string, any>([
+        ["types", types],
+    ]);
+    const rt = await fetchNoBody("api/dic/pub/list-by-type", "GET", mParam, "");
+    const err = await fetchErr(rt, onExpired)
+    return {
+        'data': err == null ? (rt as any[])[0] : null,
+        'error': err
+    };
+}
