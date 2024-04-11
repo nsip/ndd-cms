@@ -6,7 +6,7 @@
         <button class="more-editor" @click="onMoreLessClick('+')">
             <font-awesome-icon icon="circle-plus" />
         </button>
-        <div v-for="(n, i) in nEditor" :key="i">
+        <div v-for="(n, i) in nEditor" :key="i" :class="i % 2 == 1 ? 'block-bg-odd' : 'block-bg-even'">
             <br>
             <TextLine v-if="nEditor > 1" :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="3px" />
             <EditorOtherStd :idx="i" />

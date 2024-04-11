@@ -335,4 +335,12 @@ border-bottom: 1px dotted black; */
     line-height: 20px;
     text-align: left;
 }
+
+.block-bg-odd {
+    background-color: rgb(232, 243, 247);
+}
+
+.block-bg-even {
+    background-color: rgb(247, 247, 241);
+}
 </style>
