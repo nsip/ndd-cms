@@ -292,6 +292,26 @@ border-bottom: 1px dotted black; */
     border: none;
 }
 
+.more-editor-dropdownlist {
+    font-size: medium;
+    color: red;
+    background-color: white;
+    float: right;
+    margin-right: 1px;
+    width: 22px;
+    border: none;
+}
+
+.less-editor-dropdownlist {
+    font-size: medium;
+    color: green;
+    background-color: white;
+    float: right;
+    margin-right: 1px;
+    width: 22px;
+    border: none;
+}
+
 .hide-editor {
     font-size: medium;
     float: right;

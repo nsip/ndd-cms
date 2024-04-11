@@ -2,33 +2,49 @@
 
     <div class="lbl">
         <label id="type-lbl">Type:</label>
-        <span class="type-input" v-for="choice in choices">
-            <input v-model="type" type="radio" name="type" :value="choice" @change="select" />
+        <span v-for="choice in choicesType" class="type-input">
+            <input v-model="type" type="radio" name="type" :value="choice" @change="select" :disabled="disRbType" />
             <label>{{ choice }}</label>
         </span>
     </div>
 
-    <!-- TODO: dropdown -->
     <div class="lbl">
         <label> Super Class: </label>
-        <!-- <input type="text" class="content" v-model="superClass" placeholder="super class" :disabled="disTaSC" :title="tipTaSC" /> -->
-        <select v-if="drop_list_ae?.length > 0" ref="scSelect" :disabled="disTaSC" :title="tipTaSC" @change="switchSC($event)">
-            <option value="-1" class="firstOpt">--- super class ({{ drop_list_ae?.length }} items)  ---</option>
-            <option v-for="(item, idx) in drop_list_ae" :key="idx"> {{ item }}</option>
+        <select v-if="options_ae?.length > 0" v-model="superClass" :disabled="disSelSC" :title="tipSelSC" @change="switchSC" class="dropdown-list">
+            <option value="">--- empty ---</option>
+            <option v-for="(item, idx) in options_ae" :key="idx" :value="item"> {{ item }}</option>
         </select>
     </div>
 
-    <!-- TODO: dropdown -->
     <div class="lbl">
         <label> Is Attribute Of: </label>
-        <textarea class="content" ref="taAO" v-model="isAttrOf" placeholder="is attribute of" :disabled="disTaAO" :title="tipTaAO" wrap="off"></textarea>
+        <select v-if="options_o?.length > 0" v-model="isAttrOf_oneElem" :disabled="disSelAO" :title="tipSelAO" @change="switchAO" class="dropdown-list">
+            <option value="">--- empty ---</option>
+            <option v-for="(item, idx) in options_o" :key="idx" :value="item"> {{ item }}</option>
+        </select>
+        <button class="less-editor-dropdownlist" @click="onMoreLessClick('-ao')">
+            <font-awesome-icon icon="circle-minus" />
+        </button>
+        <button class="more-editor-dropdownlist" @click="onMoreLessClick('+ao')">
+            <font-awesome-icon icon="circle-plus" />
+        </button>
     </div>
+    <div class="lbl-ex"> {{ showIsAttrOf }} </div>
 
-    <!-- TODO: dropdown -->
     <div class="lbl">
         <label> Cross Reference Entities: </label>
-        <textarea class="content" ref="taRE" v-model="refEntities" placeholder="cross reference entities" :disabled="disTaRE" :title="tipTaRE" wrap="off"></textarea>
+        <select v-if="options_aeo?.length > 0" v-model="refEntities_oneElem" :disabled="disSelRE" :title="tipSelRE" @change="switchRE" class="dropdown-list">
+            <option value="">--- empty ---</option>
+            <option v-for="(item, idx) in options_aeo" :key="idx" :value="item"> {{ item }}</option>
+        </select>
+        <button class="less-editor-dropdownlist" @click="onMoreLessClick('-re')">
+            <font-awesome-icon icon="circle-minus" />
+        </button>
+        <button class="more-editor-dropdownlist" @click="onMoreLessClick('+re')">
+            <font-awesome-icon icon="circle-plus" />
+        </button>
     </div>
+    <div class="lbl-ex"> {{ showRefEntities }} </div>
 
 </template>
 
@@ -38,70 +54,57 @@ import { jsonEnt } from "@/share/EntType";
 import { fitTextarea, UnionArrays } from "@/share/util";
 import { getListItemType, itemCat, getListItem } from "@/share/share"
 
-const type = ref("");
-const superClass = ref("");
-const isAttrOf = ref("");
-const refEntities = ref("");
-
-const taAO = ref<HTMLTextAreaElement | null>(null);
-const taRE = ref<HTMLTextAreaElement | null>(null);
+const type = ref("");                // meta Type value
+const superClass = ref("");          // meta SuperClass value
+const isAttrOf = ref("");            // meta IsAttributeOf value
+const isAttrOf_oneElem = ref("");    // one element value for dropdown list
+const refEntities = ref("");         // meta CrossRefEntities value
+const refEntities_oneElem = ref(""); // one element value for dropdown list
 
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 
-const disTaSC = computed(() => jsonEnt.Entity.includes('=>'));
-const disTaAO = computed(() => jsonEnt.Entity.includes('=>'));
-const disTaRE = computed(() => jsonEnt.Entity.includes('=>'));
+const disRbType = computed(() => jsonEnt.Entity.includes('=>'));
+const disSelSC = computed(() => jsonEnt.Entity.includes('=>'));
+const disSelAO = computed(() => jsonEnt.Entity.includes('=>'));
+const disSelRE = computed(() => jsonEnt.Entity.includes('=>'));
 
-const tipTaSC = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name is on changing stage, [SuperClass] cannot be edited' : '');
-const tipTaAO = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name is on changing stage, [IsAttributeOf] cannot be edited' : '');
-const tipTaRE = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name is on changing stage, [CrossRefEntities] cannot be edited' : '');
+const tipSelSC = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name is on changing stage, [SuperClass] cannot be edited' : '');
+const tipSelAO = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name is on changing stage, [IsAttributeOf] cannot be edited' : '');
+const tipSelRE = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name is on changing stage, [CrossRefEntities] cannot be edited' : '');
 
-const choices = ref();
+const choicesType = ref();
 
-const drop_list_e = ref();
-const drop_list_a = ref();
-const drop_list_o = ref();
-const drop_list_c = ref();
-const drop_list_ae = ref();
-const drop_list_aeo = ref();
+const options_e = ref();
+const options_a = ref();
+const options_o = ref();
+const options_c = ref();
+const options_ae = ref();
+const options_aeo = ref();
 
-const scSelect = ref(null);
-const switchSC = (event: any) => {
-    if (event.target.value != "-1") {
-        alert(event.target.value)
-
-        // const select = scSelect.value as HTMLSelectElement | null;
-        // if (select != null) {
-        //     select.selectedIndex = 0;
-        // }
-    }
-}
-
+const switchSC = () => { }
+const switchAO = () => { }
+const switchRE = () => { }
 
 onMounted(async () => {
 
     const meta = jsonEnt.Metadata;
 
-    // textarea
+    // init model variables
     type.value = meta.Type;
     superClass.value = meta.SuperClass;
     isAttrOf.value = meta.IsAttributeOf != null ? meta.IsAttributeOf.join("\n") : "";
     refEntities.value = meta.CrossRefEntities != null ? meta.CrossRefEntities.join("\n") : "";
 
     // 'Type' radio button choices
-    choices.value = (await getListItemType(itemCat.value)).data as string[];
+    choicesType.value = (await getListItemType(itemCat.value)).data as string[];
 
     // dropdown list
-    drop_list_a.value = ((await getListItem('abstract')).data as string[]).sort((a, b) => a.localeCompare(b));
-    drop_list_e.value = ((await getListItem('element')).data as string[]).sort((a, b) => a.localeCompare(b));
-    drop_list_o.value = ((await getListItem('object')).data as string[]).sort((a, b) => a.localeCompare(b));
-    drop_list_c.value = ((await getListItem('collection')).data as string[]).sort((a, b) => a.localeCompare(b));
-    drop_list_ae.value = (UnionArrays(drop_list_a.value, drop_list_e.value) as string[]).sort((a, b) => a.localeCompare(b));;
-    drop_list_aeo.value = (UnionArrays(drop_list_a.value, drop_list_e.value, drop_list_o.value) as string[]).sort((a, b) => a.localeCompare(b));
-
-    // set original textarea height
-    fitTextarea(taAO.value!, isAttrOf.value);
-    fitTextarea(taRE.value!, refEntities.value);
+    options_a.value = ((await getListItem('abstract')).data as string[]).sort((a, b) => a.localeCompare(b));
+    options_e.value = ((await getListItem('element')).data as string[]).sort((a, b) => a.localeCompare(b));
+    options_o.value = ((await getListItem('object')).data as string[]).sort((a, b) => a.localeCompare(b));
+    options_c.value = ((await getListItem('collection')).data as string[]).sort((a, b) => a.localeCompare(b));
+    options_ae.value = (UnionArrays(options_a.value, options_e.value) as string[]).sort((a, b) => a.localeCompare(b));;
+    options_aeo.value = (UnionArrays(options_a.value, options_e.value, options_o.value) as string[]).sort((a, b) => a.localeCompare(b));
 
     mounted = true;
 });
@@ -115,12 +118,63 @@ watchEffect(() => {
 
     if (mounted) {
         jsonEnt.SetMeta(tp, sc, ao, re);
-        fitTextarea(taAO.value!, ao);
-        fitTextarea(taRE.value!, re);
     }
 });
 
+const showIsAttrOf = computed(() => isAttrOf.value.split("\n").filter((p) => p.trim().length > 0).join(", "))
+const showRefEntities = computed(() => refEntities.value.split("\n").filter((p) => p.trim().length > 0).join(", "))
+
 const select = () => { };
+
+const onMoreLessClick = (type: string) => {
+    switch (type) {
+        case "+ao":
+            {
+                const newElem = isAttrOf_oneElem.value;
+                if (newElem.length > 0) {
+                    if (!isAttrOf.value.split("\n").includes(newElem)) {
+                        isAttrOf.value += "\n" + newElem;
+                        isAttrOf_oneElem.value = ""
+                    }
+                }
+            }
+            break;
+
+        case "-ao":
+            {
+                const elems = isAttrOf.value.split("\n");
+                if (elems.length >= 1) {
+                    isAttrOf.value = elems.slice(0, -1).join("\n");
+                    isAttrOf_oneElem.value = ""
+                }
+            }
+            break;
+
+        case "+re":
+            {
+                const newElem = refEntities_oneElem.value;
+                if (newElem.length > 0) {
+                    if (!refEntities.value.split("\n").includes(newElem)) {
+                        refEntities.value += "\n" + newElem;
+                        refEntities_oneElem.value = ""
+                    }
+                }
+            }
+            break;
+
+        case "-re":
+            {
+                const elems = refEntities.value.split("\n");
+                if (elems.length >= 1) {
+                    refEntities.value = elems.slice(0, -1).join("\n");
+                    refEntities_oneElem.value = ""
+                }
+            }
+            break;
+
+        default:
+    }
+};
 
 </script>
 
@@ -132,6 +186,12 @@ const select = () => { };
     font-weight: bold;
 }
 
+.lbl-ex {
+    position: relative;
+    left: 5%;
+    margin-top: 20px;
+}
+
 #type-lbl {
     margin-right: 50px;
 }
@@ -139,5 +199,10 @@ const select = () => { };
 .type-input {
     margin-left: 20px;
     font-weight: normal;
+}
+
+.dropdown-list {
+    position: absolute;
+    left: 13%;
 }
 </style>
