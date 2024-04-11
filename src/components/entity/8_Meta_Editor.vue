@@ -2,49 +2,47 @@
 
     <div class="lbl">
         <label id="type-lbl">Type:</label>
-        <span v-for="choice in choicesType" class="type-input">
-            <input v-model="type" type="radio" name="type" :value="choice" @change="select" :disabled="disRbType" />
-            <label>{{ choice }}</label>
+        <span class="rb-selection-area">
+            <span v-for="choice in choicesType" class="rb-each">
+                <input v-model="type" type="radio" name="type" :value="choice" @change="select" :disabled="disRbType" />
+                <label>{{ choice }}</label>
+            </span>
         </span>
     </div>
 
     <div class="lbl">
         <label> Super Class: </label>
-        <select v-if="options_ae?.length > 0" v-model="superClass" :disabled="disSelSC" :title="tipSelSC" @change="switchSC" class="dropdown-list">
-            <option value="">--- empty ---</option>
-            <option v-for="(item, idx) in options_ae" :key="idx" :value="item"> {{ item }}</option>
-        </select>
+        <div class="area-dropdown-list">
+            <select v-model="superClass" :disabled="disSelSC" :title="tipSelSC" @change="switchSC" class="dropdown-list">
+                <option value="">--- empty ---</option>
+                <option v-for="(item, idx) in options_SC" :key="idx" :value="item"> {{ item }}</option>
+            </select>
+        </div>
     </div>
 
     <div class="lbl">
+        <button class="less-editor-dropdownlist" @click="onMoreLessClick('-ao')"> <font-awesome-icon icon="circle-minus" /> </button>
+        <button class="more-editor-dropdownlist" @click="onMoreLessClick('+ao')"> <font-awesome-icon icon="circle-plus" /> </button>
         <label> Is Attribute Of: </label>
-        <select v-if="options_o?.length > 0" v-model="isAttrOf_oneElem" :disabled="disSelAO" :title="tipSelAO" @change="switchAO" class="dropdown-list">
-            <option value="">--- empty ---</option>
-            <option v-for="(item, idx) in options_o" :key="idx" :value="item"> {{ item }}</option>
-        </select>
-        <button class="less-editor-dropdownlist" @click="onMoreLessClick('-ao')">
-            <font-awesome-icon icon="circle-minus" />
-        </button>
-        <button class="more-editor-dropdownlist" @click="onMoreLessClick('+ao')">
-            <font-awesome-icon icon="circle-plus" />
-        </button>
+        <div v-for="n in N_AO" :key="n" class="area-dropdown-list">
+            <select v-model="isAttrOf_one[n]" :disabled="disSelAO" :title="tipSelAO" @change="switchAO" class="dropdown-list">
+                <option value="">--- empty ---</option>
+                <option v-for="(item, idx) in options_AO" :key="idx" :value="item"> {{ item }}</option>
+            </select>
+        </div>
     </div>
-    <div class="lbl-ex"> {{ showIsAttrOf }} </div>
 
     <div class="lbl">
+        <button class="less-editor-dropdownlist" @click="onMoreLessClick('-re')"> <font-awesome-icon icon="circle-minus" /> </button>
+        <button class="more-editor-dropdownlist" @click="onMoreLessClick('+re')"> <font-awesome-icon icon="circle-plus" /> </button>
         <label> Cross Reference Entities: </label>
-        <select v-if="options_aeo?.length > 0" v-model="refEntities_oneElem" :disabled="disSelRE" :title="tipSelRE" @change="switchRE" class="dropdown-list">
-            <option value="">--- empty ---</option>
-            <option v-for="(item, idx) in options_aeo" :key="idx" :value="item"> {{ item }}</option>
-        </select>
-        <button class="less-editor-dropdownlist" @click="onMoreLessClick('-re')">
-            <font-awesome-icon icon="circle-minus" />
-        </button>
-        <button class="more-editor-dropdownlist" @click="onMoreLessClick('+re')">
-            <font-awesome-icon icon="circle-plus" />
-        </button>
+        <div v-for="n in N_RE" :key="n" class="area-dropdown-list">
+            <select v-model="refEntities_one[n]" :disabled="disSelRE" :title="tipSelRE" @change="switchRE" class="dropdown-list">
+                <option value="">--- empty ---</option>
+                <option v-for="(item, idx) in options_RE" :key="idx" :value="item"> {{ item }}</option>
+            </select>
+        </div>
     </div>
-    <div class="lbl-ex"> {{ showRefEntities }} </div>
 
 </template>
 
@@ -54,12 +52,13 @@ import { jsonEnt } from "@/share/EntType";
 import { fitTextarea, UnionArrays } from "@/share/util";
 import { getListItemType, itemCat, getListItem } from "@/share/share"
 
-const type = ref("");                // meta Type value
-const superClass = ref("");          // meta SuperClass value
-const isAttrOf = ref("");            // meta IsAttributeOf value
-const isAttrOf_oneElem = ref("");    // one element value for dropdown list
-const refEntities = ref("");         // meta CrossRefEntities value
-const refEntities_oneElem = ref(""); // one element value for dropdown list
+const type = ref("");          // meta Type value
+const superClass = ref("");    // meta SuperClass value
+const isAttrOf = ref("");      // meta IsAttributeOf value
+const refEntities = ref("");   // meta CrossRefEntities value
+
+const isAttrOf_one = ref([]);    // one element value list for multiple dropdown lists
+const refEntities_one = ref([]); // one element value list for multiple dropdown lists
 
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 
@@ -81,9 +80,44 @@ const options_c = ref();
 const options_ae = ref();
 const options_aeo = ref();
 
+const options_SC = computed(() => {
+    switch (type.value) {
+        case "Abstract Element":
+            return options_a.value;
+        case "Element":
+            return options_ae.value;
+        case "Object":
+            return options_o.value;
+        default:
+            return options_aeo.value;
+    }
+});
+
+const options_AO = computed(() => {
+    return options_o.value;
+});
+
+const options_RE = computed(() => {
+    return options_aeo.value;
+});
+
 const switchSC = () => { }
-const switchAO = () => { }
-const switchRE = () => { }
+const switchAO = () => {
+    const selected = (isAttrOf_one.value as string[]);
+    const sel_prev = selected.slice(0, -1);
+    const sel_last = selected[N_AO.value]
+    if (sel_prev.length > 1 && sel_prev.includes(sel_last)) {
+        (isAttrOf_one.value as string[])[N_AO.value] = ""
+    }
+}
+const switchRE = () => {
+    const selected = (refEntities_one.value as string[]);
+    const sel_prev = selected.slice(0, -1);
+    const sel_last = selected[N_RE.value]
+    if (sel_prev.length > 1 && sel_prev.includes(sel_last)) {
+        (refEntities_one.value as string[])[N_RE.value] = ""
+    }
+}
 
 onMounted(async () => {
 
@@ -111,6 +145,9 @@ onMounted(async () => {
 
 watchEffect(() => {
 
+    isAttrOf.value = isAttrOf_one.value.join("\n")
+    refEntities.value = refEntities_one.value.join("\n");
+
     const tp = type.value;
     const sc = superClass.value;
     const ao = isAttrOf.value;
@@ -121,53 +158,47 @@ watchEffect(() => {
     }
 });
 
-const showIsAttrOf = computed(() => isAttrOf.value.split("\n").filter((p) => p.trim().length > 0).join(", "))
-const showRefEntities = computed(() => refEntities.value.split("\n").filter((p) => p.trim().length > 0).join(", "))
+const select = () => {
+    superClass.value = ""
+};
 
-const select = () => { };
+const N_AO = ref(1);
+const N_RE = ref(1);
 
 const onMoreLessClick = (type: string) => {
     switch (type) {
         case "+ao":
             {
-                const newElem = isAttrOf_oneElem.value;
-                if (newElem.length > 0) {
-                    if (!isAttrOf.value.split("\n").includes(newElem)) {
-                        isAttrOf.value += "\n" + newElem;
-                        isAttrOf_oneElem.value = ""
-                    }
+                if ((isAttrOf_one.value[N_AO.value] as string).length > 0) {
+                    N_AO.value++;
+                    (isAttrOf_one.value[N_AO.value] as string) = ""
                 }
             }
             break;
 
         case "-ao":
             {
-                const elems = isAttrOf.value.split("\n");
-                if (elems.length >= 1) {
-                    isAttrOf.value = elems.slice(0, -1).join("\n");
-                    isAttrOf_oneElem.value = ""
+                if (N_AO.value > 1) {
+                    N_AO.value--;
+                    isAttrOf_one.value.pop();
                 }
             }
             break;
 
         case "+re":
             {
-                const newElem = refEntities_oneElem.value;
-                if (newElem.length > 0) {
-                    if (!refEntities.value.split("\n").includes(newElem)) {
-                        refEntities.value += "\n" + newElem;
-                        refEntities_oneElem.value = ""
-                    }
+                if ((refEntities_one.value[N_RE.value] as string).length > 0) {
+                    N_RE.value++;
+                    (refEntities_one.value[N_RE.value] as string) = ""
                 }
             }
             break;
 
         case "-re":
             {
-                const elems = refEntities.value.split("\n");
-                if (elems.length >= 1) {
-                    refEntities.value = elems.slice(0, -1).join("\n");
-                    refEntities_oneElem.value = ""
+                if (N_RE.value > 1) {
+                    N_RE.value--;
+                    refEntities_one.value.pop();
                 }
             }
             break;
@@ -196,13 +227,24 @@ const onMoreLessClick = (type: string) => {
     margin-right: 50px;
 }
 
-.type-input {
-    margin-left: 20px;
-    font-weight: normal;
+.rb-selection-area {
+    position: absolute;
+    left: 13%;
+}
+
+.rb-each {
+    margin-right: 12px;
+    font-weight: bold;
 }
 
 .dropdown-list {
-    position: absolute;
+    position: relative;
     left: 13%;
+    padding: 5px 5px 5px 5px;
+}
+
+.area-dropdown-list {
+    position: relative;
+    left: 10%;
 }
 </style>

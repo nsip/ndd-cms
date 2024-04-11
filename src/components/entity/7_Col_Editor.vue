@@ -1,8 +1,12 @@
 <template>
 
-    <!-- dropdown -->
-    <TextLine text="name:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
-    <input type="text" class="content" ref="taN" v-model="name" placeholder="name" />
+    <div class="lbl">
+        <label> name: </label>
+        <select v-if="options_c?.length > 0" v-model="name" class="dropdown-list">
+            <option value="">--- empty ---</option>
+            <option v-for="(item, idx) in options_c" :key="idx" :value="item"> {{ item }}</option>
+        </select>
+    </div>
 
     <TextLine text="description:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="description" @ready="onReadyDes" @textChange="textChangeDes(idx || 0)" />
@@ -35,6 +39,9 @@ import "@vueup/vue-quill/dist/vue-quill.bubble.css";
 import { jsonEnt } from "@/share/EntType";
 import TextLine from "@/components/TextLine.vue";
 import { fitTextarea } from "@/share/util";
+import { getListItem } from "@/share/share"
+
+const options_c = ref();
 
 const name = ref("");
 const standard = ref("");
@@ -58,6 +65,9 @@ const props = defineProps({
 })
 
 onMounted(async () => {
+
+    options_c.value = ((await getListItem('collection')).data as string[]).sort((a, b) => a.localeCompare(b));
+
     const col = jsonEnt.Collections[props.idx || 0];
     if (col != undefined && col != null) {
 
@@ -135,5 +145,17 @@ const textChangeVal = (idx: number) => {
 <style scoped>
 .sub-title {
     font-weight: bold;
+}
+
+.lbl {
+    margin-top: 20px;
+    margin-left: 20px;
+    font-weight: bold;
+}
+
+.dropdown-list {
+    position: relative;
+    left: 5%;
+    padding: 5px 5px 5px 5px;
 }
 </style>
