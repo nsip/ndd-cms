@@ -22,8 +22,8 @@ const title = Mode.value == "edit" ? `${cat} Edit` : `New ${cat}`;
 <style scoped>
 .title {
     float: center;
-    text-align: center;
-    font-size: 160%;
+    text-align: left;
+    font-size: 120%;
     font-weight: bold;
     margin-left: 0.5%;
 }

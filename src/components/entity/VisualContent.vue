@@ -5,7 +5,7 @@
 <script setup lang="ts">
 
 import { jsonEnt } from "@/share/EntType";
-import { padStartSpaceP, isHTMLStr, hasSomeValue, isSomeValue } from "@/share/util";
+import { isHTMLStr, hasSomeValue, isSomeValue } from "@/share/util";
 
 const field_title_html = (label: string) => {
     return `<h4 style='font-size:large; font-style:italic; background-color: darkgray'><pre>  ${label}  </pre></h4>`
@@ -17,13 +17,19 @@ const field_subtitle_html = (label: string) => {
 }
 
 const field_value_html = (value: any) => {
+
+    let spaces = ""
+    for (let i = 0; i < 4; i++) {
+        spaces += "&nbsp;"
+    }
+
     if (!isHTMLStr(`${value}`)) {
         if (Array.isArray(value) && value.length > 0) {
             const elems: string[] = [];
-            value.forEach(e => { elems.push(padStartSpaceP(`<p>${e}</p>`, 8)) })
+            value.forEach(e => { elems.push(`<p style="white-space: nowrap;"> ${spaces} ${e}</p>`) })
             return elems.join("")
         } else if (value.length > 0) {
-            return padStartSpaceP(`<p>${value}</p>`, 8)
+            return `<p style="white-space: nowrap;"> ${spaces} ${value}</p>`
         } else {
             return ""
         }
@@ -56,6 +62,10 @@ const prevOtherNames = () => {
     return field_title_html('Other Names') + field_value_html(jsonEnt.OtherNames);
 };
 
+const prevValues = () => {
+    return field_title_html('Values') + field_value_html(jsonEnt.Values);
+};
+
 const prevDefinition = () => {
     let rt = field_title_html('Definition');
     const n = jsonEnt.CntDef();
@@ -63,8 +73,8 @@ const prevDefinition = () => {
     for (let i = 0; i < n; i++) {
         const sub_obj = jsonEnt.Definition[i];
         let sub_str = "";
-        sub_str += hasSomeValue(sub_obj, "Text") ? field_subtitle_html('text') + field_value_html(sub_obj.Text) : ""
         sub_str += hasSomeValue(sub_obj, "Scope") ? field_subtitle_html('scope') + field_value_html(sub_obj.Scope) : ""
+        sub_str += hasSomeValue(sub_obj, "Text") ? field_subtitle_html('text') + field_value_html(sub_obj.Text) : ""
         elems.push(sub_str);
     }
     rt += elems.join(field_sep_line());
@@ -150,8 +160,10 @@ const prevCollections = () => {
         let sub_str = "";
         sub_str += hasSomeValue(sub_obj, "Name") ? field_subtitle_html('name') + field_value_html(sub_obj.Name) : ""
         sub_str += hasSomeValue(sub_obj, "Description") ? field_subtitle_html('description') + field_value_html(sub_obj.Description) : ""
+        sub_str += hasSomeValue(sub_obj, "ElementName") ? field_subtitle_html('element name') + field_value_html(sub_obj.ElementName) : ""
         sub_str += hasSomeValue(sub_obj, "Standard") ? field_subtitle_html('standard') + field_value_html(sub_obj.Standard) : ""
         sub_str += hasSomeValue(sub_obj, "Elements") ? field_subtitle_html('elements') + field_value_html(sub_obj.Elements) : ""
+        sub_str += hasSomeValue(sub_obj, "Values") ? field_subtitle_html('values') + field_value_html(sub_obj.Values) : ""
         sub_str += hasSomeValue(sub_obj, "BusinessRules") ? field_subtitle_html('business rules') + field_value_html(sub_obj.BusinessRules) : ""
         sub_str += hasSomeValue(sub_obj, "DefinitionModification") ? field_subtitle_html('definition modification') + field_value_html(sub_obj.DefinitionModification) : ""
         elems.push(sub_str);
@@ -177,6 +189,7 @@ const wholeContent = () => {
     return (
         prevEntity() +
         prevOtherNames() +
+        prevValues() +
         prevDefinition() +
         prevSIF() +
         prevOtherStandards() +

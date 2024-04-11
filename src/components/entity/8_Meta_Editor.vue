@@ -1,0 +1,250 @@
+<template>
+
+    <div class="lbl">
+        <label id="type-lbl">Type:</label>
+        <span class="rb-selection-area">
+            <span v-for="choice in choicesType" class="rb-each">
+                <input v-model="type" type="radio" name="type" :value="choice" @change="select" :disabled="disRbType" />
+                <label>{{ choice }}</label>
+            </span>
+        </span>
+    </div>
+
+    <div class="lbl">
+        <label> Super Class: </label>
+        <div class="area-dropdown-list">
+            <select v-model="superClass" :disabled="disSelSC" :title="tipSelSC" @change="switchSC" class="dropdown-list">
+                <option value="">--- empty ---</option>
+                <option v-for="(item, idx) in options_SC" :key="idx" :value="item"> {{ item }}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="lbl">
+        <button class="less-editor-dropdownlist" @click="onMoreLessClick('-ao')"> <font-awesome-icon icon="circle-minus" /> </button>
+        <button class="more-editor-dropdownlist" @click="onMoreLessClick('+ao')"> <font-awesome-icon icon="circle-plus" /> </button>
+        <label> Is Attribute Of: </label>
+        <div v-for="n in N_AO" :key="n" class="area-dropdown-list">
+            <select v-model="isAttrOf_one[n]" :disabled="disSelAO" :title="tipSelAO" @change="switchAO" class="dropdown-list">
+                <option value="">--- empty ---</option>
+                <option v-for="(item, idx) in options_AO" :key="idx" :value="item"> {{ item }}</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="lbl">
+        <button class="less-editor-dropdownlist" @click="onMoreLessClick('-re')"> <font-awesome-icon icon="circle-minus" /> </button>
+        <button class="more-editor-dropdownlist" @click="onMoreLessClick('+re')"> <font-awesome-icon icon="circle-plus" /> </button>
+        <label> Cross Reference Entities: </label>
+        <div v-for="n in N_RE" :key="n" class="area-dropdown-list">
+            <select v-model="refEntities_one[n]" :disabled="disSelRE" :title="tipSelRE" @change="switchRE" class="dropdown-list">
+                <option value="">--- empty ---</option>
+                <option v-for="(item, idx) in options_RE" :key="idx" :value="item"> {{ item }}</option>
+            </select>
+        </div>
+    </div>
+
+</template>
+
+<script setup lang="ts">
+
+import { jsonEnt } from "@/share/EntType";
+import { fitTextarea, UnionArrays } from "@/share/util";
+import { getListItemType, itemCat, getListItem } from "@/share/share"
+
+const type = ref("");          // meta Type value
+const superClass = ref("");    // meta SuperClass value
+const isAttrOf = ref("");      // meta IsAttributeOf value
+const refEntities = ref("");   // meta CrossRefEntities value
+
+const isAttrOf_one = ref([]);    // one element value list for multiple dropdown lists
+const refEntities_one = ref([]); // one element value list for multiple dropdown lists
+
+let mounted = false; // flag: let 'watchEffect' after 'onMounted'
+
+const disRbType = computed(() => jsonEnt.Entity.includes('=>'));
+const disSelSC = computed(() => jsonEnt.Entity.includes('=>'));
+const disSelAO = computed(() => jsonEnt.Entity.includes('=>'));
+const disSelRE = computed(() => jsonEnt.Entity.includes('=>'));
+
+const tipSelSC = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name is on changing stage, [SuperClass] cannot be edited' : '');
+const tipSelAO = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name is on changing stage, [IsAttributeOf] cannot be edited' : '');
+const tipSelRE = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name is on changing stage, [CrossRefEntities] cannot be edited' : '');
+
+const choicesType = ref();
+
+const options_e = ref();
+const options_a = ref();
+const options_o = ref();
+const options_c = ref();
+const options_ae = ref();
+const options_aeo = ref();
+
+const options_SC = computed(() => {
+    switch (type.value) {
+        case "Abstract Element":
+            return options_a.value;
+        case "Element":
+            return options_ae.value;
+        case "Object":
+            return options_o.value;
+        default:
+            return options_aeo.value;
+    }
+});
+
+const options_AO = computed(() => {
+    return options_o.value;
+});
+
+const options_RE = computed(() => {
+    return options_aeo.value;
+});
+
+const switchSC = () => { }
+const switchAO = () => {
+    const selected = (isAttrOf_one.value as string[]);
+    const sel_prev = selected.slice(0, -1);
+    const sel_last = selected[N_AO.value]
+    if (sel_prev.length > 1 && sel_prev.includes(sel_last)) {
+        (isAttrOf_one.value as string[])[N_AO.value] = ""
+    }
+}
+const switchRE = () => {
+    const selected = (refEntities_one.value as string[]);
+    const sel_prev = selected.slice(0, -1);
+    const sel_last = selected[N_RE.value]
+    if (sel_prev.length > 1 && sel_prev.includes(sel_last)) {
+        (refEntities_one.value as string[])[N_RE.value] = ""
+    }
+}
+
+onMounted(async () => {
+
+    const meta = jsonEnt.Metadata;
+
+    // init model variables
+    type.value = meta.Type;
+    superClass.value = meta.SuperClass;
+    isAttrOf.value = meta.IsAttributeOf != null ? meta.IsAttributeOf.join("\n") : "";
+    refEntities.value = meta.CrossRefEntities != null ? meta.CrossRefEntities.join("\n") : "";
+
+    // 'Type' radio button choices
+    choicesType.value = (await getListItemType(itemCat.value)).data as string[];
+
+    // dropdown list
+    options_a.value = ((await getListItem('abstract')).data as string[]).sort((a, b) => a.localeCompare(b));
+    options_e.value = ((await getListItem('element')).data as string[]).sort((a, b) => a.localeCompare(b));
+    options_o.value = ((await getListItem('object')).data as string[]).sort((a, b) => a.localeCompare(b));
+    options_c.value = ((await getListItem('collection')).data as string[]).sort((a, b) => a.localeCompare(b));
+    options_ae.value = (UnionArrays(options_a.value, options_e.value) as string[]).sort((a, b) => a.localeCompare(b));;
+    options_aeo.value = (UnionArrays(options_a.value, options_e.value, options_o.value) as string[]).sort((a, b) => a.localeCompare(b));
+
+    mounted = true;
+});
+
+watchEffect(() => {
+
+    isAttrOf.value = isAttrOf_one.value.join("\n")
+    refEntities.value = refEntities_one.value.join("\n");
+
+    const tp = type.value;
+    const sc = superClass.value;
+    const ao = isAttrOf.value;
+    const re = refEntities.value;
+
+    if (mounted) {
+        jsonEnt.SetMeta(tp, sc, ao, re);
+    }
+});
+
+const select = () => {
+    superClass.value = ""
+};
+
+const N_AO = ref(1);
+const N_RE = ref(1);
+
+const onMoreLessClick = (type: string) => {
+    switch (type) {
+        case "+ao":
+            {
+                if ((isAttrOf_one.value[N_AO.value] as string).length > 0) {
+                    N_AO.value++;
+                    (isAttrOf_one.value[N_AO.value] as string) = ""
+                }
+            }
+            break;
+
+        case "-ao":
+            {
+                if (N_AO.value > 1) {
+                    N_AO.value--;
+                    isAttrOf_one.value.pop();
+                }
+            }
+            break;
+
+        case "+re":
+            {
+                if ((refEntities_one.value[N_RE.value] as string).length > 0) {
+                    N_RE.value++;
+                    (refEntities_one.value[N_RE.value] as string) = ""
+                }
+            }
+            break;
+
+        case "-re":
+            {
+                if (N_RE.value > 1) {
+                    N_RE.value--;
+                    refEntities_one.value.pop();
+                }
+            }
+            break;
+
+        default:
+    }
+};
+
+</script>
+
+<!-- Add "scoped" attribute to limit CSS to this component only -->
+<style scoped>
+.lbl {
+    margin-top: 20px;
+    margin-left: 20px;
+    font-weight: bold;
+}
+
+.lbl-ex {
+    position: relative;
+    left: 5%;
+    margin-top: 20px;
+}
+
+#type-lbl {
+    margin-right: 50px;
+}
+
+.rb-selection-area {
+    position: absolute;
+    left: 13%;
+}
+
+.rb-each {
+    margin-right: 12px;
+    font-weight: bold;
+}
+
+.dropdown-list {
+    position: relative;
+    left: 13%;
+    padding: 5px 5px 5px 5px;
+}
+
+.area-dropdown-list {
+    position: relative;
+    left: 10%;
+}
+</style>

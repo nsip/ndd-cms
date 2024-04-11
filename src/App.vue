@@ -111,6 +111,7 @@ onMounted(async () => {
                         const entity = JSON.parse(de.data!);
 
                         jsonEnt.SetName(entity.Entity);
+                        jsonEnt.SetValues(entity.Values);
                         jsonEnt.AssignOtherNames(entity.OtherNames);
                         jsonEnt.AssignDef(entity.Definition);
                         jsonEnt.AssignSIF(entity.SIF);
@@ -172,20 +173,22 @@ onMounted(async () => {
 
 /* layout */
 
+html,
+body {
+    margin-top: 0.5vh;
+    overflow: hidden
+}
+
 #container {
     height: 100%;
     width: 100%;
     display: flex;
-    /* margin-top: -10px; */
 }
 
 #left {
-    width: 50%;
+    width: 54%;
     margin-right: 0.4%;
-    overflow: scroll;
     scrollbar-width: none;
-    /*   display: flex;
-flex-direction: column; */
 }
 
 #left::-webkit-scrollbar {
@@ -193,13 +196,10 @@ flex-direction: column; */
 }
 
 #right {
-    width: 50%;
+    width: 46%;
     margin-left: 0.4%;
     background-color: rgb(220, 220, 220);
-    overflow: scroll;
     scrollbar-width: none;
-    /*overflow-y: scroll;
-background-color: rgb(220, 220, 220); */
 }
 
 #right::-webkit-scrollbar {
@@ -292,6 +292,26 @@ border-bottom: 1px dotted black; */
     border: none;
 }
 
+.more-editor-dropdownlist {
+    font-size: medium;
+    color: red;
+    background-color: white;
+    float: right;
+    margin-right: 1px;
+    width: 22px;
+    border: none;
+}
+
+.less-editor-dropdownlist {
+    font-size: medium;
+    color: green;
+    background-color: white;
+    float: right;
+    margin-right: 1px;
+    width: 22px;
+    border: none;
+}
+
 .hide-editor {
     font-size: medium;
     float: right;
@@ -313,6 +333,14 @@ border-bottom: 1px dotted black; */
     height: 24px;
     min-height: 24px;
     line-height: 20px;
-    text-align: center;
+    text-align: left;
+}
+
+.block-bg-odd {
+    background-color: rgb(232, 243, 247);
+}
+
+.block-bg-even {
+    background-color: rgb(247, 247, 241);
 }
 </style>

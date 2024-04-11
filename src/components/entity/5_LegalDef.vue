@@ -6,10 +6,10 @@
         <button class="more-editor" @click="onMoreLessClick('+')">
             <font-awesome-icon icon="circle-plus" />
         </button>
-        <div v-for="(n, i) in nEditor" :key="i">
+        <div v-for="(n, i) in nEditor" :key="i" :class="i % 2 == 1 ? 'block-bg-odd' : 'block-bg-even'">
             <br>
-            <TextLine :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="3px" />
-            <EditorOtherStd :idx="i" />
+            <TextLine v-if="nEditor > 1" :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="3px" />
+            <EditorLegDef :idx="i" />
         </div>
     </div>
 </template>
@@ -20,7 +20,7 @@ import { notify } from "@kyvg/vue3-notification";
 import { jsonEnt } from "@/share/EntType";
 import { itemName, itemCat } from "@/share/share";
 import TextLine from "@/components/TextLine.vue";
-import EditorOtherStd from "@/components/entity/5_OtherStd_Editor.vue";
+import EditorLegDef from "@/components/entity/5_LegalDef_Editor.vue";
 
 const nEditor = ref(0);
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
@@ -34,10 +34,10 @@ onMounted(async () => {
 
     // edit existing item
     if (itemName.value?.length > 0 && itemCat.value?.length > 0) {
-        if (jsonEnt.OtherStandards.length > 0) {
-            nEditor.value = jsonEnt.OtherStandards.length;
+        if (jsonEnt.LegalDefinitions.length > 0) {
+            nEditor.value = jsonEnt.LegalDefinitions.length;
         } else {
-            jsonEnt.AddOtherStd();
+            jsonEnt.AddLegalDef();
             nEditor.value = 1
         }
     }
@@ -49,17 +49,17 @@ const onMoreLessClick = (type: string) => {
     switch (type) {
         case "+":
             {
-                if (jsonEnt.IsLastOtherStdEmpty()) {
+                if (jsonEnt.IsLastLegalDefEmpty()) {
                     notify({
                         title: "Note",
-                        text: "please use available editor(s). if hidden, unfold it",
+                        text: "use current blank editor(s). if hidden, unfold it",
                         type: "warn"
                     })
                     break;
                 }
 
-                // add new OtherStandard element in json
-                jsonEnt.AddOtherStd();
+                // add new LegalDefinition element in json
+                jsonEnt.AddLegalDef();
                 nEditor.value++;
             }
             break;
@@ -75,15 +75,13 @@ const onMoreLessClick = (type: string) => {
                     break;
                 }
 
-                // remove last OtherStandard element in json
-                jsonEnt.RmOtherStdLast();
+                // remove last LegalDefinition element in json
+                jsonEnt.RmLegalDefLast();
                 nEditor.value--;
             }
             break;
-
         default:
     }
-    // console.log('editor count:', nEditor.value)
 };
 
 </script>

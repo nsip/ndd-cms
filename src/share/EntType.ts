@@ -4,6 +4,7 @@ export class EntType {
 
     Entity = "";
     OtherNames: string[] = [];
+    Values = "";
     Definition: defType[] = [new defType()];
     SIF: sifType[] = [new sifType()];
     OtherStandards: otherStdType[] = [new otherStdType()];
@@ -39,6 +40,14 @@ export class EntType {
 
     CntOtherName() {
         return this.OtherNames.length;
+    }
+
+    //
+    // Values ---------------------------------------------------
+    //
+
+    SetValues(vStr: string) {
+        this.Values = validStr(vStr, this.Values);
     }
 
     //
@@ -332,7 +341,9 @@ export class EntType {
         standard: string,
         elementStr: string,
         bizruleStr: string,
-        defmod: string
+        defmod: string,
+        elemname: string,
+        values: string
     ) {
         if (this.CntCol() == 0) {
             return
@@ -344,6 +355,8 @@ export class EntType {
         ele.Elements = validStrTEXTArr(elementStr, ele.Elements);
         ele.BusinessRules = validStrHTMLArr(bizruleStr, ele.BusinessRules);
         ele.DefinitionModification = validStr(defmod, ele.DefinitionModification);
+        ele.ElementName = validStr(elemname, ele.ElementName);
+        ele.Values = validStr(values, ele.Values);
     }
 
     CntCol() {
@@ -361,7 +374,9 @@ export class EntType {
             ele.Description.trim().length == 0 &&
             ele.DefinitionModification.trim().length == 0 &&
             ele.Elements.length == 0 &&
-            ele.BusinessRules.length == 0
+            ele.BusinessRules.length == 0 &&
+            ele.ElementName.trim().length == 0 &&
+            ele.Values.length == 0
         );
     }
 
@@ -460,6 +475,8 @@ class colType {
     Elements: string[] = [];
     BusinessRules: string[] = [];
     DefinitionModification = "";
+    ElementName = "";
+    Values = "";
 }
 
 class metaType {

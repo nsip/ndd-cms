@@ -1,11 +1,3 @@
-export const padStartSpaceP = (s: string, n: number) => {
-    let spaces = ""
-    for (let i = 0; i < n; i++) {
-        spaces += "&nbsp;"
-    }
-    return s.replace('<p>', '<p>' + spaces)
-}
-
 export const isHTMLStr = (s: string) => {
     const htmlRegex = /<[a-z][\s\S]*>/i;
     return htmlRegex.test(s);
@@ -177,4 +169,12 @@ export const download_file = (url: string, file_name: string) => {
     document.body.appendChild(anchor);
     anchor.click();
     document.body.removeChild(anchor);
+}
+
+export function UnionArrays<T>(...arrays: T[][]): T[] {
+    const set = new Set<T>();
+    arrays.forEach(arr => {
+        arr.forEach(item => set.add(item));
+    });
+    return Array.from(set);
 }
