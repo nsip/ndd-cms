@@ -1,12 +1,10 @@
 <template>
 
-    <div class="lbl">
-        <label> name: </label>
-        <select v-if="options_c?.length > 0" v-model="name" class="dropdown-list">
-            <option value="">--- empty ---</option>
-            <option v-for="(item, idx) in options_c" :key="idx" :value="item"> {{ item }}</option>
-        </select>
-    </div>
+    <TextLine text="name:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
+    <select v-if="options_c?.length > 0" v-model="name" class="dropdown-list">
+        <option value="">--- empty ---</option>
+        <option v-for="(item, idx) in options_c" :key="idx" :value="item"> {{ item }}</option>
+    </select>
 
     <TextLine text="description:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="description" @ready="onReadyDes" @textChange="textChangeDes(idx || 0)" />
@@ -155,7 +153,7 @@ const textChangeVal = (idx: number) => {
 
 .dropdown-list {
     position: relative;
-    left: 5%;
+    left: 3%;
     padding: 5px 5px 5px 5px;
 }
 </style>
