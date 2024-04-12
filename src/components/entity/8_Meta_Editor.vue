@@ -21,24 +21,24 @@
     </div>
 
     <div class="lbl">
-        <button class="less-editor-dropdownlist" @click="onMoreLessClick('-ao')"> <font-awesome-icon icon="circle-minus" /> </button>
-        <button class="more-editor-dropdownlist" @click="onMoreLessClick('+ao')"> <font-awesome-icon icon="circle-plus" /> </button>
+        <button class="less-editor-dropdownlist" title="remove the last selection" @click="onMoreLessClick('-ao')"> <font-awesome-icon icon="circle-minus" /> </button>
+        <button class="more-editor-dropdownlist" title="add more selection" @click="onMoreLessClick('+ao')"> <font-awesome-icon icon="circle-plus" /> </button>
         <label> Is Attribute Of: </label>
         <div v-for="i in isAttrOf_one.length" :key="i" class="area-dropdown-list">
-            <select v-model="isAttrOf_one[i - 1]" :disabled="disSelAO" :title="tipSelAO" @change="switchAO($event, i - 1)" class="dropdown-list">
-                <option v-if="i == 1" value="">--- EMPTY ---</option>
+            <select :id="'select-ao' + (i - 1)" v-model="isAttrOf_one[i - 1]" :disabled="disSelAO" :title="tipSelAO" @change="switchAO($event, i - 1)" class="dropdown-list">
+                <option value="">--- EMPTY ---</option>
                 <option v-for="(item, idx) in options_AO" :key="idx" :value="item"> {{ item }}</option>
             </select>
         </div>
     </div>
 
     <div class="lbl">
-        <button class="less-editor-dropdownlist" @click="onMoreLessClick('-re')"> <font-awesome-icon icon="circle-minus" /> </button>
-        <button class="more-editor-dropdownlist" @click="onMoreLessClick('+re')"> <font-awesome-icon icon="circle-plus" /> </button>
+        <button class="less-editor-dropdownlist" title="remove the last selection" @click="onMoreLessClick('-re')"> <font-awesome-icon icon="circle-minus" /> </button>
+        <button class="more-editor-dropdownlist" title="add more selection" @click="onMoreLessClick('+re')"> <font-awesome-icon icon="circle-plus" /> </button>
         <label> Cross Reference Entities: </label>
         <div v-for="i in refEntities_one.length" :key="i" class="area-dropdown-list">
-            <select v-model="refEntities_one[i - 1]" :disabled="disSelRE" :title="tipSelRE" @change="switchRE($event, i - 1)" class="dropdown-list">
-                <option v-if="i == 1" value="">--- EMPTY ---</option>
+            <select :id="'select-re' + (i - 1)" v-model="refEntities_one[i - 1]" :disabled="disSelRE" :title="tipSelRE" @change="switchRE($event, i - 1)" class="dropdown-list">
+                <option value="">--- EMPTY ---</option>
                 <option v-for="(item, idx) in options_RE" :key="idx" :value="item"> {{ item }}</option>
             </select>
         </div>
@@ -119,13 +119,13 @@ const switchAO = (event: Event, idx: number) => {
     }
 
     if (sel_prev.length >= 1 && sel_prev.includes(current)) {
-        alert(`${current} already selected`)
+        alert(`'${current}' already selected`)
 
-        isAttrOf_one.value[idx] = "" // doesn't auto select menu option on firefox
+        // firefox cannot auto select by its v-model value, so manually change it
+        const select_ao: HTMLSelectElement = document.getElementById("select-ao" + idx) as HTMLSelectElement;
+        select_ao.selectedIndex = 0;
 
-        // const h = isAttrOf_one.value.slice(0, idx);
-        // const t = isAttrOf_one.value.slice(idx + 1);
-        // isAttrOf_one.value = [...h, ...t];
+        isAttrOf_one.value[idx] = "" //  firefox cannot auto select menu option only by this.
     }
 }
 
@@ -143,13 +143,13 @@ const switchRE = (event: Event, idx: number) => {
     }
 
     if (sel_prev.length >= 1 && sel_prev.includes(current)) {
-        alert(`${current} already selected`)
+        alert(`'${current}' already selected`)
 
-        refEntities_one.value[idx] = "" // doesn't auto select menu option on firefox
+        // firefox cannot auto select by its v-model value, so manually change it
+        const select_re: HTMLSelectElement = document.getElementById("select-re" + idx) as HTMLSelectElement;
+        select_re.selectedIndex = 0;
 
-        // const h = refEntities_one.value.slice(0, idx);
-        // const t = refEntities_one.value.slice(idx + 1);
-        // refEntities_one.value = [...h, ...t];
+        refEntities_one.value[idx] = "" // firefox cannot auto select menu option only by this.
     }
 }
 
@@ -224,6 +224,8 @@ const onMoreLessClick = (type: string) => {
                 const len = isAttrOf_one.value.length
                 if (len > 1) {
                     isAttrOf_one.value.pop();
+                } else {
+                    alert("select 'EMPTY' if want to remove the last one")
                 }
             }
             break;
@@ -242,6 +244,8 @@ const onMoreLessClick = (type: string) => {
                 const len = refEntities_one.value.length
                 if (len > 1) {
                     refEntities_one.value.pop();
+                } else {
+                    alert("select 'EMPTY' if want to remove the last one")
                 }
             }
             break;
