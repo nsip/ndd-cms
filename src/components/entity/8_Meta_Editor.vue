@@ -2,7 +2,7 @@
 
     <div class="lbl">
         <label id="type-lbl">Type:</label>
-        <span class="rb-selection-area">
+        <span class="area-rb-selection">
             <span v-for="choice in choicesType" class="rb-each">
                 <input v-model="type" type="radio" name="type" :value="choice" @change="select" :disabled="disRbType" />
                 <label>{{ choice }}</label>
@@ -261,7 +261,7 @@ const onMoreLessClick = (type: string) => {
 .lbl {
     margin-top: 20px;
     margin-left: 20px;
-    font-weight: bold;
+    font-weight: normal;
 }
 
 .lbl-ex {
@@ -274,14 +274,16 @@ const onMoreLessClick = (type: string) => {
     margin-right: 50px;
 }
 
-.rb-selection-area {
-    position: absolute;
-    left: 13%;
+.area-rb-selection {
+    position: relative;
+    left: 13vh;
 }
 
 .rb-each {
     margin-right: 12px;
     font-weight: bold;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 
 .dropdown-list {
