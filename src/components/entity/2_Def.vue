@@ -1,14 +1,15 @@
 <template>
     <div class="com">
 
-        <button class="less-editor" @click="onMoreLessClick('-')">
-            <font-awesome-icon icon="circle-minus" />
-        </button>
-        <button class="more-editor" @click="onMoreLessClick('+')">
-            <font-awesome-icon icon="circle-plus" />
-        </button>
-        <br>
-        <br>
+        <div class="area-more-less-btn">
+            <button class="less-editor" @click="onMoreLessClick('-')">
+                <font-awesome-icon icon="circle-minus" />
+            </button>
+            <button class="more-editor" @click="onMoreLessClick('+')">
+                <font-awesome-icon icon="circle-plus" />
+            </button>
+        </div>
+
         <div v-for="(n, i) in nEditor" :key="i" :class="i % 2 == 1 ? 'block-bg-odd' : 'block-bg-even'">
             <h6 class="block-index">{{ i }}</h6>
             <br>
@@ -116,5 +117,9 @@ const textChangeVal = () => {
 <style scoped>
 .sub-title {
     font-weight: bold;
+}
+
+.area-more-less-btn {
+    margin-bottom: 2.2vh;
 }
 </style>

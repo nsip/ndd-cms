@@ -1,41 +1,35 @@
 <template>
 
-    <div class="lbl">
-        <label id="type-lbl">Type:</label>
-        <span class="area-rb-selection">
+    <div class="com">
+        <TextLine text="type:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
+        <div class="area-rb-selection">
             <span v-for="choice in choicesType" class="rb-each">
                 <input v-model="type" type="radio" name="type" :value="choice" @change="select" :disabled="disRbType" />
                 <label>{{ choice }}</label>
             </span>
-        </span>
-    </div>
+        </div>
 
-    <div class="lbl">
-        <label> Super Class: </label>
+        <TextLine text="super class:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
         <div class="area-dropdown-list">
             <select v-model="superClass" :disabled="disSelSC" :title="tipSelSC" @change="switchSC" class="dropdown-list">
                 <option value="">--- EMPTY ---</option>
                 <option v-for="(item, idx) in options_SC" :key="idx" :value="item"> {{ item }}</option>
             </select>
         </div>
-    </div>
 
-    <div class="lbl">
         <button class="less-editor" title="remove the last selection" @click="onMoreLessClick('-ao')"> <font-awesome-icon icon="circle-minus" /> </button>
         <button class="more-editor" title="add more selection" @click="onMoreLessClick('+ao')"> <font-awesome-icon icon="circle-plus" /> </button>
-        <label> Is Attribute Of: </label>
+        <TextLine text="is attribute of:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
         <div v-for="i in isAttrOf_one.length" :key="i" class="area-dropdown-list">
             <select :id="'select-ao' + (i - 1)" v-model="isAttrOf_one[i - 1]" :disabled="disSelAO" :title="tipSelAO" @change="switchAO($event, i - 1)" class="dropdown-list">
                 <option value="">--- EMPTY ---</option>
                 <option v-for="(item, idx) in options_AO" :key="idx" :value="item"> {{ item }}</option>
             </select>
         </div>
-    </div>
 
-    <div class="lbl">
         <button class="less-editor" title="remove the last selection" @click="onMoreLessClick('-re')"> <font-awesome-icon icon="circle-minus" /> </button>
         <button class="more-editor" title="add more selection" @click="onMoreLessClick('+re')"> <font-awesome-icon icon="circle-plus" /> </button>
-        <label> Cross Reference Entities: </label>
+        <TextLine text="cross reference entities:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
         <div v-for="i in refEntities_one.length" :key="i" class="area-dropdown-list">
             <select :id="'select-re' + (i - 1)" v-model="refEntities_one[i - 1]" :disabled="disSelRE" :title="tipSelRE" @change="switchRE($event, i - 1)" class="dropdown-list">
                 <option value="">--- EMPTY ---</option>
@@ -51,6 +45,7 @@
 import { jsonEnt } from "@/share/EntType";
 import { fitTextarea, UnionArrays } from "@/share/util";
 import { getListItemType, itemCat, getListItem } from "@/share/share"
+import TextLine from "@/components/TextLine.vue";
 
 const type = ref("");          // meta Type value
 const superClass = ref("");    // meta SuperClass value
@@ -276,7 +271,7 @@ const onMoreLessClick = (type: string) => {
 
 .area-rb-selection {
     position: relative;
-    left: 13vh;
+    left: 19vh;
 }
 
 .rb-each {
@@ -288,12 +283,15 @@ const onMoreLessClick = (type: string) => {
 
 .dropdown-list {
     position: relative;
-    left: 13%;
     padding: 5px 5px 5px 5px;
 }
 
 .area-dropdown-list {
     position: relative;
-    left: 10%;
+    left: 19vh;
+}
+
+.sub-title {
+    font-weight: bold;
 }
 </style>
