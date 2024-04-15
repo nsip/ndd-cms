@@ -3,41 +3,41 @@
     <div class="wrapper">
         <button class="scroll-button prev" id="scrollLeftBtn" @click="prev_click">&lt;</button>
         <div class="tab" id="tabs-container">
-            <button class="tab-links" id="tab-default" @click="showTabContent" :hidden="!visible(0)"> {{ choices[0] }}</button>
-            <button class="tab-links" @click="showTabContent" :hidden="!visible(1)"> {{ choices[1] }}</button>
-            <button class="tab-links" @click="showTabContent" :hidden="!visible(2)"> {{ choices[2] }}</button>
-            <button class="tab-links" @click="showTabContent" :hidden="!visible(3)"> {{ choices[3] }}</button>
-            <button class="tab-links" @click="showTabContent" :hidden="!visible(4)"> {{ choices[4] }}</button>
-            <button class="tab-links" @click="showTabContent" :hidden="!visible(5)"> {{ choices[5] }}</button>
-            <button class="tab-links" @click="showTabContent" :hidden="!visible(6)"> {{ choices[6] }}</button>
-            <button class="tab-links" @click="showTabContent" :hidden="!visible(7)"> {{ choices[7] }}</button>
+            <button class="tab-links" id="tab-default" @click="showTabContent" :hidden="!visTab(0)"> {{ choices[0] }}</button>
+            <button class="tab-links" @click="showTabContent" :hidden="!visTab(1)"> {{ choices[1] }}</button>
+            <button class="tab-links" @click="showTabContent" :hidden="!visTab(2)"> {{ choices[2] }}</button>
+            <button class="tab-links" @click="showTabContent" :hidden="!visTab(3)"> {{ choices[3] }}</button>
+            <button class="tab-links" @click="showTabContent" :hidden="!visTab(4)"> {{ choices[4] }}</button>
+            <button class="tab-links" @click="showTabContent" :hidden="!visTab(5)"> {{ choices[5] }}</button>
+            <button class="tab-links" @click="showTabContent" :hidden="!visTab(6)"> {{ choices[6] }}</button>
+            <button class="tab-links" @click="showTabContent" :hidden="!visTab(7)"> {{ choices[7] }}</button>
         </div>
         <button class="scroll-button next" id="scrollRightBtn" @click="next_click">&gt;</button>
     </div>
 
     <div id="entry-ent">
-        <div v-if="mTabShown.get(choices[0]) && visible(0)" class="tab-content">
+        <div v-if="visContent(0)" class="tab-content">
             <EntName />
         </div>
-        <div v-if="mTabShown.get(choices[1]) && visible(1)" class="tab-content">
+        <div v-if="visContent(1)" class="tab-content">
             <EntDef />
         </div>
-        <div v-if="mTabShown.get(choices[2]) && visible(2)" class="tab-content">
+        <div v-if="visContent(2)" class="tab-content">
             <EntSIF />
         </div>
-        <div v-if="mTabShown.get(choices[3]) && visible(3)" class="tab-content">
+        <div v-if="visContent(3)" class="tab-content">
             <EntOtherStd />
         </div>
-        <div v-if="mTabShown.get(choices[4]) && visible(4)" class="tab-content">
+        <div v-if="visContent(4)" class="tab-content">
             <EntLegalDef />
         </div>
-        <div v-if="mTabShown.get(choices[5]) && visible(5)" class="tab-content">
+        <div v-if="visContent(5)" class="tab-content">
             <EntSensi />
         </div>
-        <div v-if="mTabShown.get(choices[6]) && visible(6)" class="tab-content">
+        <div v-if="visContent(6)" class="tab-content">
             <EntCol />
         </div>
-        <div v-if="mTabShown.get(choices[7]) && visible(7)" class="tab-content">
+        <div v-if="visContent(7)" class="tab-content">
             <EntMeta />
         </div>
     </div>
@@ -55,11 +55,6 @@ import EntSensi from "@/components/entity/6_Sensi.vue"
 import EntCol from "@/components/entity/7_Col.vue";
 import EntMeta from "@/components/entity/8_Meta.vue";
 
-// TODO: 
-const visible = (idx: number) => {
-    return idx >= startIndex.value;
-}
-
 const choices = [
     "Entity",
     "Definition",
@@ -71,17 +66,16 @@ const choices = [
     "MetaData"
 ]
 
-// tab content shown flag, key is tab-text
-const mTabShown = ref(new Map([
-    [choices[0], false],
-    [choices[1], false],
-    [choices[2], false],
-    [choices[3], false],
-    [choices[4], false],
-    [choices[5], false],
-    [choices[6], false],
-    [choices[7], false],
-]));
+const curSelTab = ref(choices[0])
+
+// TODO: 
+const visTab = (idx: number) => {
+    return idx >= startIndex.value;
+}
+
+const visContent = (idx: number) => {
+    return curSelTab.value == choices[idx];
+}
 
 const startIndex = ref(0);
 
@@ -95,9 +89,7 @@ const showTabContent = async (evt: MouseEvent) => {
     const id = (evt.target! as HTMLElement).textContent
     console.log(id)
 
-    mTabShown.value.forEach((flag, tab) => {
-        mTabShown.value.set(tab, tab == id ? true : false)
-    });
+    curSelTab.value = id!;
 
     const tab_links = document.getElementsByClassName("tab-links");
     for (let i = 0; i < tab_links.length; i++) {
@@ -151,6 +143,13 @@ const next_click = async () => {
 <style scoped>
 .wrapper {
     display: flex;
+    /* justify-content: space-between; */
+    background-color: #f1f1f1;
+}
+
+/* right most element keep right alignment */
+.wrapper div:nth-child(n) {
+    margin-right: auto;
 }
 
 /* Style the tab */

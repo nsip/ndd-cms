@@ -16,8 +16,10 @@
             <EditorDef :idx="i" />
         </div>
 
-        <TextLine text="Values:" textAlign="left" textColor="black" lineColor="black" lineHeight="4px" class="sub-title" />
-        <QuillEditor theme="snow" toolbar="essential" placeholder="values text" @ready="onReadyVal" @textChange="textChangeVal" />
+        <div class="block-bg-others block-values">
+            <TextLine text="Values:" textAlign="left" textColor="black" lineColor="black" lineHeight="2px" class="sub-title" />
+            <QuillEditor theme="snow" toolbar="essential" placeholder="values text" @ready="onReadyVal" @textChange="textChangeVal" />
+        </div>
 
     </div>
 </template>
@@ -121,5 +123,9 @@ const textChangeVal = () => {
 
 .area-more-less-btn {
     margin-bottom: 2.2vh;
+}
+
+.block-values {
+    padding-top: 0.1vh;
 }
 </style>

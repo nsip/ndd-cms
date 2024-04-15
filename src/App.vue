@@ -328,4 +328,8 @@ border-bottom: 1px dotted black; */
 .block-bg-even {
     background-color: rgb(247, 247, 241);
 }
+
+.block-bg-others {
+    background-color: rgb(224, 250, 229);
+}
 </style>
