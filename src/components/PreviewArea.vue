@@ -53,10 +53,10 @@ onMounted(async () => {
 const showTabContent = async (evt: MouseEvent) => {
 
     const id = (evt.target! as HTMLElement).textContent
-    console.log(id)
+    // console.log(id)
 
     mTabShown.value.forEach((flag, tab) => {
-        mTabShown.value.set(tab, tab == id ? true : false)
+        mTabShown.value.set(tab, tab == id)
     });
 
     let tab_links = document.getElementsByClassName("tab-links-preview");
