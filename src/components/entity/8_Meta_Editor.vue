@@ -21,8 +21,8 @@
     </div>
 
     <div class="lbl">
-        <button class="less-editor-dropdownlist" title="remove the last selection" @click="onMoreLessClick('-ao')"> <font-awesome-icon icon="circle-minus" /> </button>
-        <button class="more-editor-dropdownlist" title="add more selection" @click="onMoreLessClick('+ao')"> <font-awesome-icon icon="circle-plus" /> </button>
+        <button class="less-editor" title="remove the last selection" @click="onMoreLessClick('-ao')"> <font-awesome-icon icon="circle-minus" /> </button>
+        <button class="more-editor" title="add more selection" @click="onMoreLessClick('+ao')"> <font-awesome-icon icon="circle-plus" /> </button>
         <label> Is Attribute Of: </label>
         <div v-for="i in isAttrOf_one.length" :key="i" class="area-dropdown-list">
             <select :id="'select-ao' + (i - 1)" v-model="isAttrOf_one[i - 1]" :disabled="disSelAO" :title="tipSelAO" @change="switchAO($event, i - 1)" class="dropdown-list">
@@ -33,8 +33,8 @@
     </div>
 
     <div class="lbl">
-        <button class="less-editor-dropdownlist" title="remove the last selection" @click="onMoreLessClick('-re')"> <font-awesome-icon icon="circle-minus" /> </button>
-        <button class="more-editor-dropdownlist" title="add more selection" @click="onMoreLessClick('+re')"> <font-awesome-icon icon="circle-plus" /> </button>
+        <button class="less-editor" title="remove the last selection" @click="onMoreLessClick('-re')"> <font-awesome-icon icon="circle-minus" /> </button>
+        <button class="more-editor" title="add more selection" @click="onMoreLessClick('+re')"> <font-awesome-icon icon="circle-plus" /> </button>
         <label> Cross Reference Entities: </label>
         <div v-for="i in refEntities_one.length" :key="i" class="area-dropdown-list">
             <select :id="'select-re' + (i - 1)" v-model="refEntities_one[i - 1]" :disabled="disSelRE" :title="tipSelRE" @change="switchRE($event, i - 1)" class="dropdown-list">

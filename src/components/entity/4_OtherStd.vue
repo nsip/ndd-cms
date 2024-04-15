@@ -6,9 +6,11 @@
         <button class="more-editor" @click="onMoreLessClick('+')">
             <font-awesome-icon icon="circle-plus" />
         </button>
+        <br>
+        <br>
         <div v-for="(n, i) in nEditor" :key="i" :class="i % 2 == 1 ? 'block-bg-odd' : 'block-bg-even'">
+            <h6 class="block-index">{{ i }}</h6>
             <br>
-            <TextLine v-if="nEditor > 1" :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="3px" />
             <EditorOtherStd :idx="i" />
         </div>
     </div>
@@ -19,7 +21,6 @@
 import { notify } from "@kyvg/vue3-notification";
 import { jsonEnt } from "@/share/EntType";
 import { itemName, itemCat } from "@/share/share";
-import TextLine from "@/components/TextLine.vue";
 import EditorOtherStd from "@/components/entity/4_OtherStd_Editor.vue";
 
 const nEditor = ref(0);

@@ -1,8 +1,6 @@
 <template>
-    <div class="com">
-        <div class="meta-edit">
-            <EditorMeta />
-        </div>
+    <div :class="'com meta-edit block-bg-odd'">
+        <EditorMeta />
     </div>
 </template>
 

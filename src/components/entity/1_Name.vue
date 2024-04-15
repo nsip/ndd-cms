@@ -1,5 +1,5 @@
 <template>
-    <div class="com">
+    <div :class="'com block-bg-even'">
         <TextLine text="entity name:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
         <input class="content" type="text" v-model="entity" :readonly="Mode == 'edit'" placeholder="entity name" ref="entInput" />
 

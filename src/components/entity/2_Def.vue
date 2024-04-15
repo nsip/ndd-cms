@@ -7,9 +7,11 @@
         <button class="more-editor" @click="onMoreLessClick('+')">
             <font-awesome-icon icon="circle-plus" />
         </button>
+        <br>
+        <br>
         <div v-for="(n, i) in nEditor" :key="i" :class="i % 2 == 1 ? 'block-bg-odd' : 'block-bg-even'">
+            <h6 class="block-index">{{ i }}</h6>
             <br>
-            <TextLine v-if="nEditor > 1" :text="i.toString()" textAlign="center" textColor="gray" lineColor="black" lineHeight="2px" />
             <EditorDef :idx="i" />
         </div>
 
