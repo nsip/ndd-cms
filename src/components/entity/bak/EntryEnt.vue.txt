@@ -1,16 +1,16 @@
 <template>
 
     <div class="area-tabs">
-        <button class="scroll-button prev" id="scrollLeftBtn" @click="np_click('<')" :disabled="lHiddenCount == 0" :title="lHiddenCount + ' hidden(s)'">&lt;</button>
+        <button class="scroll-button prev" id="scrollLeftBtn" @click="prev_click" :disabled="leftHiddenCount == 0" :title="leftHiddenCount + ' hidden(s)'">&lt;</button>
         <div class="tab" id="tabs-container">
-            <button v-for="(template, idx) in components" class="tab-links" :id="'tab-' + idx" @click="showTabContent" :hidden="!visTab(idx)"> {{ template.tab }}</button>
+            <button v-for="(template, idx) in components" class="tab-links" :id="'tab-' + idx" @click="showTabContent(idx)" :hidden="!visTab(idx)"> {{ template.tab }}</button>
         </div>
-        <button class="scroll-button next" id="scrollRightBtn" @click="np_click('>')" :disabled="rHiddenCount == 0" :title="rHiddenCount + ' hidden(s)'">&gt;</button>
+        <button class="scroll-button next" id="scrollRightBtn" @click="next_click" :disabled="rightHiddenCount == 0" :title="rightHiddenCount + ' hidden(s)'">&gt;</button>
     </div>
 
     <div id="entry-ent">
-        <template v-for="template in components" class="tab-content">
-            <component :is="template.com" v-if="visCom(template.tab)"> </component>
+        <template v-for="(template, idx) in components" class="tab-content">
+            <component :is="template.com" v-if="visCom(idx)"> </component>
         </template>
     </div>
 
@@ -40,12 +40,19 @@ const components = [
     { tab: "MetaData", com: EntMeta },
 ];
 
+const getTabIdx = (tab: string) => {
+    let idx = 0;
+    components.forEach((e, i) => { if (e.tab == tab) { idx = i } })
+    return idx
+}
+const curSelTabIdx = ref(0)
+const curSelTab = computed(() => components[curSelTabIdx.value].tab)
+
 const startIndex = ref(0);
-const curSelTab = ref(components[0].tab)
 const visTab = (idx: number) => { return idx >= startIndex.value; }
-const visCom = (tab: string) => { return curSelTab.value == tab; }
-const lHiddenCount = ref(0);
-const rHiddenCount = ref(0);
+const visCom = (idx: number) => { return idx == curSelTabIdx.value; }
+const leftHiddenCount = ref(0);
+const rightHiddenCount = ref(0);
 
 onMounted(async () => {
     await setSameWidth();
@@ -56,23 +63,17 @@ onMounted(async () => {
     })
 })
 
-const getTabIdx = (tab: string) => {
-    let idx = 0;
-    components.forEach((e, i) => { if (e.tab == tab) { idx = i } })
-    return idx
-}
+const showTabContent = async (idx: number) => {
 
-const showTabContent = async (evt: MouseEvent) => {
-
-    // current selected tab text assignment
-    curSelTab.value = (evt.target! as HTMLElement).textContent!;
+    // current selected tab index assignment
+    curSelTabIdx.value = idx;
 
     // tab menu effect
     const tab_links = document.getElementsByClassName("tab-links");
     for (let i = 0; i < tab_links.length; i++) {
         tab_links[i].className = tab_links[i].className.replace(" active", "");
     }
-    (evt.currentTarget! as HTMLElement).className += " active";
+    tab_links[curSelTabIdx.value].className += " active";
 }
 
 const setDefaultTab = async (id: string) => {
@@ -81,8 +82,10 @@ const setDefaultTab = async (id: string) => {
 }
 
 const setSameWidth = async () => {
+
     const container = document.getElementById('tabs-container');
     const tabs = container?.querySelectorAll('.tab-links');
+
     let maxWidth = 0;
     tabs?.forEach(e => {
         const width = (e as HTMLElement).offsetWidth;
@@ -90,6 +93,7 @@ const setSameWidth = async () => {
             maxWidth = width;
         }
     })
+
     tabs?.forEach(e => {
         (e as HTMLElement).style.width = maxWidth + 'px';
     })
@@ -121,23 +125,23 @@ const getHiddenIndices = () => {
 
 const updateBothHidden = () => {
     const h = getHiddenIndices()
-    lHiddenCount.value = h[0].length
-    rHiddenCount.value = h[1].length
+    leftHiddenCount.value = h[0].length
+    rightHiddenCount.value = h[1].length
 }
 
-const np_click = async (np: string) => {
-    switch (np) {
-        case ">":
-            if (rHiddenCount.value > 0) {
-                startIndex.value++;
-            }
-            break;
-        case "<":
-            if (lHiddenCount.value > 0) {
-                startIndex.value--;
-            }
-            break;
+const next_click = async () => {
+    if (rightHiddenCount.value == 0) {
+        return
     }
+    startIndex.value++;
+    window.setTimeout(() => { updateBothHidden(); }, 200)
+}
+
+const prev_click = async () => {
+    if (leftHiddenCount.value == 0) {
+        return
+    }
+    startIndex.value--;
     window.setTimeout(() => { updateBothHidden(); }, 200)
 }
 
