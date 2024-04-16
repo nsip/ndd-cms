@@ -330,6 +330,6 @@ border-bottom: 1px dotted black; */
 }
 
 .block-bg-others {
-    background-color: rgb(224, 250, 229);
+    background-color: rgb(228, 247, 232);
 }
 </style>

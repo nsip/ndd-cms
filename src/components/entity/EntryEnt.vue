@@ -3,43 +3,15 @@
     <div class="wrapper">
         <button class="scroll-button prev" id="scrollLeftBtn" @click="prev_click">&lt;</button>
         <div class="tab" id="tabs-container">
-            <button class="tab-links" id="tab-default" @click="showTabContent" :hidden="!visTab(0)"> {{ choices[0] }}</button>
-            <button class="tab-links" @click="showTabContent" :hidden="!visTab(1)"> {{ choices[1] }}</button>
-            <button class="tab-links" @click="showTabContent" :hidden="!visTab(2)"> {{ choices[2] }}</button>
-            <button class="tab-links" @click="showTabContent" :hidden="!visTab(3)"> {{ choices[3] }}</button>
-            <button class="tab-links" @click="showTabContent" :hidden="!visTab(4)"> {{ choices[4] }}</button>
-            <button class="tab-links" @click="showTabContent" :hidden="!visTab(5)"> {{ choices[5] }}</button>
-            <button class="tab-links" @click="showTabContent" :hidden="!visTab(6)"> {{ choices[6] }}</button>
-            <button class="tab-links" @click="showTabContent" :hidden="!visTab(7)"> {{ choices[7] }}</button>
+            <button v-for="(template, idx) in components" class="tab-links" :id="'tab-' + idx" @click="showTabContent" :hidden="!visTab(idx)"> {{ template.tab }}</button>
         </div>
         <button class="scroll-button next" id="scrollRightBtn" @click="next_click">&gt;</button>
     </div>
 
     <div id="entry-ent">
-        <div v-if="visContent(0)" class="tab-content">
-            <EntName />
-        </div>
-        <div v-if="visContent(1)" class="tab-content">
-            <EntDef />
-        </div>
-        <div v-if="visContent(2)" class="tab-content">
-            <EntSIF />
-        </div>
-        <div v-if="visContent(3)" class="tab-content">
-            <EntOtherStd />
-        </div>
-        <div v-if="visContent(4)" class="tab-content">
-            <EntLegalDef />
-        </div>
-        <div v-if="visContent(5)" class="tab-content">
-            <EntSensi />
-        </div>
-        <div v-if="visContent(6)" class="tab-content">
-            <EntCol />
-        </div>
-        <div v-if="visContent(7)" class="tab-content">
-            <EntMeta />
-        </div>
+        <template v-for="template in components" class="tab-content">
+            <component :is="template.com" v-if="visCom(template.tab)"> </component>
+        </template>
     </div>
 
 </template>
@@ -55,42 +27,46 @@ import EntSensi from "@/components/entity/6_Sensi.vue"
 import EntCol from "@/components/entity/7_Col.vue";
 import EntMeta from "@/components/entity/8_Meta.vue";
 
-const choices = [
-    "Entity",
-    "Definition",
-    "SIF",
-    "OtherStandards",
-    "LegalDefinitions",
-    "Sensitivity",
-    "Collections",
-    "MetaData"
-]
+const components = [
+    { tab: "Entity", com: EntName },
+    { tab: "Definition", com: EntDef },
+    { tab: "SIF", com: EntSIF },
+    { tab: "OtherStandards", com: EntOtherStd },
+    { tab: "LegalDefinitions", com: EntLegalDef },
+    { tab: "Sensitivity", com: EntSensi },
+    { tab: "Collections", com: EntCol },
+    { tab: "MetaData", com: EntMeta },
+];
 
-const curSelTab = ref(choices[0])
+const curSelTab = ref(components[0].tab)
 
-// TODO: 
+const curSelTabIdx = computed(() => {
+    let idx = 0;
+    components.forEach((e, i) => { if (e.tab == curSelTab.value) { idx = i } })
+    return idx
+});
+
 const visTab = (idx: number) => {
     return idx >= startIndex.value;
 }
 
-const visContent = (idx: number) => {
-    return curSelTab.value == choices[idx];
+const visCom = (tab: string) => {
+    return curSelTab.value == tab;
 }
 
 const startIndex = ref(0);
 
 onMounted(async () => {
     await setSameWidth();
-    await setDefaultTab("tab-default");
+    await setDefaultTab("tab-0");
 })
 
 const showTabContent = async (evt: MouseEvent) => {
 
-    const id = (evt.target! as HTMLElement).textContent
-    console.log(id)
+    const tabTxt = (evt.target! as HTMLElement).textContent
+    curSelTab.value = tabTxt!;
 
-    curSelTab.value = id!;
-
+    // tab menu effect
     const tab_links = document.getElementsByClassName("tab-links");
     for (let i = 0; i < tab_links.length; i++) {
         tab_links[i].className = tab_links[i].className.replace(" active", "");
@@ -99,12 +75,8 @@ const showTabContent = async (evt: MouseEvent) => {
 }
 
 const setDefaultTab = async (id: string) => {
-    const iid = window.setInterval(() => {
-        document.getElementById(id)!.click();
-    }, 50)
-    window.setTimeout(() => {
-        window.clearInterval(iid)
-    }, 1000)
+    const iid = window.setInterval(() => { document.getElementById(id)!.click(); }, 50)
+    window.setTimeout(() => { window.clearInterval(iid) }, 1000)
 }
 
 const setSameWidth = async () => {
@@ -125,15 +97,21 @@ const setSameWidth = async () => {
     })
 }
 
-const prev_click = async () => {
-    if (startIndex.value < 8) {
+const next_click = async () => {
+    if (startIndex.value < 7) {
         startIndex.value++;
+        if (startIndex.value > curSelTabIdx.value) {
+            console.log(`should set: tab-${startIndex.value}`)
+        }
     }
 }
 
-const next_click = async () => {
+const prev_click = async () => {
     if (startIndex.value > 0) {
         startIndex.value--;
+        if (startIndex.value > curSelTabIdx.value) {
+            console.log(`should set: tab-${startIndex.value}`)
+        }
     }
 }
 
