@@ -178,3 +178,25 @@ export function UnionArrays<T>(...arrays: T[][]): T[] {
     });
     return Array.from(set);
 }
+
+export const checkOverflowVisibility = (container_id: string, child_cls: string) => {
+
+    const container = document.getElementById(container_id);
+    const children = container!.querySelectorAll(`.${child_cls}`);
+
+    const ret: string[] = [];
+    children.forEach(child => {
+        const childRect = child.getBoundingClientRect();
+        const containerRect = container!.getBoundingClientRect();
+        const isVisible = (
+            childRect.top >= containerRect.top &&
+            childRect.left >= containerRect.left &&
+            childRect.right <= containerRect.right &&
+            childRect.bottom <= containerRect.bottom
+        );
+        if (!isVisible) {
+            ret.push(child.textContent!)
+        }
+    });
+    return ret;
+}

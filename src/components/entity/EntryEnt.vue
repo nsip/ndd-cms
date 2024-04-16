@@ -1,11 +1,11 @@
 <template>
 
-    <div class="wrapper">
-        <button class="scroll-button prev" id="scrollLeftBtn" @click="prev_click">&lt;</button>
+    <div class="area-tabs">
+        <button class="scroll-button prev" id="scrollLeftBtn" @click="prev_click" :disabled="leftHiddenCount == 0" :title="leftHiddenCount + ' hidden(s)'">&lt;</button>
         <div class="tab" id="tabs-container">
             <button v-for="(template, idx) in components" class="tab-links" :id="'tab-' + idx" @click="showTabContent" :hidden="!visTab(idx)"> {{ template.tab }}</button>
         </div>
-        <button class="scroll-button next" id="scrollRightBtn" @click="next_click">&gt;</button>
+        <button class="scroll-button next" id="scrollRightBtn" @click="next_click" :disabled="rightHiddenCount == 0" :title="rightHiddenCount + ' hidden(s)'">&gt;</button>
     </div>
 
     <div id="entry-ent">
@@ -17,6 +17,8 @@
 </template>
 
 <script setup lang="ts">
+
+import { checkOverflowVisibility } from "@/share/util";
 
 import EntName from "@/components/entity/1_Name.vue";
 import EntDef from "@/components/entity/2_Def.vue";
@@ -38,28 +40,27 @@ const components = [
     { tab: "MetaData", com: EntMeta },
 ];
 
-const curSelTab = ref(components[0].tab)
-
-const curSelTabIdx = computed(() => {
-    let idx = 0;
-    components.forEach((e, i) => { if (e.tab == curSelTab.value) { idx = i } })
-    return idx
-});
-
-const visTab = (idx: number) => {
-    return idx >= startIndex.value;
-}
-
-const visCom = (tab: string) => {
-    return curSelTab.value == tab;
-}
-
 const startIndex = ref(0);
+const curSelTab = ref(components[0].tab)
+const visTab = (idx: number) => { return idx >= startIndex.value; }
+const visCom = (tab: string) => { return curSelTab.value == tab; }
+const leftHiddenCount = ref(0);
+const rightHiddenCount = ref(0);
 
 onMounted(async () => {
     await setSameWidth();
     await setDefaultTab("tab-0");
+    updateBothHidden();
+    window.addEventListener('resize', () => {
+        updateBothHidden();
+    })
 })
+
+const getTabIdx = (tab: string) => {
+    let idx = 0;
+    components.forEach((e, i) => { if (e.tab == tab) { idx = i } })
+    return idx
+}
 
 const showTabContent = async (evt: MouseEvent) => {
 
@@ -97,36 +98,64 @@ const setSameWidth = async () => {
     })
 }
 
-const next_click = async () => {
-    if (startIndex.value < 7) {
-        startIndex.value++;
-        if (startIndex.value > curSelTabIdx.value) {
-            console.log(`should set: tab-${startIndex.value}`)
+const getHiddenIndices = () => {
+    const hIndices: number[] = [];
+    (checkOverflowVisibility('tabs-container', 'tab-links')).forEach((ht) => {
+        hIndices.push(getTabIdx(ht))
+    })
+    const left: number[] = [];
+    for (let i = 0; i <= components.length - 1; i++) {
+        if (hIndices.includes(i)) {
+            left.push(i);
+        } else {
+            break
         }
     }
+    const right: number[] = [];
+    for (let i = components.length - 1; i >= 0; i--) {
+        if (hIndices.includes(i)) {
+            right.push(i);
+        } else {
+            break
+        }
+    }
+    return [left, right];
+}
+
+const updateBothHidden = () => {
+    const h = getHiddenIndices()
+    leftHiddenCount.value = h[0].length
+    rightHiddenCount.value = h[1].length
+}
+
+const next_click = async () => {
+    if (rightHiddenCount.value == 0) {
+        return
+    }
+    startIndex.value++;
+    window.setTimeout(() => { updateBothHidden(); }, 200)
 }
 
 const prev_click = async () => {
-    if (startIndex.value > 0) {
-        startIndex.value--;
-        if (startIndex.value > curSelTabIdx.value) {
-            console.log(`should set: tab-${startIndex.value}`)
-        }
+    if (leftHiddenCount.value == 0) {
+        return
     }
+    startIndex.value--;
+    window.setTimeout(() => { updateBothHidden(); }, 200)
 }
 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.wrapper {
+.area-tabs {
     display: flex;
     /* justify-content: space-between; */
     background-color: #f1f1f1;
 }
 
 /* right most element keep right alignment */
-.wrapper div:nth-child(n) {
+.area-tabs div:nth-child(n) {
     margin-right: auto;
 }
 
