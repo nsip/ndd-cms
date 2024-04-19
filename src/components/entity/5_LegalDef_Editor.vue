@@ -1,21 +1,23 @@
 <template>
-    <TextLine text="legislationName:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
+    <TextLine text="legislationName:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <input type="text" class="content" ref="taLN" v-model="legname" placeholder="legislation name" />
 
-    <TextLine text="citation:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
+    <TextLine text="citation:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="citation" @ready="onReadyCit" @textChange="textChangeCit(idx || 0)" />
 
-    <TextLine text="link:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
-    <textarea class="content" ref="taLK" v-model="link" placeholder="link" wrap="off" ></textarea>
+    <TextLine text="link:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
+    <textarea class="content" ref="taLK" v-model="link" placeholder="link" wrap="off"></textarea>
 
-    <TextLine text="definition:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
+    <TextLine text="definition:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="definition" @ready="onReadyDef" @textChange="textChangeDef(idx || 0)" />
 
-    <TextLine text="commentary:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
+    <TextLine text="commentary:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="commentary" @ready="onReadyCmt" @textChange="textChangeCmt(idx || 0)" />
 
-    <TextLine text="datestamp:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
+    <TextLine text="datestamp:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <input type="text" class="content" ref="taDS" v-model="datestamp" placeholder="datestamp" />
+
+    <br>
 </template>
 
 <script setup lang="ts">

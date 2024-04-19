@@ -1,8 +1,6 @@
 <template>
-    <div class="com">
-        <div class="meta-edit">
-            <EditorMeta />
-        </div>
+    <div class="meta-edit block-bg-even">
+        <EditorMeta />
     </div>
 </template>
 
@@ -22,6 +20,6 @@ import EditorMeta from "@/components/entity/8_Meta_Editor.vue";
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .meta-edit {
-    margin-top: -1%;
+    margin-top: 0%;
 }
 </style>

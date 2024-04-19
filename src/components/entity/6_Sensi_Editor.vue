@@ -1,11 +1,11 @@
 <template>
-    <TextLine text="locale:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
-    <input type="text"  class="content" v-model="locale" placeholder="locale" />
+    <TextLine text="locale:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
+    <input type="text" class="content" v-model="locale" placeholder="locale" />
 
-    <TextLine text="value:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
-    <input type="text"  class="content" v-model="val" placeholder="value" />
+    <TextLine text="value:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
+    <input type="text" class="content" v-model="val" placeholder="value" />
 
-    <TextLine text="commentary:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title"/>
+    <TextLine text="commentary:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <QuillEditor theme="snow" toolbar="essential" placeholder="commentary" @ready="onReadyC" @textChange="textChangeC(idx || 0)" />
 </template>
 

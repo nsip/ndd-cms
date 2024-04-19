@@ -273,10 +273,8 @@ border-bottom: 1px dotted black; */
 .more-editor {
     font-size: medium;
     color: red;
-    background-color: white;
+    background-color: transparent;
     float: right;
-    margin-right: 1px;
-    margin-bottom: 5px;
     width: 22px;
     border: none;
 }
@@ -284,32 +282,19 @@ border-bottom: 1px dotted black; */
 .less-editor {
     font-size: medium;
     color: green;
-    background-color: white;
+    background-color: transparent;
     float: right;
-    margin-right: 1px;
-    margin-bottom: 5px;
     width: 22px;
     border: none;
 }
 
-.more-editor-dropdownlist {
-    font-size: medium;
-    color: red;
-    background-color: white;
+.block-index {
+    position: relative;
     float: right;
-    margin-right: 1px;
-    width: 22px;
-    border: none;
-}
-
-.less-editor-dropdownlist {
-    font-size: medium;
-    color: green;
-    background-color: white;
-    float: right;
-    margin-right: 1px;
-    width: 22px;
-    border: none;
+    margin-right: 8px;
+    margin-top: 8px;
+    font-style: italic;
+    color: darkblue;
 }
 
 .hide-editor {
@@ -342,5 +327,9 @@ border-bottom: 1px dotted black; */
 
 .block-bg-even {
     background-color: rgb(247, 247, 241);
+}
+
+.block-bg-others {
+    background-color: rgb(228, 247, 232);
 }
 </style>

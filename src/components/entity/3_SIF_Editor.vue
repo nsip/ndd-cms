@@ -10,6 +10,8 @@
 
     <TextLine text="datestamp:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
     <input type="text" class="content" ref="taDS" v-model="datestamp" placeholder="datestamp"  wrap="off" />
+
+    <br>
 </template>
 
 <script setup lang="ts">
