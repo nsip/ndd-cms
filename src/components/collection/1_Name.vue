@@ -1,5 +1,5 @@
 <template>
-    <div class="com">
+    <div class="com block-bg-even">
         <input class="content" type="text" v-model="collection" :readonly="Mode == 'edit'" placeholder="collection name" ref="colInput" />
     </div>
 </template>

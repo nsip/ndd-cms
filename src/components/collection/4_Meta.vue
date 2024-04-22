@@ -1,8 +1,6 @@
 <template>
-    <div class="com">
-        <div class="meta-edit">
-            <EditorMeta />
-        </div>
+    <div class="meta-edit block-bg-even">
+        <EditorMeta />
     </div>
 </template>
 
@@ -10,19 +8,18 @@
 
 import EditorMeta from "@/components/collection/4_Meta_Editor.vue";
 
-let mounted = false; // flag: let 'watchEffect' after 'onMounted'
+// let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 
-onMounted(async () => {
-    await new Promise((f) => setTimeout(f, 500)); // textarea needs to wait, quill in 'onReady'
-    mounted = true;
-});
+// onMounted(async () => {
+//     await new Promise((f) => setTimeout(f, 500)); // textarea needs to wait, quill in 'onReady'
+//     mounted = true;
+// });
 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .meta-edit {
-    margin-top: -1%;
-    margin-bottom: 1%;
+    margin-top: 0%;
 }
 </style>

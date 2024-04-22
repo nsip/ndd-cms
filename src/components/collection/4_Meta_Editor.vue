@@ -1,6 +1,6 @@
 <template>
-    <div class="lbl">
-        <label id="type-lbl">Type:</label>
+    <div class="com">
+        <TextLine text="type:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
         <span class="type-input" v-for="choice in choices">
             <input v-model="type" type="radio" name="type" :value="choice" @change="select" />
             <label>{{ choice }}</label>
@@ -12,6 +12,7 @@
 
 import { jsonCol } from "@/share/ColType";
 import { getListItemType, itemCat } from "@/share/share"
+import TextLine from "@/components/TextLine.vue";
 
 const type = ref("");
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
@@ -43,20 +44,12 @@ const select = () => { };
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-.lbl {
-    margin-top: 20px;
-    margin-left: 20px;
-    font-weight: bold;
-}
-
-#type-lbl {
-    margin-right: 50px;
-}
-
 .type-input {
     margin-left: 20px;
     font-weight: normal;
 }
 
+.sub-title {
+    font-weight: bold;
+}
 </style>
