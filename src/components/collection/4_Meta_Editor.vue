@@ -1,10 +1,12 @@
 <template>
     <div class="com">
         <TextLine text="type:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
-        <span class="type-input" v-for="choice in choices">
-            <input v-model="type" type="radio" name="type" :value="choice" @change="select" />
-            <label>{{ choice }}</label>
-        </span>
+        <div class="area-rb-selection">
+            <span v-for="choice in choicesType" class="rb-each">
+                <input v-model="type" type="radio" name="type" :value="choice" @change="select" />
+                <label>{{ choice }}</label>
+            </span>
+        </div>
     </div>
 </template>
 
@@ -17,7 +19,7 @@ import TextLine from "@/components/TextLine.vue";
 const type = ref("");
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 
-const choices = ref();
+const choicesType = ref();
 
 onMounted(async () => {
     const meta = jsonCol.Metadata;
@@ -26,7 +28,7 @@ onMounted(async () => {
     type.value = meta.Type;
 
     // 'Type' radio button choices
-    choices.value = (await getListItemType(itemCat.value)).data as string[];
+    choicesType.value = (await getListItemType(itemCat.value)).data as string[];
 
     mounted = true
 });
@@ -44,12 +46,19 @@ const select = () => { };
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-.type-input {
-    margin-left: 20px;
-    font-weight: normal;
-}
-
 .sub-title {
     font-weight: bold;
+}
+
+.area-rb-selection {
+    position: relative;
+    left: 10vh;
+}
+
+.rb-each {
+    margin-right: 12px;
+    font-weight: bold;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
 </style>
