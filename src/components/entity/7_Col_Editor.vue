@@ -83,8 +83,8 @@ onMounted(async () => {
         quillVal.root.innerHTML = isSomeValue(col.Values) ? col.Values : "";
 
         // do a dropdown list alert if existing 'name' value is NOT in Collections
-        if (!(options_c.value as string[]).includes(name.value)) {
-            const msg = `Dropdown Menu value cannot be selected as '${name.value}' doesn't exist in Collections List`
+        if (name.value.length > 0 && !(options_c.value as string[]).includes(name.value)) {
+            const msg = `Dropdown Menu value cannot be auto selected as '${name.value}' doesn't exist in Collections List`
             notify({
                 title: `No.${props.idx} collection's name is missing from Dropdown Menu`,
                 text: msg,
