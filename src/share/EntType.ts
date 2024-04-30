@@ -397,12 +397,14 @@ export class EntType {
         type: string,
         superClass: string,
         isAttributeOf: string,
-        crossRef: string
+        crossRef: string,
+        timeframe: string,
     ) {
         this.Metadata.Type = validStr(type, this.Metadata.Type);
         this.Metadata.SuperClass = validStr(superClass, this.Metadata.SuperClass);
         this.Metadata.IsAttributeOf = validStrTEXTArr(isAttributeOf, this.Metadata.IsAttributeOf);
         this.Metadata.CrossRefEntities = validStrTEXTArr(crossRef, this.Metadata.CrossRefEntities);
+        this.Metadata.Timeframe = validStr(timeframe, this.Metadata.Timeframe);
     }
 
     AssignMeta(meta: metaType) {
@@ -484,6 +486,7 @@ class metaType {
     SuperClass = "";
     IsAttributeOf: string[] = [];
     CrossRefEntities: string[] = [];
+    Timeframe = "";
 }
 
 const EmptyStrArr = (): string[] => { return [] }
