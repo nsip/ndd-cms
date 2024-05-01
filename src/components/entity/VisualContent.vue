@@ -180,6 +180,7 @@ const prevMetadata = () => {
     sub_str += hasSomeValue(sub_obj, "SuperClass") ? field_subtitle_html('super class') + field_value_html(sub_obj.SuperClass) : ""
     sub_str += hasSomeValue(sub_obj, "IsAttributeOf") ? field_subtitle_html('is attribute of') + field_value_html(sub_obj.IsAttributeOf) : ""
     sub_str += hasSomeValue(sub_obj, "CrossRefEntities") ? field_subtitle_html('cross ref entities') + field_value_html(sub_obj.CrossRefEntities) : ""
+    sub_str += hasSomeValue(sub_obj, "Timeframe") ? field_subtitle_html('timeframe') + field_value_html(sub_obj.Timeframe) : ""
     return rt + sub_str
 };
 

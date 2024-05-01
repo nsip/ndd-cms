@@ -39,7 +39,7 @@
         </div>
 
         <TextLine text="timeframe:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
-        <div class="area-rb-selection">
+        <div class="area-rb-selection area-rb-selection-tf">
             <span v-for="choice in choicesTimeframe" class="rb-each">
                 <input v-model="timeframe" type="radio" name="timeframe" :value="choice" @change="select_timeframe" :disabled="disRbTF" />
                 <label>{{ choice }}</label>
@@ -299,6 +299,10 @@ const onMoreLessClick = (type: string) => {
 .area-rb-selection {
     position: relative;
     left: 19vh;
+}
+
+.area-rb-selection-tf {
+    margin-bottom: 1vh;
 }
 
 .rb-each {
