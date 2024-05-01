@@ -19,6 +19,7 @@
 <script setup lang="ts">
 
 import { checkOverflowVisibility } from "@/share/util";
+import { curSelTab } from "@/share/share";
 
 import EntName from "@/components/entity/1_Name.vue";
 import EntDef from "@/components/entity/2_Def.vue";
@@ -41,13 +42,13 @@ const components = [
 ];
 
 const startIndex = ref(0);
-const curSelTab = ref(components[0].tab)
 const visTab = (idx: number) => { return idx >= startIndex.value; }
 const visCom = (tab: string) => { return curSelTab.value == tab; }
 const lHiddenCount = ref(0);
 const rHiddenCount = ref(0);
 
 onMounted(async () => {
+    curSelTab.value = components[0].tab;
     await setSameWidth();
     await setDefaultTab("tab-0");
     updateBothHidden();
