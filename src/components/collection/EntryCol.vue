@@ -1,25 +1,15 @@
 <template>
 
-    <div class="tab">
-        <button class="tab-links" id="tab-default" @click="showTabContent"> {{ choices[0] }}</button>
-        <button class="tab-links" @click="showTabContent"> {{ choices[1] }}</button>
-        <button class="tab-links" @click="showTabContent"> {{ choices[2] }}</button>
-        <button class="tab-links" @click="showTabContent"> {{ choices[3] }}</button>
+    <div class="area-tabs">
+        <div class="tab" id="tabs-container">
+            <button v-for="(template, idx) in components" class="tab-links" :id="'tab-' + idx" @click="showTabContent" :hidden="!visTab(idx)"> {{ template.tab }}</button>
+        </div>
     </div>
 
     <div id="entry-col">
-        <div v-if="mTabShown.get(choices[0])" class="tab-content">
-            <ColName />
-        </div>
-        <div v-if="mTabShown.get(choices[1])" class="tab-content">
-            <ColDef />
-        </div>
-        <div v-if="mTabShown.get(choices[2])" class="tab-content">
-            <ColUrl />
-        </div>
-        <div v-if="mTabShown.get(choices[3])" class="tab-content">
-            <ColMeta />
-        </div>
+        <template v-for="template in components" class="tab-content">
+            <component :is="template.com" v-if="visCom(template.tab)"> </component>
+        </template>
     </div>
 
 </template>
@@ -31,35 +21,30 @@ import ColDef from "@/components/collection/2_Def.vue";
 import ColUrl from "@/components/collection/3_Url.vue";
 import ColMeta from "@/components/collection/4_Meta.vue";
 
-const choices = [
-    "Collection",
-    "Definition",
-    "URL",
-    "MetaData",
-]
+const components = [
+    { tab: "Collection", com: ColName },
+    { tab: "Definition", com: ColDef },
+    { tab: "URL", com: ColUrl },
+    { tab: "MetaData", com: ColMeta },
+];
 
-// tab content shown flag, key is tab-text
-const mTabShown = ref(new Map([
-    [choices[0], false],
-    [choices[1], false],
-    [choices[2], false],
-    [choices[3], false],
-]));
+const startIndex = ref(0);
+const curSelTab = ref(components[0].tab)
+const visTab = (idx: number) => { return idx >= startIndex.value; }
+const visCom = (tab: string) => { return curSelTab.value == tab; }
 
 onMounted(async () => {
-    await setDefaultTab("tab-default")
+    await setSameWidth();
+    await setDefaultTab("tab-0")
 })
 
 const showTabContent = async (evt: MouseEvent) => {
 
-    const id = (evt.target! as HTMLElement).textContent
-    console.log(id)
+    // current selected tab text assignment
+    curSelTab.value = (evt.target! as HTMLElement).textContent!;
 
-    mTabShown.value.forEach((flag, tab) => {
-        mTabShown.value.set(tab, tab == id ? true : false)
-    });
-
-    let tab_links = document.getElementsByClassName("tab-links");
+    // tab menu effect
+    const tab_links = document.getElementsByClassName("tab-links");
     for (let i = 0; i < tab_links.length; i++) {
         tab_links[i].className = tab_links[i].className.replace(" active", "");
     }
@@ -67,18 +52,35 @@ const showTabContent = async (evt: MouseEvent) => {
 }
 
 const setDefaultTab = async (id: string) => {
-    const iid = window.setInterval(() => {
-        document.getElementById(id)!.click();
-    }, 50)
-    window.setTimeout(() => {
-        window.clearInterval(iid)
-    }, 1000)
+    const iid = window.setInterval(() => { document.getElementById(id)!.click(); }, 50)
+    window.setTimeout(() => { window.clearInterval(iid) }, 1000)
+}
+
+const setSameWidth = async () => {
+    const container = document.getElementById('tabs-container');
+    const tabs = container?.querySelectorAll('.tab-links');
+    let maxWidth = 0;
+    tabs?.forEach(e => {
+        const width = (e as HTMLElement).offsetWidth;
+        if (width > maxWidth) {
+            maxWidth = width;
+        }
+    })
+    tabs?.forEach(e => {
+        (e as HTMLElement).style.width = maxWidth + 'px';
+    })
 }
 
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.area-tabs {
+    display: flex;
+    /* justify-content: space-between; */
+    background-color: #f1f1f1;
+}
+
 /* Style the tab */
 .tab {
     overflow: hidden;

@@ -1,10 +1,12 @@
 <template>
-    <div class="lbl">
-        <label id="type-lbl">Type:</label>
-        <span class="type-input" v-for="choice in choices">
-            <input v-model="type" type="radio" name="type" :value="choice" @change="select" />
-            <label>{{ choice }}</label>
-        </span>
+    <div class="com">
+        <TextLine text="type:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
+        <div class="area-rb-selection">
+            <span v-for="choice in choicesType" class="rb-each">
+                <input v-model="type" type="radio" name="type" :value="choice" @change="select" />
+                <label>{{ choice }}</label>
+            </span>
+        </div>
     </div>
 </template>
 
@@ -12,11 +14,12 @@
 
 import { jsonCol } from "@/share/ColType";
 import { getListItemType, itemCat } from "@/share/share"
+import TextLine from "@/components/TextLine.vue";
 
 const type = ref("");
 let mounted = false; // flag: let 'watchEffect' after 'onMounted'
 
-const choices = ref();
+const choicesType = ref();
 
 onMounted(async () => {
     const meta = jsonCol.Metadata;
@@ -25,7 +28,7 @@ onMounted(async () => {
     type.value = meta.Type;
 
     // 'Type' radio button choices
-    choices.value = (await getListItemType(itemCat.value)).data as string[];
+    choicesType.value = (await getListItemType(itemCat.value)).data as string[];
 
     mounted = true
 });
@@ -43,20 +46,19 @@ const select = () => { };
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-
-.lbl {
-    margin-top: 20px;
-    margin-left: 20px;
+.sub-title {
     font-weight: bold;
 }
 
-#type-lbl {
-    margin-right: 50px;
+.area-rb-selection {
+    position: relative;
+    left: 10vh;
 }
 
-.type-input {
-    margin-left: 20px;
-    font-weight: normal;
+.rb-each {
+    margin-right: 12px;
+    font-weight: bold;
+    font-style: italic;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif
 }
-
 </style>

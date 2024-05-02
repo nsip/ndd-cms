@@ -8,6 +8,7 @@ export const loginToken = ref("");
 export const itemName = ref("");
 export const itemCat = ref("");
 export const itemPhase = ref("");
+export const curSelTab = ref();
 
 //////////////////////////////////////////////////////////////////////////////////////
 

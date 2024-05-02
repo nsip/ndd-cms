@@ -13,7 +13,7 @@
     <input type="text" class="content" ref="taS" v-model="standard" placeholder="standard" />
 
     <TextLine text="element name:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
-    <input type="text" class="content" ref="taEN" v-model="elemname" placeholder="element name" />
+    <input type="text" class="content" ref="taEN" v-model="elemName" placeholder="element name" />
 
     <TextLine text="elements:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <textarea class="content" ref="taE" v-model="elements" placeholder="elements" wrap="off"></textarea>
@@ -36,15 +36,16 @@ import "@vueup/vue-quill/dist/vue-quill.snow.css";
 import "@vueup/vue-quill/dist/vue-quill.bubble.css";
 import { jsonEnt } from "@/share/EntType";
 import TextLine from "@/components/TextLine.vue";
-import { fitTextarea } from "@/share/util";
+import { fitTextarea, isSomeValue } from "@/share/util";
 import { getListItem } from "@/share/share"
+import { notify } from "@kyvg/vue3-notification";
 
 const options_c = ref();
 
 const name = ref("");
 const standard = ref("");
 const elements = ref("");
-const elemname = ref("");
+const elemName = ref("");
 
 const taN = ref<HTMLTextAreaElement | null>(null); // fetch element
 const taS = ref<HTMLTextAreaElement | null>(null); // fetch element
@@ -73,13 +74,23 @@ onMounted(async () => {
         name.value = col.Name;
         standard.value = col.Standard;
         elements.value = col.Elements != null ? col.Elements.join("\n") : "";
-        elemname.value = col.ElementName;
+        elemName.value = col.ElementName;
 
         // quill
-        quillDes.root.innerHTML = col.Description;
+        quillDes.root.innerHTML = isSomeValue(col.Description) ? col.Description : "";
         quillBR.root.innerHTML = col.BusinessRules != null ? col.BusinessRules.join("\n") : "";
-        quillDM.root.innerHTML = col.DefinitionModification;
-        quillVal.root.innerHTML = col.Values;
+        quillDM.root.innerHTML = isSomeValue(col.DefinitionModification) ? col.DefinitionModification : "";
+        quillVal.root.innerHTML = isSomeValue(col.Values) ? col.Values : "";
+
+        // do a dropdown list alert if existing 'name' value is NOT in Collections
+        if (name.value.length > 0 && !(options_c.value as string[]).includes(name.value)) {
+            const msg = `Dropdown Menu value cannot be auto selected as '${name.value}' doesn't exist in Collections List`
+            notify({
+                title: `No.${props.idx} collection's name is missing from Dropdown Menu`,
+                text: msg,
+                type: "warn",
+            })
+        }
     }
     mounted = true;
 });
@@ -91,7 +102,7 @@ watchEffect(() => {
     const n = name.value;
     const s = standard.value;
     const e = elements.value;
-    const en = elemname.value;
+    const en = elemName.value;
 
     if (mounted) {
 

@@ -1,17 +1,18 @@
 <template>
 
     <div class="com">
+
         <TextLine text="type:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
         <div class="area-rb-selection">
             <span v-for="choice in choicesType" class="rb-each">
-                <input v-model="type" type="radio" name="type" :value="choice" @change="select" :disabled="disRbType" />
+                <input v-model="type" type="radio" name="type" :value="choice" @change="select_type" :disabled="disRbType" />
                 <label>{{ choice }}</label>
             </span>
         </div>
 
         <TextLine text="super class:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
         <div class="area-dropdown-list">
-            <select v-model="superClass" :disabled="disSelSC" :title="tipSelSC" @change="switchSC" class="dropdown-list">
+            <select v-model="superClass" :title="tipSelSC" @change="switchSC" class="dropdown-list" :disabled="disSelSC">
                 <option value="">--- EMPTY ---</option>
                 <option v-for="(item, idx) in options_SC" :key="idx" :value="item"> {{ item }}</option>
             </select>
@@ -21,7 +22,7 @@
         <button class="more-editor" title="add more selection" @click="onMoreLessClick('+ao')"> <font-awesome-icon icon="circle-plus" /> </button>
         <TextLine text="is attribute of:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
         <div v-for="i in isAttrOf_one.length" :key="i" class="area-dropdown-list">
-            <select :id="'select-ao' + (i - 1)" v-model="isAttrOf_one[i - 1]" :disabled="disSelAO" :title="tipSelAO" @change="switchAO($event, i - 1)" class="dropdown-list">
+            <select :id="'select-ao' + (i - 1)" v-model="isAttrOf_one[i - 1]" :title="tipSelAO" @change="switchAO($event, i - 1)" class="dropdown-list" :disabled="disSelAO">
                 <option value="">--- EMPTY ---</option>
                 <option v-for="(item, idx) in options_AO" :key="idx" :value="item"> {{ item }}</option>
             </select>
@@ -31,11 +32,20 @@
         <button class="more-editor" title="add more selection" @click="onMoreLessClick('+re')"> <font-awesome-icon icon="circle-plus" /> </button>
         <TextLine text="cross reference entities:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
         <div v-for="i in refEntities_one.length" :key="i" class="area-dropdown-list">
-            <select :id="'select-re' + (i - 1)" v-model="refEntities_one[i - 1]" :disabled="disSelRE" :title="tipSelRE" @change="switchRE($event, i - 1)" class="dropdown-list">
+            <select :id="'select-re' + (i - 1)" v-model="refEntities_one[i - 1]" :title="tipSelRE" @change="switchRE($event, i - 1)" class="dropdown-list" :disabled="disSelRE">
                 <option value="">--- EMPTY ---</option>
                 <option v-for="(item, idx) in options_RE" :key="idx" :value="item"> {{ item }}</option>
             </select>
         </div>
+
+        <TextLine text="timeframe:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="0.5px" class="sub-title" />
+        <div class="area-rb-selection area-rb-selection-tf">
+            <span v-for="choice in choicesTimeframe" class="rb-each">
+                <input v-model="timeframe" type="radio" name="timeframe" :value="choice" @change="select_timeframe" :disabled="disRbTF" />
+                <label>{{ choice }}</label>
+            </span>
+        </div>
+
     </div>
 
 </template>
@@ -51,6 +61,7 @@ const type = ref("");          // meta Type value
 const superClass = ref("");    // meta SuperClass value
 const isAttrOf = ref("");      // meta IsAttributeOf value
 const refEntities = ref("");   // meta CrossRefEntities value
+const timeframe = ref("");     // meta Timeframe value
 
 const isAttrOf_one = ref<string[]>([]);    // one element value list for multiple dropdown lists
 const refEntities_one = ref<string[]>([]); // one element value list for multiple dropdown lists
@@ -61,12 +72,14 @@ const disRbType = computed(() => jsonEnt.Entity.includes('=>'));
 const disSelSC = computed(() => jsonEnt.Entity.includes('=>'));
 const disSelAO = computed(() => jsonEnt.Entity.includes('=>'));
 const disSelRE = computed(() => jsonEnt.Entity.includes('=>'));
+const disRbTF = computed(() => jsonEnt.Entity.includes('=>'));
 
 const tipSelSC = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name is on changing stage, [SuperClass] cannot be edited' : '');
 const tipSelAO = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name is on changing stage, [IsAttributeOf] cannot be edited' : '');
 const tipSelRE = computed(() => jsonEnt.Entity.includes('=>') ? 'If entity name is on changing stage, [CrossRefEntities] cannot be edited' : '');
 
 const choicesType = ref();
+const choicesTimeframe = ref();
 
 const options_e = ref();
 const options_a = ref();
@@ -153,6 +166,9 @@ onMounted(async () => {
     // 'Type' radio button choices
     choicesType.value = (await getListItemType(itemCat.value)).data as string[];
 
+    // 'Timeframe' radio button choices
+    choicesTimeframe.value = ["Current", "Historical", "Prospective"] // (await getListItemType(itemCat.value)).data as string[];
+
     // dropdown list
     options_a.value = ((await getListItem('abstract')).data as string[]).sort((a, b) => a.localeCompare(b));
     options_e.value = ((await getListItem('element')).data as string[]).sort((a, b) => a.localeCompare(b));
@@ -168,6 +184,9 @@ onMounted(async () => {
     const meta = jsonEnt.Metadata;
 
     type.value = meta.Type;
+    if (type.value.length == 0) {
+        type.value = "Element"
+    }
 
     superClass.value = meta.SuperClass;
 
@@ -179,6 +198,11 @@ onMounted(async () => {
     refEntities_one.value = meta.CrossRefEntities;
     if (refEntities_one.value.length == 0) {
         refEntities_one.value.push("")
+    }
+
+    timeframe.value = meta.Timeframe;
+    if (timeframe.value.length == 0) {
+        timeframe.value = "Current"
     }
 
     mounted = true;
@@ -193,15 +217,18 @@ watchEffect(() => {
     const sc = superClass.value;
     const ao = isAttrOf.value;
     const re = refEntities.value;
+    const tf = timeframe.value;
 
     if (mounted) {
-        jsonEnt.SetMeta(tp, sc, ao, re);
+        jsonEnt.SetMeta(tp, sc, ao, re, tf);
     }
 });
 
-const select = () => {
+const select_type = () => {
     superClass.value = ""
 };
+
+const select_timeframe = () => { }
 
 const onMoreLessClick = (type: string) => {
     switch (type) {
@@ -272,6 +299,10 @@ const onMoreLessClick = (type: string) => {
 .area-rb-selection {
     position: relative;
     left: 19vh;
+}
+
+.area-rb-selection-tf {
+    margin-bottom: 1vh;
 }
 
 .rb-each {
