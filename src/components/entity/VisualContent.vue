@@ -129,6 +129,7 @@ const prevLegalDefinition = () => {
         sub_str += hasSomeValue(sub_obj, "Definition") ? field_subtitle_html('definition') + field_value_html(sub_obj.Definition) : ""
         sub_str += hasSomeValue(sub_obj, "Commentary") ? field_subtitle_html('commentary') + field_value_html(sub_obj.Commentary) : ""
         sub_str += hasSomeValue(sub_obj, "Datestamp") ? field_subtitle_html('datestamp') + field_value_html(sub_obj.Datestamp) : ""
+        sub_str += hasSomeValue(sub_obj, "Jurisdiction") ? field_subtitle_html('jurisdiction') + field_value_html(sub_obj.Jurisdiction) : ""
         elems.push(sub_str);
     }
     rt += elems.join(field_sep_line());
