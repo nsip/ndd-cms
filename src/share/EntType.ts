@@ -228,7 +228,8 @@ export class EntType {
         linkStr: string,
         definition: string,
         commentary: string,
-        datestamp: string
+        datestamp: string,
+        jurisdiction: string,
     ) {
         if (this.CntLegalDef() == 0) {
             return
@@ -240,6 +241,7 @@ export class EntType {
         ele.Link = validStr(linkStr, ele.Link);
         ele.Commentary = validStr(commentary, ele.Commentary);
         ele.Datestamp = validStr(datestamp, ele.Datestamp);
+        ele.Jurisdiction = validStr(jurisdiction, ele.Jurisdiction);
     }
 
     CntLegalDef() {
@@ -257,6 +259,7 @@ export class EntType {
             ele.Commentary.trim().length == 0 &&
             ele.Citation.trim().length == 0 &&
             ele.Datestamp.trim().length == 0 &&
+            ele.Jurisdiction.trim().length == 0 &&
             ele.Link.length == 0
         );
     }
@@ -462,6 +465,7 @@ class legalDefType {
     Definition = "";
     Commentary = "";
     Datestamp = "";
+    Jurisdiction = "";
 }
 
 class sensiType {

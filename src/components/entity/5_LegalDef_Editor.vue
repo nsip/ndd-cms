@@ -1,4 +1,5 @@
 <template>
+
     <TextLine text="legislationName:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <input type="text" class="content" ref="taLN" v-model="legname" placeholder="legislation name" />
 
@@ -17,6 +18,9 @@
     <TextLine text="datestamp:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
     <input type="text" class="content" ref="taDS" v-model="datestamp" placeholder="datestamp" />
 
+    <TextLine text="jurisdiction:" textAlign="left" textColor="gray" lineColor="gray" lineHeight="1px" class="sub-title" />
+    <input type="text" class="content" ref="taJD" v-model="jurisdiction" placeholder="jurisdiction" />
+
     <br>
 </template>
 
@@ -28,14 +32,15 @@ import { jsonEnt } from "@/share/EntType";
 import TextLine from "@/components/TextLine.vue";
 import { fitTextarea } from "@/share/util";
 
-
 const legname = ref("");
 const link = ref("");
 const datestamp = ref("");
+const jurisdiction = ref("");
 
 const taLN = ref<HTMLTextAreaElement | null>(null); // fetch element
 const taLK = ref<HTMLTextAreaElement | null>(null); // fetch element
 const taDS = ref<HTMLTextAreaElement | null>(null); // fetch element
+const taJD = ref<HTMLTextAreaElement | null>(null); // fetch element
 
 let quillCit: Quill;
 let quillDef: Quill;
@@ -55,6 +60,7 @@ onMounted(async () => {
         legname.value = ld.LegislationName;
         link.value = ld.Link;
         datestamp.value = ld.Datestamp;
+        jurisdiction.value = ld.Jurisdiction;
 
         // quill
         quillCit.root.innerHTML = ld.Citation;
@@ -76,15 +82,15 @@ const onReadyCmt = (quill: Quill) => {
 
 const textChangeCit = (idx: number) => {
     const html = quillCit.root.innerHTML;
-    jsonEnt.SetLegalDef(idx, "**", html, "**", "**", "**", "**");
+    jsonEnt.SetLegalDef(idx, "**", html, "**", "**", "**", "**", "**");
 };
 const textChangeDef = (idx: number) => {
     const html = quillDef.root.innerHTML;
-    jsonEnt.SetLegalDef(idx, "**", "**", "**", html, "**", "**");
+    jsonEnt.SetLegalDef(idx, "**", "**", "**", html, "**", "**", "**");
 };
 const textChangeCmt = (idx: number) => {
     const html = quillCmt.root.innerHTML;
-    jsonEnt.SetLegalDef(idx, "**", "**", "**", "**", html, "**");
+    jsonEnt.SetLegalDef(idx, "**", "**", "**", "**", html, "**", "**");
 };
 
 watchEffect(() => {
@@ -92,11 +98,13 @@ watchEffect(() => {
     const ln = legname.value;
     const lk = link.value;
     const ds = datestamp.value;
+    const jd = jurisdiction.value;
     if (mounted) {
-        jsonEnt.SetLegalDef(idx || 0, ln, "**", lk, "**", "**", ds);
+        jsonEnt.SetLegalDef(idx || 0, ln, "**", lk, "**", "**", ds, jd);
         fitTextarea(taLN.value!, ln);
         fitTextarea(taLK.value!, lk);
         fitTextarea(taDS.value!, ds);
+        fitTextarea(taJD.value!, jd);
     }
 });
 
